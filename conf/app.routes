@@ -1,0 +1,7 @@
+# microservice specific routes
+
+POST        /scope             @uk.gov.hmrc.controllers.ScopeController.createOrUpdateScope
+GET         /scope             @uk.gov.hmrc.controllers.ScopeController.fetchScopes(keys ?= "*")
+GET         /scope/:key        @uk.gov.hmrc.controllers.ScopeController.fetchScope(key)
+
+POST        /scope/validate    @uk.gov.hmrc.controllers.ScopeController.validate
