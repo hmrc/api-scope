@@ -15,7 +15,7 @@ lazy val appDependencies: Seq[ModuleID] = compile ++ test
 
 lazy val hmrcMicroserviceBootstrapVersion = "6.18.0"
 lazy val hmrcPlayReactivemongoVersion = "6.2.0"
-lazy val hmrcHttpMetricsVersion = "1.1.0"
+lazy val hmrcHttpMetricsVersion = "1.2.0"
 lazy val hmrcReactiveMongoTestVersion = "3.1.0"
 lazy val hmrcTestVersion = "3.0.0"
 lazy val scalaJVersion = "2.4.0"
