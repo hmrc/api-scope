@@ -56,7 +56,7 @@ package object controllers {
       seqValidationError map {
         validationError =>
           val isMissingPath = validationError.message == "error.path.missing"
-          val message = if (isMissingPath) s"element is missing" else validationError.message
+          val message = if (isMissingPath) "element is missing" else validationError.message
           ErrorDescription(jsPath.toString, message)
       }
     }
