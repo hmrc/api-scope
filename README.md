@@ -73,16 +73,16 @@ GET /scope?keys=read:employment read:paye
 response:
 ```
 [
-{
-   "key": "read:employment",
-   "name":"Read Employment Data",
-   "description":"Ability to read employment data"
-},
-{
-   "key": "read:paye",
-   "name":"Read Paye Data",
-   "description":"Ability to read paye data"
-}
+  {
+    "key": "read:employment",
+    "name":"Read Employment Data",
+    "description":"Ability to read employment data"
+  },
+  {
+    "key": "read:paye",
+    "name":"Read Paye Data",
+    "description":"Ability to read paye data"
+  }
 ]
 ```
 
