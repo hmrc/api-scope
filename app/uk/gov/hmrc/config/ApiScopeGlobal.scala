@@ -36,7 +36,7 @@ class ApiScopeGlobal @Inject()(
 
   override def authFilter: Option[EssentialFilter] = None
 
-  override def microserviceMetricsConfig(implicit app: Application): Option[Configuration] = app.configuration.getConfig(s"$env.microservice.metrics")
+  override def microserviceMetricsConfig(implicit app: Application): Option[Configuration] = app.configuration.getConfig("microservice.metrics")
 }
 
 @Singleton
@@ -59,5 +59,5 @@ class MicroserviceLoggingFilter @Inject()(config: ControllerConfig) extends Logg
 
 @Singleton
 class MicroserviceAuditConnector extends AuditConnector with RunMode {
-  override lazy val auditingConfig = LoadAuditingConfig(s"$env.auditing")
+  override lazy val auditingConfig = LoadAuditingConfig("auditing")
 }
