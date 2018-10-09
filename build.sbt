@@ -42,6 +42,7 @@ lazy val test = Seq(
   "com.github.tomakehurst" % "wiremock" % wireMockVersion % "test,it"
 )
 
+
 lazy val plugins: Seq[Plugins] = Seq(PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin)
 lazy val playSettings: Seq[Setting[_]] = Seq.empty
 

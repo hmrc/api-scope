@@ -17,11 +17,11 @@
 package uk.gov.hmrc.repository
 
 import javax.inject.{Inject, Singleton}
-
 import play.api.Logger
 import play.api.libs.json.Json
 import play.api.libs.json.Json._
 import play.modules.reactivemongo.ReactiveMongoComponent
+import reactivemongo.api.Cursor
 import reactivemongo.api.indexes.{Index, IndexType}
 import reactivemongo.bson.{BSONDocument, BSONObjectID}
 import reactivemongo.play.json.ImplicitBSONHandlers._
@@ -49,10 +49,9 @@ class ScopeRepository @Inject()(mongo: ReactiveMongoComponent)
   ensureIndex("key", "keyIndex")
 
   def save(scope: Scope) : Future[Scope] = metrics.record(API("mongo-scope-save")) {
-    collection.find(Json.obj("key" -> scope.key)).one[BSONDocument].flatMap {
-      case Some(document) => collection.update(selector = BSONDocument("_id" -> document.get("_id")), update = scope)
-      case None => collection.save(scope)
-    }.map(_ => scope)
+    collection
+      .update(selector = BSONDocument("key" -> scope.key), scope, upsert = true)
+      .map(_ => scope)
   }
 
   private def ensureIndex(field: String, indexName: String, isUnique: Boolean = true, isBackground: Boolean = true): Future[Boolean] = {
@@ -76,7 +75,7 @@ class ScopeRepository @Inject()(mongo: ReactiveMongoComponent)
   }
 
   def fetchAll(): Future[Seq[Scope]] = metrics.record(API("mongo-scope-fetch-all")) {
-    collection.find(Json.obj()).cursor[Scope].collect[Seq]()
+    collection.find(Json.obj()).cursor[Scope]().collect[Seq](Int.MaxValue,Cursor.FailOnError[Seq[Scope]]())
   }
 
 }
