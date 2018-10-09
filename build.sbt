@@ -43,16 +43,16 @@ lazy val test = Seq(
 )
 
 
-lazy val plugins: Seq[Plugins] = Seq(PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin)
 lazy val playSettings: Seq[Setting[_]] = Seq.empty
 
 lazy val microservice = Project(appName, file("."))
-  .enablePlugins(plugins: _*)
+  .enablePlugins(PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin, SbtArtifactory)
   .settings(playSettings: _*)
   .settings(scalaSettings: _*)
   .settings(publishingSettings: _*)
   .settings(defaultSettings(): _*)
   .settings(
+    majorVersion := 0,
     targetJvm := "jvm-1.8",
     scalaVersion := "2.11.11",
     libraryDependencies ++= appDependencies,
