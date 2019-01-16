@@ -22,7 +22,7 @@ import play.api.libs.json._
 import play.api.mvc.{Action, AnyContent, BodyParsers, Result}
 import uk.gov.hmrc.models.ErrorCode._
 import uk.gov.hmrc.models.{Scope, ScopeData}
-import uk.gov.hmrc.play.microservice.controller.BaseController
+import uk.gov.hmrc.play.bootstrap.controller.BaseController
 import uk.gov.hmrc.services.ScopeService
 
 import scala.concurrent.ExecutionContext.Implicits.global
