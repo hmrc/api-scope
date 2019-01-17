@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,6 @@ import play.mvc.Http.Status.{INTERNAL_SERVER_ERROR, NOT_FOUND, NO_CONTENT, OK}
 import uk.gov.hmrc.controllers.ScopeController
 import uk.gov.hmrc.models.ConfidenceLevel._
 import uk.gov.hmrc.models.{ErrorCode, ErrorDescription, ErrorResponse, Scope}
-import uk.gov.hmrc.play.microservice.filters.MicroserviceFilterSupport
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 import uk.gov.hmrc.services.ScopeService
 
@@ -41,7 +40,9 @@ import scala.concurrent.Future.failed
 
 class ScopeControllerSpec extends UnitSpec with MockitoSugar with ScalaFutures with WithFakeApplication {
 
-  trait Setup extends MicroserviceFilterSupport {
+  implicit lazy val materializer = fakeApplication.materializer
+
+  trait Setup {
     val mockScopeService = mock[ScopeService]
     
     val underTest = new ScopeController(mockScopeService)

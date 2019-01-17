@@ -13,20 +13,22 @@ lazy val appName = "api-scope"
 
 lazy val appDependencies: Seq[ModuleID] = compile ++ test
 
+lazy val hmrcBootstrapPlay25Version = "4.7.0"
 lazy val hmrcMicroserviceBootstrapVersion = "8.3.0"
 lazy val hmrcPlayReactivemongoVersion = "6.2.0"
 lazy val hmrcHttpMetricsVersion = "1.2.0"
 lazy val hmrcReactiveMongoTestVersion = "3.1.0"
-lazy val hmrcTestVersion = "3.1.0"
+lazy val hmrcTestVersion = "3.4.0-play-25"
 lazy val scalaJVersion = "2.4.0"
-lazy val scalaTestVersion = "3.0.4"
+lazy val scalaTestVersion = "3.0.5"
 lazy val scalatestPlusPlayVersion = "2.0.1"
 lazy val mockitoVersion = "1.10.19"
 lazy val wireMockVersion = "2.18.0"
 
 lazy val compile = Seq(
   ws,
-  "uk.gov.hmrc" %% "microservice-bootstrap" % hmrcMicroserviceBootstrapVersion,
+
+  "uk.gov.hmrc" %% "bootstrap-play-25" %  hmrcBootstrapPlay25Version,
   "uk.gov.hmrc" %% "play-reactivemongo" % hmrcPlayReactivemongoVersion,
   "uk.gov.hmrc" %% "http-metrics" % hmrcHttpMetricsVersion
 )
