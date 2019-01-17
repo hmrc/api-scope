@@ -109,8 +109,8 @@ class ScopeRepositorySpec extends UnitSpec
       import scala.concurrent.duration._
 
       val expectedIndexes = List(
-        Index(key = Seq("key" -> IndexType.Ascending), name = Some("keyIndex"), unique = true, background = true, version = Some(1)),
-        Index(key = Seq("_id" -> IndexType.Ascending), name = Some("_id_"), unique = false, background = false, version = Some(1))
+        Index(key = Seq("key" -> IndexType.Ascending), name = Some("keyIndex"), unique = true, background = true, version = Some(2)),
+        Index(key = Seq("_id" -> IndexType.Ascending), name = Some("_id_"), unique = false, background = false, version = Some(2))
       )
 
       val repo = createRepository
