@@ -25,11 +25,10 @@ import uk.gov.hmrc.models.{Scope, ScopeData}
 import uk.gov.hmrc.play.bootstrap.controller.BaseController
 import uk.gov.hmrc.services.ScopeService
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ScopeController @Inject()(scopeService: ScopeService) extends BaseController {
+class ScopeController @Inject()(scopeService: ScopeService)(implicit val ec: ExecutionContext) extends BaseController {
 
   def createOrUpdateScope(): Action[JsValue] = Action.async(BodyParsers.parse.json) { implicit request =>
     handleRequest[Seq[ScopeData]](request) {

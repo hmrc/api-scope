@@ -13,7 +13,7 @@ lazy val appName = "api-scope"
 
 lazy val appDependencies: Seq[ModuleID] = compile ++ test
 
-lazy val hmrcBootstrapPlay25Version = "4.7.0"
+lazy val hmrcBootstrapPlay25Version = "4.8.0"
 lazy val hmrcMicroserviceBootstrapVersion = "8.3.0"
 lazy val hmrcPlayReactivemongoVersion = "6.2.0"
 lazy val hmrcHttpMetricsVersion = "1.2.0"

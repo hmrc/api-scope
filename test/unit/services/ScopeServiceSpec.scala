@@ -26,6 +26,7 @@ import uk.gov.hmrc.play.test.UnitSpec
 import uk.gov.hmrc.repository.ScopeRepository
 import uk.gov.hmrc.services.ScopeService
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class ScopeServiceSpec extends UnitSpec with MockitoSugar with ScalaFutures {
