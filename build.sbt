@@ -15,9 +15,9 @@ lazy val appDependencies: Seq[ModuleID] = compile ++ test
 
 lazy val hmrcBootstrapPlay25Version = "4.8.0"
 lazy val hmrcMicroserviceBootstrapVersion = "8.3.0"
-lazy val hmrcPlayReactivemongoVersion = "6.2.0"
+lazy val hmrcSimpleReactivemongoVersion = "7.10.0-play-25"
 lazy val hmrcHttpMetricsVersion = "1.2.0"
-lazy val hmrcReactiveMongoTestVersion = "3.1.0"
+lazy val hmrcReactiveMongoTestVersion = "4.6.0-play-25"
 lazy val hmrcTestVersion = "3.4.0-play-25"
 lazy val scalaJVersion = "2.4.0"
 lazy val scalaTestVersion = "3.0.5"
@@ -29,7 +29,7 @@ lazy val compile = Seq(
   ws,
 
   "uk.gov.hmrc" %% "bootstrap-play-25" %  hmrcBootstrapPlay25Version,
-  "uk.gov.hmrc" %% "play-reactivemongo" % hmrcPlayReactivemongoVersion,
+  "uk.gov.hmrc" %% "simple-reactivemongo" % hmrcSimpleReactivemongoVersion,
   "uk.gov.hmrc" %% "http-metrics" % hmrcHttpMetricsVersion
 )
 
