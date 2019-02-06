@@ -17,15 +17,13 @@
 package uk.gov.hmrc.services
 
 import javax.inject.{Inject, Singleton}
-
 import uk.gov.hmrc.models.Scope
 import uk.gov.hmrc.repository.ScopeRepository
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ScopeService @Inject()(scopeRepository: ScopeRepository) {
+class ScopeService @Inject()(scopeRepository: ScopeRepository)(implicit val ec: ExecutionContext) {
 
   def saveScopes(scopes: Seq[Scope]): Future[Seq[Scope]] =
     Future.sequence(scopes.map(scopeRepository.save))

@@ -20,7 +20,6 @@ import org.scalatest.concurrent.{Eventually, ScalaFutures}
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import play.modules.reactivemongo.ReactiveMongoComponent
 import reactivemongo.api.indexes.{Index, IndexType}
-import reactivemongo.core.commands.LastError
 import uk.gov.hmrc.models.ConfidenceLevel._
 import uk.gov.hmrc.models.Scope
 import uk.gov.hmrc.mongo.{MongoConnector, MongoSpecSupport}
@@ -41,9 +40,6 @@ class ScopeRepositorySpec extends UnitSpec
 
   val scope1 = Scope("key1", "name1", "description1")
   val scope2 = Scope("key2", "name2", "description2", confidenceLevel = Some(L200))
-
-  val noError = LastError(ok = true, None, None, None, None, 0, updatedExisting = false)
-  val error = LastError(ok = false, Some("Error"), Some(2), Some("Error Msg"), None, 0, updatedExisting = false)
 
   private def createRepository = new ScopeRepository(reactiveMongoComponent) {
     override lazy val metrics = NoopMetrics
@@ -113,7 +109,7 @@ class ScopeRepositorySpec extends UnitSpec
         Index(key = Seq("_id" -> IndexType.Ascending), name = Some("_id_"), unique = false, background = false, version = Some(2))
       )
 
-      val repo = createRepository
+      val repo: ScopeRepository = createRepository
 
       eventually(timeout(4.seconds), interval(100.milliseconds)) {
         getIndexes(repo) shouldBe expectedIndexes

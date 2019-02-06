@@ -31,8 +31,7 @@ import uk.gov.hmrc.mongo.json.ReactiveMongoFormats
 import uk.gov.hmrc.play.http.metrics.{API, Metrics, PlayMetrics}
 
 import scala.collection.Seq
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 private object ScopeFormats {
   implicit val objectIdFormats = ReactiveMongoFormats.objectIdFormats
@@ -40,7 +39,7 @@ private object ScopeFormats {
 }
 
 @Singleton
-class ScopeRepository @Inject()(mongo: ReactiveMongoComponent)
+class ScopeRepository @Inject()(mongo: ReactiveMongoComponent)(implicit val ec: ExecutionContext)
   extends ReactiveRepository[Scope, BSONObjectID]("scope", mongo.mongoConnector.db,
     ScopeFormats.scopeFormat, ReactiveMongoFormats.objectIdFormats) {
 
