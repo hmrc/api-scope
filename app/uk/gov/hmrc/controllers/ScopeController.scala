@@ -54,6 +54,7 @@ class ScopeController @Inject()(scopeService: ScopeService)(implicit val ec: Exe
   }
 
   def fetchScopes(scopes: String): Action[AnyContent] = Action.async {
+    Logger.info(s"Fetching scopes: $scopes")
     val future: Future[Seq[Scope]] = scopes match {
       case "*" => scopeService.fetchAll
       case spaceSeparatedScopes =>
