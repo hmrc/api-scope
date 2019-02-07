@@ -19,16 +19,16 @@ package uk.gov.hmrc.controllers
 import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.libs.json._
-import play.api.mvc.{Action, AnyContent, BodyParsers, Result}
+import play.api.mvc._
 import uk.gov.hmrc.models.ErrorCode._
 import uk.gov.hmrc.models.{Scope, ScopeData}
-import uk.gov.hmrc.play.bootstrap.controller.BaseController
+import uk.gov.hmrc.play.bootstrap.controller.BackendController
 import uk.gov.hmrc.services.ScopeService
 
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ScopeController @Inject()(scopeService: ScopeService)(implicit val ec: ExecutionContext) extends BaseController {
+class ScopeController @Inject()(scopeService: ScopeService, cc: ControllerComponents)(implicit val ec: ExecutionContext) extends BackendController(cc) {
 
   def createOrUpdateScope(): Action[JsValue] = Action.async(BodyParsers.parse.json) { implicit request =>
     handleRequest[Seq[ScopeData]](request) {

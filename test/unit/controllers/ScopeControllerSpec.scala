@@ -33,7 +33,7 @@ import uk.gov.hmrc.models.ConfidenceLevel._
 import uk.gov.hmrc.models.{ErrorCode, ErrorDescription, ErrorResponse, Scope}
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 import uk.gov.hmrc.services.ScopeService
-
+import uk.gov.hmrc.play.bootstrap.tools.Stubs.stubMessagesControllerComponents
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.concurrent.Future.failed
@@ -44,8 +44,9 @@ class ScopeControllerSpec extends UnitSpec with MockitoSugar with ScalaFutures w
 
   trait Setup {
     val mockScopeService = mock[ScopeService]
+    val controllerComponents = stubMessagesControllerComponents()
     
-    val underTest = new ScopeController(mockScopeService)
+    val underTest = new ScopeController(mockScopeService, controllerComponents)
 
     implicit lazy val request = FakeRequest()
 

@@ -1,8 +1,6 @@
 import _root_.play.core.PlayVersion
-import _root_.play.routes.compiler.StaticRoutesGenerator
 import _root_.play.sbt.PlayImport._
 import _root_.play.sbt.PlayScala
-import _root_.play.sbt.routes.RoutesKeys.routesGenerator
 import sbt.Keys._
 import sbt.Tests.{Group, SubProcess}
 import sbt._
@@ -13,31 +11,29 @@ lazy val appName = "api-scope"
 
 lazy val appDependencies: Seq[ModuleID] = compile ++ test
 
-lazy val hmrcBootstrapPlay25Version = "4.8.0"
-lazy val hmrcMicroserviceBootstrapVersion = "8.3.0"
-lazy val hmrcSimpleReactivemongoVersion = "7.10.0-play-25"
-lazy val hmrcHttpMetricsVersion = "1.2.0"
-lazy val hmrcReactiveMongoTestVersion = "4.6.0-play-25"
-lazy val hmrcTestVersion = "3.4.0-play-25"
-lazy val scalaJVersion = "2.4.0"
-lazy val scalaTestVersion = "3.0.5"
-lazy val scalatestPlusPlayVersion = "2.0.1"
+lazy val hmrcBootstrapPlay26Version = "0.36.0"
+lazy val hmrcSimpleReactivemongoVersion = "7.12.0-play-26"
+lazy val hmrcHttpMetricsVersion = "1.4.0"
+lazy val hmrcReactiveMongoTestVersion = "4.7.0-play-26"
+lazy val hmrcTestVersion = "3.4.0-play-26"
+lazy val scalaJVersion = "2.4.1"
+lazy val scalatestPlusPlayVersion = "3.1.2"
 lazy val mockitoVersion = "1.10.19"
 lazy val wireMockVersion = "2.18.0"
 
 lazy val compile = Seq(
   ws,
 
-  "uk.gov.hmrc" %% "bootstrap-play-25" %  hmrcBootstrapPlay25Version,
+  "uk.gov.hmrc" %% "bootstrap-play-26" %  hmrcBootstrapPlay26Version,
   "uk.gov.hmrc" %% "simple-reactivemongo" % hmrcSimpleReactivemongoVersion,
   "uk.gov.hmrc" %% "http-metrics" % hmrcHttpMetricsVersion
 )
 
 lazy val test = Seq(
+  "uk.gov.hmrc" %% "bootstrap-play-26" % hmrcBootstrapPlay26Version % "test,it" classifier "tests",
   "uk.gov.hmrc" %% "reactivemongo-test" % hmrcReactiveMongoTestVersion % "test,it",
   "uk.gov.hmrc" %% "hmrctest" % hmrcTestVersion % "test,it",
   "org.scalaj" %% "scalaj-http" % scalaJVersion % "test,it",
-  "org.scalatest" %% "scalatest" % scalaTestVersion % "test,it",
   "org.scalatestplus.play" %% "scalatestplus-play" % scalatestPlusPlayVersion % "test,it",
   "org.mockito" % "mockito-core" % mockitoVersion % "test,it",
   "com.typesafe.play" %% "play-test" % PlayVersion.current % "test,it",
@@ -60,8 +56,7 @@ lazy val microservice = Project(appName, file("."))
     libraryDependencies ++= appDependencies,
     parallelExecution in Test := false,
     fork in Test := false,
-    retrieveManaged := true,
-    routesGenerator := StaticRoutesGenerator
+    retrieveManaged := true
   )
   .settings(inConfig(TemplateTest)(Defaults.testSettings): _*)
   .settings(testOptions in Test := Seq(Tests.Filter(unitFilter)),

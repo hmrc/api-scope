@@ -17,7 +17,6 @@
 package uk.gov.hmrc
 
 import _root_.play.api.Logger
-import _root_.play.api.data.validation.ValidationError
 import _root_.play.api.libs.json.Json.toJson
 import _root_.play.api.libs.json._
 import _root_.play.api.mvc.Results._
@@ -50,7 +49,7 @@ package object controllers {
     })
   }
 
-  def validationResult(errors : Seq[(JsPath, Seq[ValidationError])]): JsValue = {
+  def validationResult(errors : Seq[(JsPath, Seq[JsonValidationError])]): JsValue = {
 
     val errs: Seq[ErrorDescription] = errors flatMap { case (jsPath, seqValidationError) =>
       seqValidationError map {
