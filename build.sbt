@@ -1,5 +1,4 @@
 import _root_.play.core.PlayVersion
-import _root_.play.sbt.PlayImport._
 import _root_.play.sbt.PlayScala
 import sbt.Keys._
 import sbt.Tests.{Group, SubProcess}
@@ -19,12 +18,13 @@ lazy val hmrcTestVersion = "3.6.0-play-26"
 lazy val scalaJVersion = "2.4.1"
 lazy val scalatestPlusPlayVersion = "3.1.2"
 lazy val mockitoVersion = "1.10.19"
-lazy val wireMockVersion = "2.18.0"
+lazy val wireMockVersion = "2.21.0"
 
 lazy val compile = Seq(
-  "uk.gov.hmrc" %% "bootstrap-play-26" %  hmrcBootstrapPlay26Version,
+  "uk.gov.hmrc" %% "bootstrap-play-26" % hmrcBootstrapPlay26Version,
   "uk.gov.hmrc" %% "simple-reactivemongo" % hmrcSimpleReactivemongoVersion,
-  "uk.gov.hmrc" %% "http-metrics" % hmrcHttpMetricsVersion
+  "uk.gov.hmrc" %% "http-metrics" % hmrcHttpMetricsVersion,
+  "com.beachape" %% "enumeratum-play" % "1.5.11"
 )
 
 lazy val test = Seq(
@@ -35,9 +35,8 @@ lazy val test = Seq(
   "org.scalatestplus.play" %% "scalatestplus-play" % scalatestPlusPlayVersion % "test,it",
   "org.mockito" % "mockito-core" % mockitoVersion % "test,it",
   "com.typesafe.play" %% "play-test" % PlayVersion.current % "test,it",
-  "com.github.tomakehurst" % "wiremock" % wireMockVersion % "test,it"
+  "com.github.tomakehurst" % "wiremock-jre8" % wireMockVersion % "test,it"
 )
-
 
 lazy val playSettings: Seq[Setting[_]] = Seq.empty
 
@@ -64,7 +63,7 @@ lazy val microservice = Project(appName, file("."))
   .settings(inConfig(TemplateItTest)(Defaults.itSettings): _*)
   .settings(
     Keys.fork in IntegrationTest := false,
-    unmanagedSourceDirectories in IntegrationTest := Seq((baseDirectory in IntegrationTest).value / "test/it" ),
+    unmanagedSourceDirectories in IntegrationTest := Seq((baseDirectory in IntegrationTest).value / "test/it"),
     addTestReportOption(IntegrationTest, "int-test-reports"),
     testGrouping in IntegrationTest := oneForkedJvmPerTest((definedTests in IntegrationTest).value),
     parallelExecution in IntegrationTest := false)
@@ -89,6 +88,6 @@ def oneForkedJvmPerTest(tests: Seq[TestDefinition]) =
   }
 
 // Coverage configuration
-coverageMinimum := 90
+coverageMinimum := 86
 coverageFailOnMinimum := true
 coverageExcludedPackages := "<empty>;com.kenshoo.play.metrics.*;.*definition.*;prod.*;testOnlyDoNotUseInAppConf.*;app.*;uk.gov.hmrc.BuildInfo;uk.gov.hmrc.config.*"
