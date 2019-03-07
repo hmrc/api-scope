@@ -12,18 +12,16 @@ lazy val appName = "api-scope"
 lazy val appDependencies: Seq[ModuleID] = compile ++ test
 
 lazy val hmrcBootstrapPlay26Version = "0.36.0"
-lazy val hmrcSimpleReactivemongoVersion = "7.12.0-play-26"
+lazy val hmrcSimpleReactivemongoVersion = "7.14.0-play-26"
 lazy val hmrcHttpMetricsVersion = "1.4.0"
-lazy val hmrcReactiveMongoTestVersion = "4.7.0-play-26"
-lazy val hmrcTestVersion = "3.4.0-play-26"
+lazy val hmrcReactiveMongoTestVersion = "4.9.0-play-26"
+lazy val hmrcTestVersion = "3.6.0-play-26"
 lazy val scalaJVersion = "2.4.1"
 lazy val scalatestPlusPlayVersion = "3.1.2"
 lazy val mockitoVersion = "1.10.19"
 lazy val wireMockVersion = "2.18.0"
 
 lazy val compile = Seq(
-  ws,
-
   "uk.gov.hmrc" %% "bootstrap-play-26" %  hmrcBootstrapPlay26Version,
   "uk.gov.hmrc" %% "simple-reactivemongo" % hmrcSimpleReactivemongoVersion,
   "uk.gov.hmrc" %% "http-metrics" % hmrcHttpMetricsVersion
@@ -91,6 +89,6 @@ def oneForkedJvmPerTest(tests: Seq[TestDefinition]) =
   }
 
 // Coverage configuration
-coverageMinimum := 86
+coverageMinimum := 90
 coverageFailOnMinimum := true
 coverageExcludedPackages := "<empty>;com.kenshoo.play.metrics.*;.*definition.*;prod.*;testOnlyDoNotUseInAppConf.*;app.*;uk.gov.hmrc.BuildInfo;uk.gov.hmrc.config.*"
