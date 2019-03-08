@@ -30,6 +30,7 @@ lazy val compile = Seq(
 lazy val test = Seq(
   "uk.gov.hmrc" %% "bootstrap-play-26" % hmrcBootstrapPlay26Version % "test,it" classifier "tests",
   "uk.gov.hmrc" %% "reactivemongo-test" % hmrcReactiveMongoTestVersion % "test,it",
+  "org.reactivemongo" % "reactivemongo-shaded-native" % "0.16.1-osx-x86-64" % "test,it",
   "uk.gov.hmrc" %% "hmrctest" % hmrcTestVersion % "test,it",
   "org.scalaj" %% "scalaj-http" % scalaJVersion % "test,it",
   "org.scalatestplus.play" %% "scalatestplus-play" % scalatestPlusPlayVersion % "test,it",
