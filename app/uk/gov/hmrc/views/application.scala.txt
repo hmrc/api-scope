@@ -1,0 +1,39 @@
+@()#%RAML 1.0
+---
+
+title: API Scope
+version: 1.0
+protocols: [ HTTPS ]
+baseUri: https://api.service.hmrc.gov.uk/
+
+mediaType: [ application/json ]
+
+uses:
+  sec: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/securitySchemes.raml
+  headers: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/headers.raml
+  annotations: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/annotations.raml
+  types: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/types.raml
+
+/api-scope:
+  /scope:
+    post:
+      is: [headers.acceptHeader]
+      securedBy: [ sec.x-application ]
+    get:
+      is: [headers.acceptHeader]
+      securedBy: [ sec.x-application ]
+
+    /{key}:
+      uriParameters:
+        key:
+        type: string
+
+      get:
+        is: [headers.acceptHeader]
+        securedBy: [ sec.x-application ]
+
+
+    /validate:
+      post:
+        is: [headers.acceptHeader]
+        securedBy: [ sec.x-application ]
