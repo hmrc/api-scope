@@ -24,12 +24,14 @@ uses:
       securedBy: [ sec.x-application ]
 
     /{key}:
+      uriParameters:
+        key:
+        type: string
+
       get:
         is: [headers.acceptHeader]
         securedBy: [ sec.x-application ]
-        uriParameters:
-          key:
-            type: string
+
 
     /validate:
       post:
