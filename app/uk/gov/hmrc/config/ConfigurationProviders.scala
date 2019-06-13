@@ -19,7 +19,6 @@ package uk.gov.hmrc.config
 import javax.inject.{Inject, Provider}
 import play.api.inject.{Binding, Module}
 import play.api.{Configuration, Environment}
-import uk.gov.hmrc.connectors.ServiceLocatorConfig
 import uk.gov.hmrc.controllers._
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
@@ -27,30 +26,8 @@ class ConfigurationModule extends Module {
 
   override def bindings(environment: Environment, configuration: Configuration): Seq[Binding[_]] = {
     Seq(
-      bind[ServiceLocatorRegistrationConfig].toProvider[ServiceLocatorRegistrationConfigProvider],
-      bind[ServiceLocatorConfig].toProvider[ServiceLocatorConfigProvider],
       bind[ApiDefinitionConfiguration].toProvider[ApiDefinitionConfigurationProvider]
     )
-  }
-}
-
-class ServiceLocatorRegistrationConfigProvider @Inject()(servicesConfig: ServicesConfig)
-  extends Provider[ServiceLocatorRegistrationConfig] {
-
-  override def get() = {
-    val registrationEnabled = servicesConfig.getConfBool("service-locator.enabled", defBool = false)
-    ServiceLocatorRegistrationConfig(registrationEnabled)
-  }
-}
-
-class ServiceLocatorConfigProvider @Inject()(servicesConfig: ServicesConfig)
-  extends Provider[ServiceLocatorConfig] {
-
-  override def get() = {
-    val appName = servicesConfig.getString("appName")
-    val appUrl = servicesConfig.getString("appUrl")
-    val serviceLocatorBaseUrl = servicesConfig.baseUrl("service-locator")
-    ServiceLocatorConfig(appName, appUrl, serviceLocatorBaseUrl)
   }
 }
 

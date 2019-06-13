@@ -32,7 +32,7 @@ class ApiDefinitionController @Inject()(config: ApiDefinitionConfiguration, asse
     if(config.publishApiDefinition) {
       Ok(txt.definition(config)).withHeaders(CONTENT_TYPE -> JSON)
     } else {
-      NotFound
+      NoContent
     }
   }
 
@@ -40,7 +40,7 @@ class ApiDefinitionController @Inject()(config: ApiDefinitionConfiguration, asse
     if(config.publishApiDefinition) {
       Ok(txt.application())
     } else {
-      NotFound
+      NoContent
     }
   }
 }

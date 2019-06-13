@@ -16,29 +16,35 @@
 
 package it.uk.gov.hmrc
 
-import org.scalatest.BeforeAndAfterAll
+import org.scalatest.TestData
+import org.scalatestplus.play.guice.GuiceOneAppPerTest
+import play.api.{Application, Mode}
+import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.controllers._
-import it.uk.gov.hmrc.stubs.ServiceLocatorStub
 import uk.gov.hmrc.play.test.UnitSpec
 
-class PlatformIntegrationSpec extends UnitSpec with AppUsingStubs with ServiceLocatorStub with BeforeAndAfterAll {
+trait PlatformIntegrationSpec extends UnitSpec with GuiceOneAppPerTest {
 
-  override def beforeAll(): Unit = {
-    super.beforeAll()
-    serviceLocatorWillAcceptTheRegistration()
-  }
+  val publishApiDefinition: Boolean
+
+  override def newAppForTest(testData: TestData): Application = GuiceApplicationBuilder()
+    .configure("run.mode" -> "Stub")
+    .configure(Map(
+      "publishApiDefinition" -> publishApiDefinition))
+    .in(Mode.Test).build()
 
   trait Setup {
-    val controller = app.injector.instanceOf[ApiDefinitionController]
+    implicit def mat: akka.stream.Materializer = app.injector.instanceOf[akka.stream.Materializer]
+    val controller: ApiDefinitionController = app.injector.instanceOf[ApiDefinitionController]
   }
+}
+
+class PublishApiDefinitionEnabledSpec extends PlatformIntegrationSpec {
+  val publishApiDefinition = true
 
   "microservice" should {
-
-    "register itself with the service locator" in new Setup {
-      verifyServiceLocatorWasCalledToRegister(appName, appUrl)
-    }
 
     "return the JSON definition" in new Setup {
       route(app, FakeRequest(GET, "/api/definition")) match {
@@ -57,6 +63,33 @@ class PlatformIntegrationSpec extends UnitSpec with AppUsingStubs with ServiceLo
           val result = await(resultF)
           status(result) shouldBe OK
           bodyOf(result) should include("#%RAML 1.0")
+
+        case _ => fail
+      }
+    }
+  }
+}
+
+class PublishApiDefinitionDisabledSpec extends PlatformIntegrationSpec {
+  val publishApiDefinition = false
+
+  "microservice" should {
+
+    "return a 204 from the definition endpoint" in new Setup {
+      route(app, FakeRequest(GET, "/api/definition")) match {
+        case Some(resultF) =>
+          val result = await(resultF)
+          status(result) shouldBe NO_CONTENT
+
+        case _ => fail
+      }
+    }
+
+    "return a 204 from the RAML endpoint" in new Setup {
+      route(app, FakeRequest(GET, "/api/conf/1.0/application.raml")) match {
+        case Some(resultF) =>
+          val result = await(resultF)
+          status(result) shouldBe NO_CONTENT
 
         case _ => fail
       }
