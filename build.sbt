@@ -10,10 +10,10 @@ lazy val appName = "api-scope"
 
 lazy val appDependencies: Seq[ModuleID] = compile ++ test
 
-lazy val hmrcBootstrapPlay26Version = "1.0.0"
+lazy val hmrcBootstrapPlay26Version = "1.3.0"
 lazy val hmrcSimpleReactivemongoVersion = "7.22.0-play-26"
-lazy val hmrcHttpMetricsVersion = "1.4.0"
-lazy val hmrcReactiveMongoTestVersion = "4.15.0-play-26"
+lazy val hmrcHttpMetricsVersion = "1.6.0-play-26"
+lazy val hmrcReactiveMongoTestVersion = "4.16.0-play-26"
 lazy val hmrcTestVersion = "3.9.0-play-26"
 lazy val scalaJVersion = "2.4.1"
 lazy val scalatestPlusPlayVersion = "3.1.2"
@@ -63,7 +63,7 @@ lazy val microservice = Project(appName, file("."))
   .settings(inConfig(TemplateItTest)(Defaults.itSettings): _*)
   .settings(
     Keys.fork in IntegrationTest := false,
-    unmanagedSourceDirectories in IntegrationTest := Seq((baseDirectory in IntegrationTest).value / "test/it"),
+    unmanagedSourceDirectories in IntegrationTest := Seq((baseDirectory in IntegrationTest).value / "test"),
     addTestReportOption(IntegrationTest, "int-test-reports"),
     testGrouping in IntegrationTest := oneForkedJvmPerTest((definedTests in IntegrationTest).value),
     parallelExecution in IntegrationTest := false)
