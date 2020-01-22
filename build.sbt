@@ -19,6 +19,9 @@ lazy val scalaJVersion = "2.4.1"
 lazy val scalatestPlusPlayVersion = "3.1.2"
 lazy val mockitoVersion = "1.10.19"
 lazy val wireMockVersion = "2.21.0"
+// we need to override the akka version for now as newer versions are not compatible with reactivemongo
+lazy val akkaVersion = "2.5.23"
+lazy val akkaHttpVersion = "10.0.15"
 
 lazy val compile = Seq(
   "uk.gov.hmrc" %% "bootstrap-play-26" % hmrcBootstrapPlay26Version,
@@ -38,6 +41,14 @@ lazy val test = Seq(
   "com.github.tomakehurst" % "wiremock-jre8" % wireMockVersion % "test,it"
 )
 
+lazy val overrides = Set(
+  "com.typesafe.akka" %% "akka-stream" % akkaVersion,
+  "com.typesafe.akka" %% "akka-protobuf" % akkaVersion,
+  "com.typesafe.akka" %% "akka-slf4j" % akkaVersion,
+  "com.typesafe.akka" %% "akka-actor" % akkaVersion,
+  "com.typesafe.akka" %% "akka-http-core" % akkaHttpVersion
+)
+
 lazy val playSettings: Seq[Setting[_]] = Seq.empty
 
 lazy val microservice = Project(appName, file("."))
@@ -51,6 +62,7 @@ lazy val microservice = Project(appName, file("."))
     targetJvm := "jvm-1.8",
     scalaVersion := "2.11.11",
     libraryDependencies ++= appDependencies,
+    dependencyOverrides ++= overrides,
     parallelExecution in Test := false,
     fork in Test := false,
     retrieveManaged := true
