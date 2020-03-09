@@ -28,7 +28,7 @@ import reactivemongo.play.json.ImplicitBSONHandlers._
 import uk.gov.hmrc.models.Scope
 import uk.gov.hmrc.mongo.ReactiveRepository
 import uk.gov.hmrc.mongo.json.ReactiveMongoFormats
-import uk.gov.hmrc.play.http.metrics.{API, Metrics, PlayMetrics}
+import uk.gov.hmrc.play.http.metrics.{API, ApiMetrics, RecordMetrics}
 
 import scala.collection.Seq
 import scala.concurrent.{ExecutionContext, Future}
@@ -39,15 +39,13 @@ private object ScopeFormats {
 }
 
 @Singleton
-class ScopeRepository @Inject()(mongo: ReactiveMongoComponent)(implicit val ec: ExecutionContext)
+ class ScopeRepository @Inject()(mongo: ReactiveMongoComponent, val apiMetrics: ApiMetrics)(implicit val ec: ExecutionContext)
   extends ReactiveRepository[Scope, BSONObjectID]("scope", mongo.mongoConnector.db,
-    ScopeFormats.scopeFormat, ReactiveMongoFormats.objectIdFormats) {
-
-  lazy val metrics: Metrics = PlayMetrics
+    ScopeFormats.scopeFormat, ReactiveMongoFormats.objectIdFormats) with RecordMetrics {
 
   ensureIndex("key", "keyIndex")
 
-  def save(scope: Scope) : Future[Scope] = metrics.record(API("mongo-scope-save")) {
+  def save(scope: Scope) : Future[Scope] = record {
     collection
       .update(selector = BSONDocument("key" -> scope.key), scope, upsert = true)
       .map(_ => scope)
@@ -64,7 +62,7 @@ class ScopeRepository @Inject()(mongo: ReactiveMongoComponent)(implicit val ec: 
     collection.indexesManager.ensure(createIndex)
   }
 
-  def fetch(key: String): Future[Option[Scope]] = metrics.record(API("mongo-scope-fetch")) {
+  def fetch(key: String): Future[Option[Scope]] = record {
     collection.find(Json.obj("key" -> key)).one[Scope] map {
       case Some(s) => Some(s)
       case None =>
@@ -73,8 +71,9 @@ class ScopeRepository @Inject()(mongo: ReactiveMongoComponent)(implicit val ec: 
     }
   }
 
-  def fetchAll(): Future[Seq[Scope]] = metrics.record(API("mongo-scope-fetch-all")) {
+  def fetchAll(): Future[Seq[Scope]] = record {
     collection.find(Json.obj()).cursor[Scope]().collect[Seq](Int.MaxValue,Cursor.FailOnError[Seq[Scope]]())
   }
 
+  override val api: API = api
 }

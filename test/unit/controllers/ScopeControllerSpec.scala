@@ -17,34 +17,33 @@
 package unit.controllers
 
 import org.mockito.BDDMockito.given
-import org.mockito.Matchers.any
+import org.mockito.Matchers
+import org.mockito.{ArgumentMatchersSugar, MockitoSugar}
 import org.mockito.Mockito
 import org.mockito.Mockito.{verify, when}
 import org.scalatest.concurrent.ScalaFutures
-import org.scalatest.mockito.MockitoSugar
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
 import play.api.libs.json.{JsDefined, JsString, Json}
 import play.api.mvc.Result
-import play.api.test.FakeRequest
+import play.api.test.{FakeRequest, StubControllerComponentsFactory}
 import play.mvc.Http.Status.{INTERNAL_SERVER_ERROR, NOT_FOUND, NO_CONTENT, OK}
 import uk.gov.hmrc.controllers.ScopeController
 import uk.gov.hmrc.models.ConfidenceLevel._
 import uk.gov.hmrc.models.{ErrorCode, ErrorDescription, ErrorResponse, Scope}
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 import uk.gov.hmrc.services.ScopeService
-import uk.gov.hmrc.play.bootstrap.tools.Stubs.stubMessagesControllerComponents
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.concurrent.Future.failed
 
-class ScopeControllerSpec extends UnitSpec with MockitoSugar with ScalaFutures with WithFakeApplication {
+class ScopeControllerSpec extends UnitSpec with MockitoSugar with ScalaFutures with WithFakeApplication with StubControllerComponentsFactory {
 
   implicit lazy val materializer = fakeApplication.materializer
 
   trait Setup {
     val mockScopeService = mock[ScopeService]
-    val controllerComponents = stubMessagesControllerComponents()
+    val controllerComponents = stubControllerComponents()
     
     val underTest = new ScopeController(mockScopeService, controllerComponents)
 
