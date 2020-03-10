@@ -17,7 +17,7 @@
 package unit.controllers
 
 import org.mockito.BDDMockito.given
-import org.mockito.Matchers
+import org.mockito.ArgumentMatchers
 import org.mockito.{ArgumentMatchersSugar, MockitoSugar}
 import org.mockito.Mockito
 import org.mockito.Mockito.{verify, when}
@@ -49,7 +49,7 @@ class ScopeControllerSpec extends UnitSpec with MockitoSugar with ScalaFutures w
 
     implicit lazy val request = FakeRequest()
 
-    when(mockScopeService.saveScopes(any[Seq[Scope]])).thenReturn(Future(Seq()))
+    when(mockScopeService.saveScopes(ArgumentMatchers.any[Seq[Scope]])).thenReturn(Future(Seq()))
     given(mockScopeService.fetchScopes(Set(scope.key))).willReturn(Seq(scope))
   }
 
@@ -83,13 +83,13 @@ class ScopeControllerSpec extends UnitSpec with MockitoSugar with ScalaFutures w
         val result = await(underTest.createOrUpdateScope()(request.withBody(Json.parse(invalidBody))))
 
         status(result) shouldBe expectedResponseCode
-        verify(mockScopeService, Mockito.times(0)).saveScopes(any())
+        verify(mockScopeService, Mockito.times(0)).saveScopes(ArgumentMatchers.any())
       }
     }
 
     "fail with a 500 (internal server error) when the service throws an exception" in new Setup {
 
-      given(mockScopeService.saveScopes(any[Seq[Scope]])).willReturn(failed(new RuntimeException()))
+      given(mockScopeService.saveScopes(ArgumentMatchers.any[Seq[Scope]])).willReturn(failed(new RuntimeException()))
 
       val result = await(underTest.createOrUpdateScope()(request.withBody(Json.parse(validScopeBody))))
 
