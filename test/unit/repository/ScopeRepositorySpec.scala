@@ -28,13 +28,14 @@ import uk.gov.hmrc.mongo.{MongoConnector, MongoSpecSupport}
 import uk.gov.hmrc.play.http.metrics.{API, ApiMetrics}
 import uk.gov.hmrc.play.test.UnitSpec
 import uk.gov.hmrc.repository.ScopeRepository
+import unit.MockMetrics
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class ScopeRepositorySpec extends UnitSpec
   with ScalaFutures with MongoSpecSupport
   with BeforeAndAfterEach with BeforeAndAfterAll
-  with Eventually with MockitoSugar {
+  with Eventually with MockitoSugar with MockMetrics {
 
   private val reactiveMongoComponent = new ReactiveMongoComponent { override def mongoConnector: MongoConnector = mongoConnectorForTest }
 
@@ -43,9 +44,7 @@ class ScopeRepositorySpec extends UnitSpec
   val scope1 = Scope("key1", "name1", "description1")
   val scope2 = Scope("key2", "name2", "description2", confidenceLevel = Some(L200))
 
-  val mockApiMetricks = mock[ApiMetrics]
-
-  private def createRepository = new ScopeRepository(reactiveMongoComponent, mockApiMetricks) {
+  private def createRepository = new ScopeRepository(reactiveMongoComponent, mockApiMetrics) {
   }
 
   private def dropRepository(repo: ScopeRepository) = {

@@ -43,6 +43,8 @@ private object ScopeFormats {
   extends ReactiveRepository[Scope, BSONObjectID]("scope", mongo.mongoConnector.db,
     ScopeFormats.scopeFormat, ReactiveMongoFormats.objectIdFormats) with RecordMetrics {
 
+  val api:API = API("mongo-scope")
+
   ensureIndex("key", "keyIndex")
 
   def save(scope: Scope) : Future[Scope] = record {
@@ -75,5 +77,4 @@ private object ScopeFormats {
     collection.find(Json.obj()).cursor[Scope]().collect[Seq](Int.MaxValue,Cursor.FailOnError[Seq[Scope]]())
   }
 
-  override val api: API = api
 }
