@@ -69,14 +69,14 @@ lazy val microservice = Project(appName, file("."))
     retrieveManaged := true
   )
   .settings(inConfig(TemplateTest)(Defaults.testSettings): _*)
-  .settings(testOptions in Test := Seq(Tests.Filter(unitFilter)),
+  .settings(
     addTestReportOption(Test, "test-reports")
   )
   .configs(IntegrationTest)
   .settings(inConfig(TemplateItTest)(Defaults.itSettings): _*)
   .settings(
     Keys.fork in IntegrationTest := false,
-    unmanagedSourceDirectories in IntegrationTest := Seq((baseDirectory in IntegrationTest).value / "test"),
+    unmanagedSourceDirectories in IntegrationTest := Seq((baseDirectory in IntegrationTest).value / "integration"),
     addTestReportOption(IntegrationTest, "int-test-reports"),
     parallelExecution in IntegrationTest := false)
   .settings(
@@ -89,7 +89,9 @@ lazy val allItPhases = "tit->it;it->it;it->compile;compile->compile"
 lazy val TemplateTest = config("tt") extend Test
 lazy val TemplateItTest = config("tit") extend IntegrationTest
 
-def unitFilter(name: String): Boolean = name startsWith "unit"
+
+
+
 
 // Coverage configuration
 coverageMinimum := 86
