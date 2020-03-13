@@ -12,12 +12,12 @@ lazy val appDependencies: Seq[ModuleID] = compile ++ test
 
 lazy val hmrcBootstrapPlay26Version = "1.3.0"
 lazy val hmrcSimpleReactivemongoVersion = "7.22.0-play-26"
-lazy val hmrcHttpMetricsVersion = "1.6.0-play-26"
+lazy val hmrcHttpMetricsVersion = "1.10.0"
 lazy val hmrcReactiveMongoTestVersion = "4.16.0-play-26"
 lazy val hmrcTestVersion = "3.9.0-play-26"
 lazy val scalaJVersion = "2.4.1"
 lazy val scalatestPlusPlayVersion = "3.1.2"
-lazy val mockitoVersion = "1.10.19"
+lazy val mockitoVersion = "2.13.0"
 lazy val wireMockVersion = "2.21.0"
 // we need to override the akka version for now as newer versions are not compatible with reactivemongo
 lazy val akkaVersion = "2.5.23"
@@ -27,7 +27,7 @@ lazy val compile = Seq(
   "uk.gov.hmrc" %% "bootstrap-play-26" % hmrcBootstrapPlay26Version,
   "uk.gov.hmrc" %% "simple-reactivemongo" % hmrcSimpleReactivemongoVersion,
   "uk.gov.hmrc" %% "http-metrics" % hmrcHttpMetricsVersion,
-  "com.beachape" %% "enumeratum-play" % "1.5.11"
+  "com.beachape" %% "enumeratum-play" % "1.5.13"
 )
 
 lazy val test = Seq(
@@ -37,11 +37,12 @@ lazy val test = Seq(
   "org.scalaj" %% "scalaj-http" % scalaJVersion % "test,it",
   "org.scalatestplus.play" %% "scalatestplus-play" % scalatestPlusPlayVersion % "test,it",
   "org.mockito" % "mockito-core" % mockitoVersion % "test,it",
+  "org.mockito" %% "mockito-scala-scalatest" % "1.7.1" % "test, it",
   "com.typesafe.play" %% "play-test" % PlayVersion.current % "test,it",
   "com.github.tomakehurst" % "wiremock-jre8" % wireMockVersion % "test,it"
 )
 
-lazy val overrides = Set(
+lazy val overrides = Seq(
   "com.typesafe.akka" %% "akka-stream" % akkaVersion,
   "com.typesafe.akka" %% "akka-protobuf" % akkaVersion,
   "com.typesafe.akka" %% "akka-slf4j" % akkaVersion,
@@ -60,7 +61,7 @@ lazy val microservice = Project(appName, file("."))
   .settings(
     majorVersion := 0,
     targetJvm := "jvm-1.8",
-    scalaVersion := "2.11.11",
+    scalaVersion := "2.12.10",
     libraryDependencies ++= appDependencies,
     dependencyOverrides ++= overrides,
     parallelExecution in Test := false,
@@ -68,23 +69,19 @@ lazy val microservice = Project(appName, file("."))
     retrieveManaged := true
   )
   .settings(inConfig(TemplateTest)(Defaults.testSettings): _*)
-  .settings(testOptions in Test := Seq(Tests.Filter(unitFilter)),
+  .settings(
     addTestReportOption(Test, "test-reports")
   )
   .configs(IntegrationTest)
   .settings(inConfig(TemplateItTest)(Defaults.itSettings): _*)
   .settings(
     Keys.fork in IntegrationTest := false,
-    unmanagedSourceDirectories in IntegrationTest := Seq((baseDirectory in IntegrationTest).value / "test"),
+    unmanagedSourceDirectories in IntegrationTest := Seq((baseDirectory in IntegrationTest).value / "integration"),
     addTestReportOption(IntegrationTest, "int-test-reports"),
-    testGrouping in IntegrationTest := oneForkedJvmPerTest((definedTests in IntegrationTest).value),
     parallelExecution in IntegrationTest := false)
   .settings(
     resolvers += Resolver.bintrayRepo("hmrc", "releases"),
     resolvers += Resolver.jcenterRepo)
-  .settings(ivyScala := ivyScala.value map {
-    _.copy(overrideScalaVersion = true)
-  })
 
 lazy val allPhases = "tt->test;test->test;test->compile;compile->compile"
 lazy val allItPhases = "tit->it;it->it;it->compile;compile->compile"
@@ -92,12 +89,9 @@ lazy val allItPhases = "tit->it;it->it;it->compile;compile->compile"
 lazy val TemplateTest = config("tt") extend Test
 lazy val TemplateItTest = config("tit") extend IntegrationTest
 
-def unitFilter(name: String): Boolean = name startsWith "unit"
 
-def oneForkedJvmPerTest(tests: Seq[TestDefinition]) =
-  tests map {
-    test => Group(test.name, Seq(test), SubProcess(ForkOptions(runJVMOptions = Seq("-Dtest.name=" + test.name))))
-  }
+
+
 
 // Coverage configuration
 coverageMinimum := 86
