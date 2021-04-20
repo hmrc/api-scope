@@ -12,7 +12,7 @@ lazy val appDependencies: Seq[ModuleID] = compile ++ test
 
 lazy val hmrcBootstrapPlay26Version = "2.0.0"
 lazy val hmrcSimpleReactivemongoVersion = "7.30.0-play-26"
-lazy val hmrcHttpMetricsVersion = "1.10.0"
+lazy val hmrcHttpMetricsVersion = "1.11.0"
 lazy val hmrcReactiveMongoTestVersion = "4.21.0-play-26"
 lazy val hmrcTestVersion = "3.9.0-play-26"
 lazy val scalaJVersion = "2.4.1"
@@ -61,7 +61,7 @@ lazy val microservice = Project(appName, file("."))
   .settings(
     majorVersion := 0,
     targetJvm := "jvm-1.8",
-    scalaVersion := "2.12.10",
+    scalaVersion := "2.12.12",
     libraryDependencies ++= appDependencies,
     dependencyOverrides ++= overrides,
     parallelExecution in Test := false,
@@ -89,11 +89,7 @@ lazy val allItPhases = "tit->it;it->it;it->compile;compile->compile"
 lazy val TemplateTest = config("tt") extend Test
 lazy val TemplateItTest = config("tit") extend IntegrationTest
 
-
-
-
-
 // Coverage configuration
-coverageMinimum := 86
+coverageMinimum := 90
 coverageFailOnMinimum := true
 coverageExcludedPackages := "<empty>;com.kenshoo.play.metrics.*;.*definition.*;prod.*;testOnlyDoNotUseInAppConf.*;app.*;uk.gov.hmrc.BuildInfo;uk.gov.hmrc.config.*"
