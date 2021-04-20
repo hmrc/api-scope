@@ -79,9 +79,6 @@ lazy val microservice = Project(appName, file("."))
     unmanagedSourceDirectories in IntegrationTest := Seq((baseDirectory in IntegrationTest).value / "integration"),
     addTestReportOption(IntegrationTest, "int-test-reports"),
     parallelExecution in IntegrationTest := false)
-  .settings(
-    resolvers += Resolver.bintrayRepo("hmrc", "releases"),
-    resolvers += Resolver.jcenterRepo)
 
 lazy val allPhases = "tt->test;test->test;test->compile;compile->compile"
 lazy val allItPhases = "tit->it;it->it;it->compile;compile->compile"
