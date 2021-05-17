@@ -16,9 +16,7 @@
 
 package uk.gov.hmrc.apiscope.models
 
-import org.scalatest.{Failed, Succeeded}
 import play.api.libs.json._
-import uk.gov.hmrc.apiscope.models.ErrorCode
 import uk.gov.hmrc.play.test.UnitSpec
 import play.api.libs.json.JsError
 

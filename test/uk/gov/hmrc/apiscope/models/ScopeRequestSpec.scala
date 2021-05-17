@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.apiscope.models
 
-import uk.gov.hmrc.apiscope.models.ScopeData
 import uk.gov.hmrc.play.test.UnitSpec
 
 class ScopeRequestSpec extends UnitSpec {

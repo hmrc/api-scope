@@ -234,7 +234,7 @@ class ScopeControllerSpec extends UnitSpec
       jsonBodyOf(result) shouldEqual Json.toJson(
         ErrorResponse(ErrorCode.API_INVALID_JSON, "Json cannot be converted to API Scope",
           Some(Seq(
-            ErrorDescription("(0)/confidenceLevel", "confidence level must be one of: 50, 100, 200, 300")
+            ErrorDescription("(0)/confidenceLevel", "confidence level must be one of: 50, 200, 250, 300, 500")
           ))))
     }
   }
