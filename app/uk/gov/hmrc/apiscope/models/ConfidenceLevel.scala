@@ -27,11 +27,13 @@ object ConfidenceLevel extends Enumeration {
     50 -> L50,
     100 -> L200,    // TODO - replace this value in the database once we know this allows Agent IV etc.
     200 -> L200,
-    300 -> L300
+    250 -> L250,
+    300 -> L300,
+    500 -> L500
   )
-  private val toInt = fromInt.map(_.swap)
+  private val toInt = fromInt.filterNot(_._1 == 100).map(_.swap)
 
-  val errorMessage = s"confidence level must be one of: ${fromInt.keys.toSeq.sorted.mkString(", ")}"
+  val errorMessage = s"confidence level must be one of: ${fromInt.keys.filterNot(_ == 100).toSeq.sorted.mkString(", ")}"
 
   implicit val reads = Reads[ConfidenceLevel] { json =>
     json.asOpt[Int].flatMap(fromInt.get)

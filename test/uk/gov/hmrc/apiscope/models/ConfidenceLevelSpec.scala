@@ -27,11 +27,12 @@ class ConfidenceLevelSpec extends UnitSpec {
       Json.fromJson[ConfidenceLevel.Value](JsNumber(50)) shouldBe JsSuccess(L50)
       Json.fromJson[ConfidenceLevel.Value](JsNumber(100)) shouldBe JsSuccess(L200)
       Json.fromJson[ConfidenceLevel.Value](JsNumber(200)) shouldBe JsSuccess(L200)
+      Json.fromJson[ConfidenceLevel.Value](JsNumber(250)) shouldBe JsSuccess(L250)
       Json.fromJson[ConfidenceLevel.Value](JsNumber(300)) shouldBe JsSuccess(L300)
     }
 
     "report invalid confidence levels" in {
-      val error = JsError("confidence level must be one of: 50, 100, 200, 300")
+      val error = JsError("confidence level must be one of: 50, 200, 250, 300, 500")
       Json.fromJson[ConfidenceLevel.Value](JsNumber(0)) shouldBe error
       Json.fromJson[ConfidenceLevel.Value](JsNumber(1)) shouldBe error
       Json.fromJson[ConfidenceLevel.Value](JsNumber(101)) shouldBe error
@@ -42,6 +43,7 @@ class ConfidenceLevelSpec extends UnitSpec {
     "write out correct values" in {
       Json.toJson(L50) shouldBe JsNumber(50)
       Json.toJson(L200) shouldBe JsNumber(200)
+      Json.toJson(L250) shouldBe JsNumber(250)
       Json.toJson(L300) shouldBe JsNumber(300)
     }
   }
