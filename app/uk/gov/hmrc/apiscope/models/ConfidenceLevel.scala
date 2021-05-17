@@ -21,16 +21,15 @@ import play.api.libs.json._
 object ConfidenceLevel extends Enumeration {
   type ConfidenceLevel = Value
 
-  val L50, L100, L200, L300, L500 = Value
+  val L50, L200, L250, L300, L500 = Value
 
   private val fromInt = Map(
     50 -> L50,
-    100 -> L100,
+    100 -> L200,    // TODO - replace this value in the database once we know this allows Agent IV etc.
     200 -> L200,
     300 -> L300
   )
   private val toInt = fromInt.map(_.swap)
-
 
   val errorMessage = s"confidence level must be one of: ${fromInt.keys.toSeq.sorted.mkString(", ")}"
 
