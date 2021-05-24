@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.apiscope.repository
 
-import org.mockito.Mockito
 import org.scalatest.concurrent.{Eventually, ScalaFutures}
 import org.scalatest.mockito.MockitoSugar
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
@@ -26,9 +25,7 @@ import uk.gov.hmrc.MockMetrics
 import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
 import uk.gov.hmrc.apiscope.models.Scope
 import uk.gov.hmrc.mongo.{MongoConnector, MongoSpecSupport}
-import uk.gov.hmrc.play.http.metrics.{API, ApiMetrics}
 import uk.gov.hmrc.play.test.UnitSpec
-import uk.gov.hmrc.apiscope.repository.ScopeRepository
 
 import scala.concurrent.ExecutionContext.Implicits.global
 

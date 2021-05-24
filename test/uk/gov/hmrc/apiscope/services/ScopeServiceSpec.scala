@@ -24,7 +24,6 @@ import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
 import uk.gov.hmrc.apiscope.models.Scope
 import uk.gov.hmrc.play.test.UnitSpec
 import uk.gov.hmrc.apiscope.repository.ScopeRepository
-import uk.gov.hmrc.apiscope.services.ScopeService
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

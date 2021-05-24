@@ -28,7 +28,6 @@ class ErrorCodeSpec extends UnitSpec {
     }
 
     "report invalid error code" in {
-      val error = JsError("error code must be one of: SCOPE_NOT_FOUND")
       Json.fromJson[ErrorCode.Value](JsNumber(0)) should matchPattern {
         case e : JsError =>
       }
