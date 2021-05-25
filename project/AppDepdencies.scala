@@ -6,7 +6,7 @@ object AppDependencies {
   lazy val libraryDependencies = compile ++ test
   lazy val dependencyOverrides = overrides
 
-  private lazy val hmrcBootstrapPlay26Version = "2.0.0"
+  private lazy val hmrcBootstrapPlay26Version = "4.0.0"
   private lazy val hmrcSimpleReactivemongoVersion = "7.30.0-play-26"
   private lazy val hmrcHttpMetricsVersion = "1.11.0"
   private lazy val hmrcReactiveMongoTestVersion = "4.21.0-play-26"
