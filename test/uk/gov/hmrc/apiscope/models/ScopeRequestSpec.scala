@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.apiscope.models
 
-import uk.gov.hmrc.play.test.UnitSpec
+import uk.gov.hmrc.util.HmrcSpec
 
-class ScopeRequestSpec extends UnitSpec {
+class ScopeRequestSpec extends HmrcSpec {
 
   val scopeData = ScopeData("key", "name", "description")
   val scopeRequest = Seq(scopeData)

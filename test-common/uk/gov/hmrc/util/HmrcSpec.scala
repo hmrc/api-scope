@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package util
+package uk.gov.hmrc.util
 
 import org.mockito.{ArgumentMatchersSugar, MockitoSugar}
 import org.scalatest.{Matchers, OptionValues, WordSpec}
