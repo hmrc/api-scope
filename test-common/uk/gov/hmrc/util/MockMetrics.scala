@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc
+package uk.gov.hmrc.util
 
 import com.codahale.metrics.SharedMetricRegistries
 import org.mockito.{ArgumentMatchersSugar, MockitoSugar}
+
 import uk.gov.hmrc.play.http.metrics.{API, ApiMetrics, NoopTimer}
 
 trait MockMetrics extends MockitoSugar with ArgumentMatchersSugar {

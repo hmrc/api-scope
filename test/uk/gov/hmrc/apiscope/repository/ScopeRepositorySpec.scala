@@ -16,18 +16,18 @@
 
 package uk.gov.hmrc.apiscope.repository
 
-import org.scalatest.concurrent.{Eventually}
+import scala.concurrent.ExecutionContext.Implicits.global
+
+import org.scalatest.concurrent.Eventually
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
-import play.modules.reactivemongo.ReactiveMongoComponent
 import reactivemongo.api.indexes.{Index, IndexType}
-import uk.gov.hmrc.MockMetrics
+
+import play.modules.reactivemongo.ReactiveMongoComponent
+import uk.gov.hmrc.mongo.{MongoConnector, MongoSpecSupport}
+
 import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
 import uk.gov.hmrc.apiscope.models.Scope
-
-import scala.concurrent.ExecutionContext.Implicits.global
-import uk.gov.hmrc.util.AsyncHmrcSpec
-import uk.gov.hmrc.mongo.MongoConnector
-import uk.gov.hmrc.mongo.MongoSpecSupport
+import uk.gov.hmrc.util.{AsyncHmrcSpec, MockMetrics}
 
 class ScopeRepositorySpec extends AsyncHmrcSpec
   with BeforeAndAfterEach with BeforeAndAfterAll

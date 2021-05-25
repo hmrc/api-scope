@@ -16,23 +16,25 @@
 
 package uk.gov.hmrc.apiscope.controllers
 
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future.{failed, successful}
+
 import akka.stream.Materializer
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.TableFor2
 import org.scalatest.prop.Tables.Table
-import play.api.test.Helpers._
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+
 import play.api.libs.json.{JsDefined, JsString, Json}
+import play.api.mvc.ControllerComponents
+import play.api.test.Helpers._
 import play.api.test.{FakeRequest, StubControllerComponentsFactory, StubPlayBodyParsersFactory}
 import play.mvc.Http.Status.{INTERNAL_SERVER_ERROR, NOT_FOUND, NO_CONTENT, OK}
+
 import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
 import uk.gov.hmrc.apiscope.models.{ErrorCode, ErrorDescription, ErrorResponse, Scope}
 import uk.gov.hmrc.apiscope.services.ScopeService
 import uk.gov.hmrc.util.AsyncHmrcSpec
-
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future.{failed, successful}
-import play.api.mvc.ControllerComponents
 
 class ScopeControllerSpec extends AsyncHmrcSpec
   with GuiceOneAppPerSuite

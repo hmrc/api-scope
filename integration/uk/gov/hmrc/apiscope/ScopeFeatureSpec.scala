@@ -17,14 +17,15 @@
 package uk.gov.hmrc.apiscope
 
 import java.util.concurrent.TimeUnit
-
-import _root_.play.api.libs.json.{JsValue, Json}
-import scalaj.http.Http
-import uk.gov.hmrc.apiscope.repository.ScopeRepository
-
 import scala.concurrent.Await.result
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
+
+import scalaj.http.Http
+
+import play.api.libs.json.{JsValue, Json}
+
+import uk.gov.hmrc.apiscope.repository.ScopeRepository
 
 class ScopeFeatureSpec extends BaseFeatureSpec {
 

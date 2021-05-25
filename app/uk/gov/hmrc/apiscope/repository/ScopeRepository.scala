@@ -17,21 +17,23 @@
 package uk.gov.hmrc.apiscope.repository
 
 import javax.inject.{Inject, Singleton}
-import play.api.Logger
-import play.api.libs.json.Json
-import play.api.libs.json.Json._
-import play.modules.reactivemongo.ReactiveMongoComponent
+import scala.collection.Seq
+import scala.concurrent.{ExecutionContext, Future}
+
 import reactivemongo.api.Cursor
 import reactivemongo.api.indexes.{Index, IndexType}
 import reactivemongo.bson.{BSONDocument, BSONObjectID}
 import reactivemongo.play.json.ImplicitBSONHandlers._
-import uk.gov.hmrc.apiscope.models.Scope
+
+import play.api.Logger
+import play.api.libs.json.Json
+import play.api.libs.json.Json._
+import play.modules.reactivemongo.ReactiveMongoComponent
 import uk.gov.hmrc.mongo.ReactiveRepository
 import uk.gov.hmrc.mongo.json.ReactiveMongoFormats
 import uk.gov.hmrc.play.http.metrics.{API, ApiMetrics, RecordMetrics}
 
-import scala.collection.Seq
-import scala.concurrent.{ExecutionContext, Future}
+import uk.gov.hmrc.apiscope.models.Scope
 
 private object ScopeFormats {
   implicit val objectIdFormats = ReactiveMongoFormats.objectIdFormats

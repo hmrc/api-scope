@@ -16,12 +16,12 @@
 
 package uk.gov.hmrc.apiscope.services
 
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future.{failed, successful}
+
 import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
 import uk.gov.hmrc.apiscope.models.Scope
 import uk.gov.hmrc.apiscope.repository.ScopeRepository
-
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future.{successful, failed}
 import uk.gov.hmrc.util.AsyncHmrcSpec
 
 class ScopeServiceSpec extends AsyncHmrcSpec {

@@ -16,8 +16,8 @@
 
 package uk.gov.hmrc.apiscope.models
 
-import play.api.libs.json._
-import play.api.libs.json.JsError
+import play.api.libs.json.{JsError, _}
+
 import uk.gov.hmrc.util.HmrcSpec
 
 class ErrorCodeSpec extends HmrcSpec {

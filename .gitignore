@@ -1,6 +1,6 @@
 .*
 !.gitignore
-
+!.scalafix.conf
 logs
 project/project
 project/target
