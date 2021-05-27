@@ -23,7 +23,7 @@ lazy val appName = "api-scope"
 lazy val playSettings: Seq[Setting[_]] = Seq.empty
 
 lazy val microservice = Project(appName, file("."))
-  .enablePlugins(PlayScala, SbtDistributablesPlugin)
+  .enablePlugins(PlayScala, SbtAutoBuildPlugin, SbtDistributablesPlugin)
   .settings(playSettings: _*)
   .settings(scalaSettings: _*)
   .settings(publishingSettings: _*)
