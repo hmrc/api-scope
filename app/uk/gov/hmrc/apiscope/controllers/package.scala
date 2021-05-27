@@ -16,16 +16,17 @@
 
 package uk.gov.hmrc.apiscope
 
-import _root_.play.api.Logger
-import _root_.play.api.libs.json.Json.toJson
-import _root_.play.api.libs.json._
-import _root_.play.api.mvc.Results._
-import _root_.play.api.mvc.{Request, Result}
+import scala.concurrent.Future
+
+import play.api.Logger
+import play.api.libs.json.Json.toJson
+import play.api.libs.json._
+import play.api.mvc.Results._
+import play.api.mvc.{Request, Result}
 import uk.gov.hmrc.http.NotFoundException
+
 import uk.gov.hmrc.apiscope.models.ErrorCode.{API_INVALID_JSON, SCOPE_NOT_FOUND}
 import uk.gov.hmrc.apiscope.models.{ErrorCode, ErrorDescription, ErrorResponse}
-
-import scala.concurrent.Future
 
 package object controllers {
 

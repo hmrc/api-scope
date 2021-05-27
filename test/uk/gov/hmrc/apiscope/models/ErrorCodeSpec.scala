@@ -16,11 +16,11 @@
 
 package uk.gov.hmrc.apiscope.models
 
-import play.api.libs.json._
-import uk.gov.hmrc.play.test.UnitSpec
-import play.api.libs.json.JsError
+import play.api.libs.json.{JsError, _}
 
-class ErrorCodeSpec extends UnitSpec {
+import uk.gov.hmrc.util.HmrcSpec
+
+class ErrorCodeSpec extends HmrcSpec {
 
   "read" should {
     "read valid error code" in {

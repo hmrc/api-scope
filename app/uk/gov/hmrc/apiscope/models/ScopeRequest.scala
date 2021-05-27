@@ -17,6 +17,7 @@
 package uk.gov.hmrc.apiscope.models
 
 import play.api.libs.json.Json
+
 import uk.gov.hmrc.apiscope.models.ConfidenceLevel.ConfidenceLevel
 
 case class ScopeData(key: String, name: String, description: String, confidenceLevel: Option[ConfidenceLevel] = None) {

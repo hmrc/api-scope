@@ -17,10 +17,10 @@
 package uk.gov.hmrc.apiscope.services
 
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
+
 import uk.gov.hmrc.apiscope.models.Scope
 import uk.gov.hmrc.apiscope.repository.ScopeRepository
-
-import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ScopeService @Inject()(scopeRepository: ScopeRepository)(implicit val ec: ExecutionContext) {

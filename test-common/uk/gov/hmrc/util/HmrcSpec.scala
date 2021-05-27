@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiscope.models
+package uk.gov.hmrc.util
 
-import play.api.libs.json.Json
+import org.mockito.{ArgumentMatchersSugar, MockitoSugar}
+import org.scalatest.{Matchers, OptionValues, WordSpec}
+import org.scalatestplus.play.WsScalaTestClient
 
-import uk.gov.hmrc.apiscope.models.ConfidenceLevel.ConfidenceLevel
+import play.api.test.{DefaultAwaitTimeout, FutureAwaits}
 
-case class Scope(key: String, name: String, description: String, confidenceLevel: Option[ConfidenceLevel] = None)
+abstract class HmrcSpec extends WordSpec with Matchers with OptionValues with WsScalaTestClient with MockitoSugar with ArgumentMatchersSugar
 
-object Scope {
-  implicit val formats = Json.format[Scope]
+abstract class AsyncHmrcSpec
+  extends HmrcSpec with DefaultAwaitTimeout with FutureAwaits {
 }

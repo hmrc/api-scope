@@ -16,23 +16,24 @@
 
 package uk.gov.hmrc.apiscope.repository
 
-import org.scalatest.concurrent.{Eventually, ScalaFutures}
-import org.scalatest.mockito.MockitoSugar
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
-import play.modules.reactivemongo.ReactiveMongoComponent
-import reactivemongo.api.indexes.{Index, IndexType}
-import uk.gov.hmrc.MockMetrics
-import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
-import uk.gov.hmrc.apiscope.models.Scope
-import uk.gov.hmrc.mongo.{MongoConnector, MongoSpecSupport}
-import uk.gov.hmrc.play.test.UnitSpec
-
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class ScopeRepositorySpec extends UnitSpec
-  with ScalaFutures with MongoSpecSupport
+import org.scalatest.concurrent.Eventually
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
+import reactivemongo.api.indexes.{Index, IndexType}
+
+import play.modules.reactivemongo.ReactiveMongoComponent
+import uk.gov.hmrc.mongo.{MongoConnector, MongoSpecSupport}
+
+import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
+import uk.gov.hmrc.apiscope.models.Scope
+import uk.gov.hmrc.util.{AsyncHmrcSpec, MockMetrics}
+
+class ScopeRepositorySpec extends AsyncHmrcSpec
   with BeforeAndAfterEach with BeforeAndAfterAll
-  with Eventually with MockitoSugar with MockMetrics {
+  with MongoSpecSupport
+  with Eventually
+  with MockMetrics {
 
   private val reactiveMongoComponent = new ReactiveMongoComponent { override def mongoConnector: MongoConnector = mongoConnectorForTest }
 

@@ -16,19 +16,15 @@
 
 package uk.gov.hmrc.apiscope.services
 
-import org.mockito.BDDMockito.given
-import org.mockito.Mockito._
-import org.scalatest.concurrent.ScalaFutures
-import org.scalatest.mockito.MockitoSugar
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future.{failed, successful}
+
 import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
 import uk.gov.hmrc.apiscope.models.Scope
-import uk.gov.hmrc.play.test.UnitSpec
 import uk.gov.hmrc.apiscope.repository.ScopeRepository
+import uk.gov.hmrc.util.AsyncHmrcSpec
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
-
-class ScopeServiceSpec extends UnitSpec with MockitoSugar with ScalaFutures {
+class ScopeServiceSpec extends AsyncHmrcSpec {
 
   val scope1 = Scope("key1", "name1", "description1")
   val scope2 = Scope("key2", "name2", "description2", confidenceLevel = Some(L200))
@@ -43,8 +39,8 @@ class ScopeServiceSpec extends UnitSpec with MockitoSugar with ScalaFutures {
     "save scopes in repository" in new Setup {
 
       val scopes = Seq(scope1, scope2)
-      given(mockScopeRepository.save(scope1)).willReturn(Future.successful(scope1))
-      given(mockScopeRepository.save(scope2)).willReturn(Future.successful(scope2))
+      when(mockScopeRepository.save(scope1)).thenReturn(successful(scope1))
+      when(mockScopeRepository.save(scope2)).thenReturn(successful(scope2))
 
       val result = await(underTest.saveScopes(scopes))
 
@@ -57,20 +53,18 @@ class ScopeServiceSpec extends UnitSpec with MockitoSugar with ScalaFutures {
 
       val scopes = Seq(scope1, scope2)
 
-      when(mockScopeRepository.save(scope1)).thenReturn(Future.failed(new RuntimeException("Can not save scope")))
+      when(mockScopeRepository.save(scope1)).thenReturn(failed(new RuntimeException("Can not save scope")))
 
-      val future = underTest.saveScopes(scopes)
-
-      whenReady(future.failed) { ex =>
-        ex shouldBe an [RuntimeException]
-      }
+      intercept[RuntimeException] {
+        await(underTest.saveScopes(scopes))
+      } 
     }
   }
 
   "fetchScope" should {
     "fetch a scope from the repository" in new Setup {
 
-      when(mockScopeRepository.fetch(scope1.key)).thenReturn(Some(scope1))
+      when(mockScopeRepository.fetch(scope1.key)).thenReturn(successful(Some(scope1)))
 
       val result = await(underTest.fetchScope(scope1.key))
 
@@ -79,12 +73,10 @@ class ScopeServiceSpec extends UnitSpec with MockitoSugar with ScalaFutures {
 
     "fail when repository returns an error" in new Setup {
 
-      when(mockScopeRepository.fetch(scope1.key)).thenReturn(Future.failed(new RuntimeException()))
+      when(mockScopeRepository.fetch(scope1.key)).thenReturn(failed(new RuntimeException()))
 
-      val future = underTest.fetchScope(scope1.key)
-
-      whenReady(future.failed) { ex =>
-        ex shouldBe an [RuntimeException]
+      intercept[RuntimeException] {
+        await(underTest.fetchScope(scope1.key))
       }
     }
   }
@@ -94,7 +86,7 @@ class ScopeServiceSpec extends UnitSpec with MockitoSugar with ScalaFutures {
 
       val scopes = Seq(scope1, scope2).toList
 
-      when(mockScopeRepository.fetchAll()).thenReturn(scopes)
+      when(mockScopeRepository.fetchAll()).thenReturn(successful(scopes))
 
       val result = await(underTest.fetchAll)
 
@@ -103,12 +95,10 @@ class ScopeServiceSpec extends UnitSpec with MockitoSugar with ScalaFutures {
 
     "fail when repository returns an error" in new Setup {
 
-      when(mockScopeRepository.fetchAll()).thenReturn(Future.failed(new RuntimeException()))
+      when(mockScopeRepository.fetchAll()).thenReturn(failed(new RuntimeException()))
 
-      val future = underTest.fetchAll
-
-      whenReady(future.failed) { ex =>
-        ex shouldBe an [RuntimeException]
+      intercept[RuntimeException] {
+        await(underTest.fetchAll)
       }
     }
   }
@@ -118,9 +108,9 @@ class ScopeServiceSpec extends UnitSpec with MockitoSugar with ScalaFutures {
 
       val scopes = Seq(scope1, scope2).toList
 
-      when(mockScopeRepository.fetch("scope1")).thenReturn(Some(scope1))
-      when(mockScopeRepository.fetch("scope2")).thenReturn(Some(scope2))
-      when(mockScopeRepository.fetch("unknown")).thenReturn(None)
+      when(mockScopeRepository.fetch("scope1")).thenReturn(successful(Some(scope1)))
+      when(mockScopeRepository.fetch("scope2")).thenReturn(successful(Some(scope2)))
+      when(mockScopeRepository.fetch("unknown")).thenReturn(successful(None))
 
       val result = await(underTest.fetchScopes(Set("scope1", "scope2", "unknown")))
 
@@ -129,13 +119,11 @@ class ScopeServiceSpec extends UnitSpec with MockitoSugar with ScalaFutures {
 
     "fail when one of the request fails" in new Setup {
 
-      when(mockScopeRepository.fetch("scope1")).thenReturn(Some(scope1))
-      when(mockScopeRepository.fetch("scope2")).thenReturn(Future.failed(new RuntimeException()))
+      when(mockScopeRepository.fetch("scope1")).thenReturn(successful(Some(scope1)))
+      when(mockScopeRepository.fetch("scope2")).thenReturn(failed(new RuntimeException()))
 
-      val future = underTest.fetchScopes(Set("scope1", "scope2"))
-
-      whenReady(future.failed) { ex =>
-        ex shouldBe an [RuntimeException]
+      intercept[RuntimeException] {
+        await(underTest.fetchScopes(Set("scope1", "scope2")))
       }
     }
   }

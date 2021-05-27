@@ -16,30 +16,27 @@
 
 package uk.gov.hmrc.apiscope.controllers
 
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future.{failed, successful}
+
 import akka.stream.Materializer
-import org.mockito.BDDMockito.given
-import org.mockito.{ArgumentMatchers, Mockito, MockitoSugar}
-import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.TableFor2
 import org.scalatest.prop.Tables.Table
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+
 import play.api.libs.json.{JsDefined, JsString, Json}
-import play.api.mvc.{AnyContentAsEmpty, ControllerComponents, Result}
+import play.api.mvc.ControllerComponents
+import play.api.test.Helpers._
 import play.api.test.{FakeRequest, StubControllerComponentsFactory, StubPlayBodyParsersFactory}
 import play.mvc.Http.Status.{INTERNAL_SERVER_ERROR, NOT_FOUND, NO_CONTENT, OK}
+
 import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
 import uk.gov.hmrc.apiscope.models.{ErrorCode, ErrorDescription, ErrorResponse, Scope}
 import uk.gov.hmrc.apiscope.services.ScopeService
-import uk.gov.hmrc.play.test.UnitSpec
+import uk.gov.hmrc.util.AsyncHmrcSpec
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
-import scala.concurrent.Future.failed
-
-class ScopeControllerSpec extends UnitSpec
-  with MockitoSugar
-  with ScalaFutures
+class ScopeControllerSpec extends AsyncHmrcSpec
   with GuiceOneAppPerSuite
   with StubControllerComponentsFactory
   with StubPlayBodyParsersFactory{
@@ -61,23 +58,23 @@ class ScopeControllerSpec extends UnitSpec
     
     val underTest = new ScopeController(mockScopeService, controllerComponents, stubPlayBodyParsers(materializer))
 
-    implicit lazy val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
+    implicit lazy val request = FakeRequest()
 
-    when(mockScopeService.saveScopes(ArgumentMatchers.any[Seq[Scope]])).thenReturn(Future(Seq()))
-    given(mockScopeService.fetchScopes(Set(scope.key))).willReturn(Seq(scope))
+    when(mockScopeService.saveScopes(any[Seq[Scope]])).thenReturn(successful(Seq()))
+    when(mockScopeService.fetchScopes(Set(scope.key))).thenReturn(successful(Seq(scope)))
   }
 
   "createOrUpdateScope" should {
 
     "store scope and return 200 (ok) when the json payload is valid for the request" in new Setup {
-      val result: Result = await(underTest.createOrUpdateScope()(request.withBody(Json.parse(validScopeBody))))
+      val result = underTest.createOrUpdateScope()(request.withBody(Json.parse(validScopeBody)))
 
       status(result) shouldBe OK
       verify(mockScopeService).saveScopes(Seq(Scope("key1", "name1", "desc1")))
     }
 
     "store scope with a particular confidence level, and return 200 (ok)" in new Setup {
-      val result: Result = await(underTest.createOrUpdateScope()(request.withBody(Json.parse(validScopeBodyWithConfidenceLevel))))
+      val result = underTest.createOrUpdateScope()(request.withBody(Json.parse(validScopeBodyWithConfidenceLevel)))
 
       status(result) shouldBe OK
       verify(mockScopeService).saveScopes(Seq(Scope("key1", "name1", "desc1", confidenceLevel = Some(L200))))
@@ -94,18 +91,18 @@ class ScopeControllerSpec extends UnitSpec
 
       forAll (invalidRequests) { (invalidBody, expectedResponseCode) =>
 
-        val result = await(underTest.createOrUpdateScope()(request.withBody(Json.parse(invalidBody))))
+        val result = underTest.createOrUpdateScope()(request.withBody(Json.parse(invalidBody)))
 
         status(result) shouldBe expectedResponseCode
-        verify(mockScopeService, Mockito.times(0)).saveScopes(ArgumentMatchers.any())
+        verify(mockScopeService, times(0)).saveScopes(*)
       }
     }
 
     "fail with a 500 (internal server error) when the service throws an exception" in new Setup {
 
-      given(mockScopeService.saveScopes(ArgumentMatchers.any[Seq[Scope]])).willReturn(failed(new RuntimeException()))
+      when(mockScopeService.saveScopes(any[Seq[Scope]])).thenReturn(failed(new RuntimeException()))
 
-      val result: Result = await(underTest.createOrUpdateScope()(request.withBody(Json.parse(validScopeBody))))
+      val result = underTest.createOrUpdateScope()(request.withBody(Json.parse(validScopeBody)))
 
       status(result) shouldBe INTERNAL_SERVER_ERROR
     }
@@ -117,29 +114,29 @@ class ScopeControllerSpec extends UnitSpec
 
       val scope: Scope = Scope("key1", "name1", "desc1")
 
-      given(mockScopeService.fetchScope("key1")).willReturn(Some(scope))
+      when(mockScopeService.fetchScope("key1")).thenReturn(successful(Some(scope)))
 
-      val result: Result = await(underTest.fetchScope("key1")(request))
+      val result = underTest.fetchScope("key1")(request)
 
       status(result) shouldBe OK
-      jsonBodyOf(result) shouldEqual Json.toJson(scope)
+      contentAsJson(result) shouldEqual Json.toJson(scope)
     }
 
     "return 404 (not found) when the scope does not exist" in new Setup {
 
-      given(mockScopeService.fetchScope("key1")).willReturn(None)
+      when(mockScopeService.fetchScope("key1")).thenReturn(successful(None))
 
-      val result: Result = await(underTest.fetchScope("key1")(request))
+      val result = underTest.fetchScope("key1")(request)
 
       status(result) shouldBe NOT_FOUND
-      jsonBodyOf(result) \ "code" shouldEqual JsDefined(JsString(ErrorCode.SCOPE_NOT_FOUND.toString))
+      contentAsJson(result) \ "code" shouldEqual JsDefined(JsString(ErrorCode.SCOPE_NOT_FOUND.toString))
     }
 
     "return 500 (internal service error) when the service throws an exception" in new Setup {
 
-      given(mockScopeService.fetchScope("key1")).willReturn(failed(new RuntimeException()))
+      when(mockScopeService.fetchScope("key1")).thenReturn(failed(new RuntimeException()))
 
-      val result: Result = await(underTest.fetchScope("key1")(request))
+      val result = underTest.fetchScope("key1")(request)
 
       status(result) shouldBe INTERNAL_SERVER_ERROR
     }
@@ -150,46 +147,46 @@ class ScopeControllerSpec extends UnitSpec
       val scope2 = Scope("key2", "name2", "desc2")
 
     "return 200 (ok) with the scopes requested when keys parameter is defined" in new Setup {
-      given(mockScopeService.fetchScopes(Set("key1", "key2"))).willReturn(Seq(scope1, scope2))
+      when(mockScopeService.fetchScopes(Set("key1", "key2"))).thenReturn(successful(Seq(scope1, scope2)))
 
-      val result: Result = await(underTest.fetchScopes("key1 key2")(request))
+      val result = underTest.fetchScopes("key1 key2")(request)
 
       status(result) shouldBe OK
-      jsonBodyOf(result) shouldEqual Json.toJson(Seq(scope1, scope2))
+      contentAsJson(result) shouldEqual Json.toJson(Seq(scope1, scope2))
     }
 
     "return 200 (ok) with the scopes requested when keys parameter has duplicates" in new Setup {
-      given(mockScopeService.fetchScopes(Set("key1", "key2"))).willReturn(Seq(scope1, scope2))
+      when(mockScopeService.fetchScopes(Set("key1", "key2"))).thenReturn(successful(Seq(scope1, scope2)))
 
-      val result: Result = await(underTest.fetchScopes("key1 key2 key1")(request))
+      val result = underTest.fetchScopes("key1 key2 key1")(request)
 
       status(result) shouldBe OK
-      jsonBodyOf(result) shouldEqual Json.toJson(Seq(scope1, scope2))
+      contentAsJson(result) shouldEqual Json.toJson(Seq(scope1, scope2))
     }
 
     "return 200 (ok) with all the scopes requested when keys is *" in new Setup {
-      given(mockScopeService.fetchAll).willReturn(Seq(scope1, scope2))
+      when(mockScopeService.fetchAll).thenReturn(successful(Seq(scope1, scope2)))
 
-      val result: Result = await(underTest.fetchScopes("*")(request))
+      val result = underTest.fetchScopes("*")(request)
 
       status(result) shouldBe OK
-      jsonBodyOf(result) shouldEqual Json.toJson(Seq(scope1, scope2))
+      contentAsJson(result) shouldEqual Json.toJson(Seq(scope1, scope2))
     }
 
     "return 500 (internal service error) when the service throws an exception while fetching defined scopes" in new Setup {
 
-      given(mockScopeService.fetchScopes(Set("key1", "key2"))).willReturn(failed(new RuntimeException()))
+      when(mockScopeService.fetchScopes(Set("key1", "key2"))).thenReturn(failed(new RuntimeException()))
 
-      val result: Result = await(underTest.fetchScopes("key1 key2")(request))
+      val result = underTest.fetchScopes("key1 key2")(request)
 
       status(result) shouldBe INTERNAL_SERVER_ERROR
     }
 
     "return 500 (internal service error) when the service throws an exception while fetching all scopes" in new Setup {
 
-      given(mockScopeService.fetchAll).willReturn(failed(new RuntimeException()))
+      when(mockScopeService.fetchAll).thenReturn(failed(new RuntimeException()))
 
-      val result: Result = await(underTest.fetchScopes("*")(request))
+      val result = underTest.fetchScopes("*")(request)
 
       status(result) shouldBe INTERNAL_SERVER_ERROR
     }
@@ -198,18 +195,18 @@ class ScopeControllerSpec extends UnitSpec
 
   "validate" should {
     "succeed with status 204 (NoContent) when the payload is valid" in new Setup {
-      val regularResult: Result = await(underTest.validate()(request.withBody(Json.parse(validScopeBody))))
+      val regularResult = underTest.validate()(request.withBody(Json.parse(validScopeBody)))
       status(regularResult) shouldBe NO_CONTENT
 
-      val resultWithConfidenceLevel: Result = await(underTest.validate()(request.withBody(Json.parse(validScopeBodyWithConfidenceLevel))))
+      val resultWithConfidenceLevel = underTest.validate()(request.withBody(Json.parse(validScopeBodyWithConfidenceLevel)))
       status(resultWithConfidenceLevel) shouldBe NO_CONTENT
     }
 
     "fail with status 422 (UnprocessableEntity) when several elements are missing" in new Setup {
 
-      val result: Result = await(underTest.validate()(request.withBody(Json.parse(scopeBodyMissingKeyAndDesc))))
+      val result = underTest.validate()(request.withBody(Json.parse(scopeBodyMissingKeyAndDesc)))
 
-      jsonBodyOf(result) shouldEqual Json.toJson(
+      contentAsJson(result) shouldEqual Json.toJson(
         ErrorResponse(ErrorCode.API_INVALID_JSON, "Json cannot be converted to API Scope",
           Some(Seq(
             ErrorDescription("(0)/description", "element is missing"),
@@ -219,9 +216,9 @@ class ScopeControllerSpec extends UnitSpec
     }
 
     "fail with status 422 (UnprocessableEntity) when the name element is missing" in new Setup {
-      val result: Result = await(underTest.validate()(request.withBody(Json.parse(scopeBodyMissingName))))
+      val result = underTest.validate()(request.withBody(Json.parse(scopeBodyMissingName)))
 
-      jsonBodyOf(result) shouldEqual Json.toJson(
+      contentAsJson(result) shouldEqual Json.toJson(
         ErrorResponse(ErrorCode.API_INVALID_JSON, "Json cannot be converted to API Scope",
           Some(Seq(
             ErrorDescription("(0)/name", "element is missing")
@@ -229,13 +226,14 @@ class ScopeControllerSpec extends UnitSpec
     }
 
     "fail with status 422 (UnprocessableEntity) when the confidenceLevel is invalid" in new Setup {
-      val result: Result = await(underTest.validate()(request.withBody(Json.parse(scopeBodyWithInvalidConfidenceLevel))))
+      val result = underTest.validate()(request.withBody(Json.parse(scopeBodyWithInvalidConfidenceLevel)))
 
-      jsonBodyOf(result) shouldEqual Json.toJson(
+      contentAsJson(result) shouldEqual Json.toJson(
         ErrorResponse(ErrorCode.API_INVALID_JSON, "Json cannot be converted to API Scope",
           Some(Seq(
             ErrorDescription("(0)/confidenceLevel", "confidence level must be one of: 50, 200, 250, 500")
-          ))))
+          )))
+      )
     }
   }
 
