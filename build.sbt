@@ -5,6 +5,7 @@ import sbt.Tests.{Group, SubProcess}
 import sbt._
 import uk.gov.hmrc.DefaultBuildSettings._
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin._
+import bloop.integrations.sbt.BloopDefaults
 
 ThisBuild / scalafixDependencies += "com.github.liancheng" %% "organize-imports" % "0.5.0"
 
@@ -15,8 +16,6 @@ inThisBuild(
     semanticdbVersion := scalafixSemanticdb.revision
   )
 )
-
-bloopAggregateSourceDependencies in Global := true
 
 lazy val appName = "api-scope"
 
@@ -38,6 +37,7 @@ lazy val microservice = Project(appName, file("."))
     retrieveManaged := true
   )
   .settings(
+    inConfig(Test)(BloopDefaults.configSettings),
     addTestReportOption(Test, "test-reports"),
     Test / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-eT"),
     Test / fork := false,
@@ -51,6 +51,7 @@ lazy val microservice = Project(appName, file("."))
   .settings(
     Defaults.itSettings,
     inConfig(IntegrationTest)(scalafixConfigSettings(IntegrationTest)),
+    inConfig(IntegrationTest)(BloopDefaults.configSettings),
     addTestReportOption(IntegrationTest, "int-test-reports"),
     IntegrationTest / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-eT"),
     IntegrationTest / fork := false,
