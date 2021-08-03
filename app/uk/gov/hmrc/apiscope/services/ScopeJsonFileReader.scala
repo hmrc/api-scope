@@ -16,12 +16,11 @@
 
 package uk.gov.hmrc.apiscope.services
 
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
+import javax.inject.Singleton
 import scala.io.Source
 
 @Singleton
-class ScopeJsonFileReader @Inject()()(implicit val ec: ExecutionContext) {
+class ScopeJsonFileReader {
 
   def readFile: String = {
     Source.fromFile("conf/scopes.json").mkString
