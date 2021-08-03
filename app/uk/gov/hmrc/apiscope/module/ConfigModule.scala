@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiscope
+package uk.gov.hmrc.apiscope.module
 
 import play.api.inject.Binding
 import play.api.{Configuration, Environment}
