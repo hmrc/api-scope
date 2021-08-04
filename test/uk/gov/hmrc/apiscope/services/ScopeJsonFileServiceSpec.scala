@@ -34,7 +34,9 @@ class ScopeJsonFileServiceSpec extends AsyncHmrcSpec {
     """[{"key": "key1", "name": "name1", "description": "description1"},
       |{"key": "key2", "name": "name2", "description": "description2", "confidenceLevel": 200}]""".stripMargin
 
-
+  /*
+  This test checks that the scopes JSON file in conf/scopes.json is valid to allow us to fail during the build if it's not
+   */
   "parseFileJson" should {
     trait Setup {
       val mockScopeRepository = mock[ScopeRepository]
