@@ -37,7 +37,8 @@ class ScopeJsonFileService @Inject()(scopeRepository: ScopeRepository,
     case parsed: JsObject => new JsArray().append(parsed).as[Seq[Scope]]
   }).map(saveScopes)
     .recover {
-      case e: Exception => logger.error("Unable to parse JSON scopes file:", e)
+      case e: Exception =>
+        logger.error("Unable to parse JSON scopes file:", e)
         None
     }
 }
