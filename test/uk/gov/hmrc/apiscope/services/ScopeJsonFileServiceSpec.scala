@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.apiscope.services
 
+import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
 import uk.gov.hmrc.apiscope.models.Scope
 import uk.gov.hmrc.apiscope.repository.ScopeRepository
@@ -33,12 +34,23 @@ class ScopeJsonFileServiceSpec extends AsyncHmrcSpec {
     """[{"key": "key1", "name": "name1", "description": "description1"},
       |{"key": "key2", "name": "name2", "description": "description2", "confidenceLevel": 200}]""".stripMargin
 
-  trait Setup {
-    val mockScopeRepository = mock[ScopeRepository]
-    val mockFileReader = mock[ScopeJsonFileReader]
+
+  "parseFileJson" should {
+    trait Setup {
+      val mockScopeRepository = mock[ScopeRepository]
+    }
+
+    "check that the scopes file contains valid JSON" in new Setup {
+      Json.parse(new ScopeJsonFileReader().readFile) shouldBe a [JsValue]
+    }
   }
 
   "saveScopes" should {
+    trait Setup {
+      val mockScopeRepository = mock[ScopeRepository]
+      val mockFileReader = mock[ScopeJsonFileReader]
+    }
+
     "save single scope in repository" in new Setup {
       when(mockScopeRepository.save(scope1)).thenReturn(successful(scope1))
       when(mockFileReader.readFile).thenReturn(scope1AsJsonString)

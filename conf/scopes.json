@@ -1,12 +1,5 @@
-[
-  {
-    "key": "hello",
-    "name": "Say Hello from JSON",
-    "description": "Say Hello scope redefined from JSON"
-  },
-  {
-    "key": "another",
-    "name": "Another name",
-    "description": "Another description"
-  }
-]
+{
+  "key": "hello",
+  "name": "Say Hello",
+  "description": "Say Hello scope"
+}
