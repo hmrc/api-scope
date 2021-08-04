@@ -17,7 +17,6 @@
 package uk.gov.hmrc.apiscope.services
 
 import play.api.Logger.logger
-import play.api.libs.json
 import play.api.libs.json.{JsArray, JsObject, Json}
 import uk.gov.hmrc.apiscope.models.Scope
 import uk.gov.hmrc.apiscope.repository.ScopeRepository
@@ -35,7 +34,7 @@ class ScopeJsonFileService @Inject()(scopeRepository: ScopeRepository,
 
   Try(Json.parse(fileReader.readFile) match {
     case parsed: JsArray => parsed.as[Seq[Scope]]
-    case parsed: JsObject => new json.JsArray().append(parsed).as[Seq[Scope]]
+    case parsed: JsObject => new JsArray().append(parsed).as[Seq[Scope]]
   }).map(saveScopes)
     .recover {
       case e: Exception => logger.error("Unable to parse JSON scopes file:", e)
