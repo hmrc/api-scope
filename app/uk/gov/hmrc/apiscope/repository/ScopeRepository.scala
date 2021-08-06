@@ -17,23 +17,20 @@
 package uk.gov.hmrc.apiscope.repository
 
 import javax.inject.{Inject, Singleton}
+
 import scala.collection.Seq
 import scala.concurrent.{ExecutionContext, Future}
-
 import reactivemongo.api.Cursor
 import reactivemongo.api.indexes.{Index, IndexType}
-import reactivemongo.bson.{BSONDocument, BSONObjectID}
+import reactivemongo.bson.BSONObjectID
 import reactivemongo.play.json.ImplicitBSONHandlers._
-
-import play.api.Logger
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import play.api.libs.json.Json._
 import play.modules.reactivemongo.ReactiveMongoComponent
 import uk.gov.hmrc.mongo.ReactiveRepository
 import uk.gov.hmrc.mongo.json.ReactiveMongoFormats
-import uk.gov.hmrc.play.http.metrics.{API, ApiMetrics, RecordMetrics}
-
 import uk.gov.hmrc.apiscope.models.Scope
+import uk.gov.hmrc.play.http.metrics.common.{API, ApiMetrics, RecordMetrics}
 
 private object ScopeFormats {
   implicit val objectIdFormats = ReactiveMongoFormats.objectIdFormats
@@ -51,7 +48,7 @@ private object ScopeFormats {
 
   def save(scope: Scope) : Future[Scope] = record {
     collection
-      .update(selector = BSONDocument("key" -> scope.key), scope, upsert = true)
+      .update(false).one(Json.obj("key" -> scope.key), scope, upsert = true)
       .map(_ => scope)
   }
 
@@ -67,16 +64,16 @@ private object ScopeFormats {
   }
 
   def fetch(key: String): Future[Option[Scope]] = record {
-    collection.find(Json.obj("key" -> key)).one[Scope] map {
+    collection.find[JsObject, Scope](Json.obj("key" -> key), None).one[Scope]. map {
       case Some(s) => Some(s)
       case None =>
-        Logger.info(s"The scope $key doesn't exist")
+        logger.info(s"The scope $key doesn't exist")
         None
     }
   }
 
   def fetchAll(): Future[Seq[Scope]] = record {
-    collection.find(Json.obj()).cursor[Scope]().collect[Seq](Int.MaxValue,Cursor.FailOnError[Seq[Scope]]())
+    collection.find[JsObject, Scope](Json.obj(), None).cursor[Scope]().collect[Seq](Int.MaxValue,Cursor.FailOnError[Seq[Scope]]())
   }
 
 }

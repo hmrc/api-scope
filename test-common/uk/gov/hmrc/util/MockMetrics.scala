@@ -19,7 +19,7 @@ package uk.gov.hmrc.util
 import com.codahale.metrics.SharedMetricRegistries
 import org.mockito.{ArgumentMatchersSugar, MockitoSugar}
 
-import uk.gov.hmrc.play.http.metrics.{API, ApiMetrics, NoopTimer}
+import uk.gov.hmrc.play.http.metrics.common.{API, ApiMetrics, NoopTimer}
 
 trait MockMetrics extends MockitoSugar with ArgumentMatchersSugar {
   SharedMetricRegistries.clear()

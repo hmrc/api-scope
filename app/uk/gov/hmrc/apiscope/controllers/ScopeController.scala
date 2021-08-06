@@ -18,30 +18,28 @@ package uk.gov.hmrc.apiscope.controllers
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
-
-import play.api.Logger
+import play.api.Logging
 import play.api.libs.json._
 import play.api.mvc._
-import uk.gov.hmrc.play.bootstrap.controller.BackendController
-
 import uk.gov.hmrc.apiscope.models.ErrorCode._
 import uk.gov.hmrc.apiscope.models.{Scope, ScopeData}
 import uk.gov.hmrc.apiscope.services.ScopeService
+import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 @Singleton
 class ScopeController @Inject()(scopeService: ScopeService, cc: ControllerComponents, playBodyParsers: PlayBodyParsers)(implicit val ec: ExecutionContext)
-  extends BackendController(cc) {
+  extends BackendController(cc) with Logging {
 
   def createOrUpdateScope(): Action[JsValue] = Action.async(playBodyParsers.json) { implicit request =>
     handleRequest[Seq[ScopeData]](request) {
       scopeRequest => {
-        Logger.info(s"Creating api-scope from request: $request")
+        logger.info(s"Creating api-scope from request: $request")
         val scopes = scopeRequest.map {
           scopeData => Scope(scopeData.key, scopeData.name, scopeData.description, scopeData.confidenceLevel)
         }
         scopeService.saveScopes(scopes).map {
           scopes =>
-            Logger.info(s"api-scope successfully created: $scopes")
+            logger.info(s"api-scope successfully created: $scopes")
             Ok(Json.toJson(scopes))
         } recover recovery
       }
@@ -56,7 +54,7 @@ class ScopeController @Inject()(scopeService: ScopeService, cc: ControllerCompon
   }
 
   def fetchScopes(scopes: String): Action[AnyContent] = Action.async {
-    Logger.info(s"Fetching scopes: $scopes")
+    logger.info(s"Fetching scopes: $scopes")
     val future: Future[Seq[Scope]] = scopes match {
       case "*" => scopeService.fetchAll
       case spaceSeparatedScopes =>
@@ -72,7 +70,7 @@ class ScopeController @Inject()(scopeService: ScopeService, cc: ControllerCompon
 
   private def recovery: PartialFunction[Throwable, Result] = {
     case e =>
-      Logger.error(s"An unexpected error occurred: ${e.getMessage}", e)
+      logger.error(s"An unexpected error occurred: ${e.getMessage}", e)
       InternalServerError(error(UNKNOWN_ERROR, "An unexpected error occurred"))
   }
 
