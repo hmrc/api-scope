@@ -29,7 +29,8 @@ class ScopeJsonFileServiceSpec extends AsyncHmrcSpec {
 
   val scope1 = Scope("key1", "name1", "description1")
   val scope2 = Scope("key2", "name2", "description2", confidenceLevel = Some(L200))
-  val scope1AsJsonString = """{"key": "key1", "name": "name1", "description": "description1"}"""
+  val scope1AsJsonString = """[{"key": "key1", "name": "name1", "description": "description1"}]"""
+  val jsonButNotScope = """[{"random": "values", "that": "aren't", "anything": "like scopes"}]"""
   val bothScopesAsJsonString =
     """[{"key": "key1", "name": "name1", "description": "description1"},
       |{"key": "key2", "name": "name2", "description": "description2", "confidenceLevel": 200}]""".stripMargin
@@ -43,9 +44,12 @@ class ScopeJsonFileServiceSpec extends AsyncHmrcSpec {
     }
 
     "check that the scopes file contains valid JSON" in new Setup {
-      Json.parse(new ScopeJsonFileReader().readFile) shouldBe a [JsValue]
+      new ScopeJsonFileReader().readFile map {
+        s => Json.parse(s) shouldBe a[JsValue]
+      }
     }
   }
+
 
   "saveScopes" should {
     trait Setup {
@@ -55,7 +59,7 @@ class ScopeJsonFileServiceSpec extends AsyncHmrcSpec {
 
     "save single scope in repository" in new Setup {
       when(mockScopeRepository.save(scope1)).thenReturn(successful(scope1))
-      when(mockFileReader.readFile).thenReturn(scope1AsJsonString)
+      when(mockFileReader.readFile).thenReturn(Some(scope1AsJsonString))
 
       new ScopeJsonFileService(mockScopeRepository, mockFileReader)
 
@@ -66,7 +70,7 @@ class ScopeJsonFileServiceSpec extends AsyncHmrcSpec {
     "save multiple scopes in repository" in new Setup {
       when(mockScopeRepository.save(scope1)).thenReturn(successful(scope1))
       when(mockScopeRepository.save(scope2)).thenReturn(successful(scope2))
-      when(mockFileReader.readFile).thenReturn(bothScopesAsJsonString)
+      when(mockFileReader.readFile).thenReturn(Some(bothScopesAsJsonString))
 
       new ScopeJsonFileService(mockScopeRepository, mockFileReader)
 
@@ -75,8 +79,17 @@ class ScopeJsonFileServiceSpec extends AsyncHmrcSpec {
       verify(mockFileReader).readFile
     }
 
+    "handle valid JSON that won't unmarshal into scope" in new Setup {
+      when(mockFileReader.readFile).thenReturn(Some(jsonButNotScope))
+
+      new ScopeJsonFileService(mockScopeRepository, mockFileReader)
+
+      verify(mockScopeRepository, never).save(scope1)
+      verify(mockFileReader).readFile
+    }
+
     "catch invalid JSON" in new Setup {
-      when(mockFileReader.readFile).thenReturn("blah rubbish")
+      when(mockFileReader.readFile).thenReturn(Some("blah rubbish"))
 
       new ScopeJsonFileService(mockScopeRepository, mockFileReader)
 

@@ -1,5 +1,6 @@
-{
-  "key": "hello",
-  "name": "Say Hello",
-  "description": "Say Hello scope"
-}
+[
+  {
+    "key": "hello",
+    "name": "Say Hello",
+    "description": "Say Hello scope"
+  }]

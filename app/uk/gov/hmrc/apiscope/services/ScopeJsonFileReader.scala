@@ -16,13 +16,21 @@
 
 package uk.gov.hmrc.apiscope.services
 
+import java.nio.file.{Files, Paths}
+
 import javax.inject.Singleton
-import scala.io.Source
+import play.api.Logger.logger
 
 @Singleton
 class ScopeJsonFileReader {
 
-  def readFile: String = {
-    Source.fromFile("conf/scopes.json").mkString
+  def readFile: Option[String] = {
+    val path = Paths.get("conf/scopes.json")
+    if (Files.exists(path)) {
+      Some(new String(Files.readAllBytes(path)))
+    } else {
+      logger.info("No Scopes file to process")
+      None
+    }
   }
 }
