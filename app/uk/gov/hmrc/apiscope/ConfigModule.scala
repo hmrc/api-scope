@@ -18,7 +18,8 @@ package uk.gov.hmrc.apiscope
 
 import play.api.inject.Binding
 import play.api.{Configuration, Environment}
-import uk.gov.hmrc.play.http.metrics.{ApiMetrics, ApiMetricsProvider, Module}
+import uk.gov.hmrc.play.http.metrics.common.ApiMetrics
+import uk.gov.hmrc.play.http.metrics.{ApiMetricsProvider, Module}
 
 class ConfigModule extends Module {
 
