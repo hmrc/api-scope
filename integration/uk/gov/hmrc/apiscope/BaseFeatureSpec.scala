@@ -29,6 +29,5 @@ abstract class BaseFeatureSpec extends FeatureSpec
   with BeforeAndAfterAll
   with Matchers {
 
-  override lazy val port = 9000
   val serverUrl = s"http://localhost:$port"
 }
