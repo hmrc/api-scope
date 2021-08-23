@@ -23,6 +23,7 @@ import uk.gov.hmrc.apiscope.models.Scope
 import uk.gov.hmrc.apiscope.repository.ScopeRepository
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.control.NonFatal
 
 @Singleton
 class ScopeJsonFileService @Inject()(scopeRepository: ScopeRepository,
@@ -40,7 +41,7 @@ class ScopeJsonFileService @Inject()(scopeRepository: ScopeRepository,
     })
   } catch {
     case _: java.nio.file.NoSuchFileException => logger.info("No Scopes file found to process")
-    case e: Exception =>
+    case NonFatal(e) =>
       logger.error("Scopes file does not contain valid JSON", e)
   }
 }
