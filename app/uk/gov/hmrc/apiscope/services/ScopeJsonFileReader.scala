@@ -14,19 +14,23 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiscope
+package uk.gov.hmrc.apiscope.services
 
-import play.api.inject.Binding
-import play.api.{Configuration, Environment}
-import uk.gov.hmrc.play.http.metrics.common.ApiMetrics
-import uk.gov.hmrc.play.http.metrics.{ApiMetricsProvider, Module}
+import java.nio.file.{Files, Paths}
 
-class ConfigModule extends Module {
+import javax.inject.Singleton
+import play.api.Logger.logger
 
-    override def bindings(environment: Environment, configuration: Configuration): Seq[Binding[_]] = {
-      Seq(
-        bind[ApiMetrics].toProvider[ApiMetricsProvider]
-      )
+@Singleton
+class ScopeJsonFileReader {
+
+  def readFile: Option[String] = {
+    val path = Paths.get("conf/scopes.json")
+    if (Files.exists(path)) {
+      Some(new String(Files.readAllBytes(path)))
+    } else {
+      logger.info("No Scopes file to process")
+      None
     }
-
+  }
 }
