@@ -3,5 +3,10 @@
     "key": "hello",
     "name": "Say Hello",
     "description": "Say Hello scope"
+  },
+  {
+    "key": "new-scope",
+    "name": "New Scope Addition",
+    "description": "A new scope to demonstrate the process"
   }
 ]
