@@ -23,6 +23,7 @@ import uk.gov.hmrc.apiscope.models.Scope
 import uk.gov.hmrc.apiscope.repository.ScopeRepository
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.{Failure, Success}
 import scala.util.control.NonFatal
 
 @Singleton
@@ -32,6 +33,19 @@ class ScopeJsonFileService @Inject()(scopeRepository: ScopeRepository,
   private def saveScopes(scopes: Seq[Scope]): Future[Seq[Scope]] =
     Future.sequence(scopes.map(scopeRepository.save))
 
+  private def logScopes(): Unit = {
+    scopeRepository.fetchAll() onComplete{
+      case Success(seqScopes) => {
+        val perLogScopes = 30
+        val groupedSeq = seqScopes.grouped(perLogScopes)
+        logger.info("Fetching scopes during api-scopes application startup.")
+        groupedSeq.foreach(group => logger.info(Json.toJson(group).toString()))
+      }
+      case Failure(err) => logger.info(s"Fetching Scopes from api-scope.scope repo failed with error $err..")
+    }
+
+  }
+
   try {
     fileReader.readFile.map(s => Json.parse(s).validate[Seq[Scope]] match {
       case JsSuccess(scopes: Seq[Scope], _) =>
@@ -39,6 +53,7 @@ class ScopeJsonFileService @Inject()(scopeRepository: ScopeRepository,
         saveScopes(scopes)
       case JsError(errors) => logger.error("Unable to parse JSON into Scopes", errors.mkString("; "))
     })
+    logScopes()
   } catch {
     case _: java.nio.file.NoSuchFileException => logger.info("No Scopes file found to process")
     case NonFatal(e) =>
