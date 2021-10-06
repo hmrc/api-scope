@@ -38,10 +38,10 @@ class ScopeJsonFileService @Inject()(scopeRepository: ScopeRepository,
       case Success(seqScopes) => {
         val perLogScopes = 30
         val groupedSeq = seqScopes.grouped(perLogScopes)
-        logger.warn("Fetching scopes during api-scopes application startup.")
-        groupedSeq.foreach(group => logger.warn(Json.toJson(group).toString()))
+        logger.info("Fetching scopes during api-scopes application startup.")
+        groupedSeq.foreach(group => logger.info(Json.toJson(group).toString()))
       }
-      case Failure(err) => logger.warn(s"Fetching Scopes from api-scope repo failed with error $err..")
+      case Failure(err) => logger.info(s"Fetching Scopes from api-scope repo failed with error $err..")
     }
 
   }
