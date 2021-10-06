@@ -3,5 +3,10 @@
     "key": "hello",
     "name": "Say Hello",
     "description": "Say Hello!"
+  },
+  {
+    "key": "common-transit-convention-guarantee-balance",
+    "name": "Common Transit Convention Guarantee Balance",
+    "description": "Common Transit Convention Guarantee Balance API"
   }
 ]
