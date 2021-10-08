@@ -5,6 +5,11 @@
     "description": "Say Hello!"
   },
   {
+    "key": "stop-autodeploy",
+    "name": "Stop AutoDeploy",
+    "description": "This is for Stop Auto Deploy testing and a BLOCKED 0.8.0 version is released!"
+  },
+  {
     "key": "common-transit-convention-guarantee-balance",
     "name": "Common Transit Convention Guarantee Balance",
     "description": "Common Transit Convention Guarantee Balance API"
