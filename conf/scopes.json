@@ -15,8 +15,8 @@
     "description": "Common Transit Convention Guarantee Balance API"
   },
   {
-    "key": "open-banking-external-api",
-    "name": "Open Banking External API",
-    "description": "This API allows third party payment providers to give HMRC updates on the status of Open Banking payments."
+    "key": "read:open-banking-payment-notification",
+    "name": "Open Banking Payment Notification",
+    "description": "Notification relating to an Open Banking payment"
   }
 ]
