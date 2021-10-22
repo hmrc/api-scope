@@ -18,5 +18,10 @@
     "key": "read:open-banking-payment-notification",
     "name": "Open Banking Payment Notification",
     "description": "Notification relating to an Open Banking payment"
+  },
+  {
+    "key": "write:customs-declarations-information",
+    "name": "Request details of a declaration",
+    "description": "Search for and request details of a declaration"
   }
 ]
