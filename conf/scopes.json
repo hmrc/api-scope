@@ -3,5 +3,21 @@
     "key": "hello",
     "name": "Say Hello",
     "description": "Say Hello scope"
+  },
+  {
+    "key": "playstation",
+    "name": "Playstation",
+    "description": "Say Hello scope"
+  },
+  {
+    "key" : "read:national-insurance",
+    "name" : "access national insurance information",
+    "description" : "Access National Insurance contribution information",
+    "confidenceLevel" : 200
+  },
+  {
+    "key": "stop-autodeploy",
+    "name": "Stop AutoDeploy",
+    "description": "This is for Stop Auto Deploy testing and a BLOCKED 0.8.0 version is released!"
   }
 ]
