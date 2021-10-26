@@ -80,16 +80,16 @@ class ScopeJsonFileService @Inject()(scopeRepository: ScopeRepository,
   def reconcileScopesInDryRun(fileScopes: Seq[Scope], repoScopes: Seq[Scope]) : String = {
     val toSet1 = repoScopes.toSet
     val diff1 = fileScopes.filterNot(toSet1)
-    val toSet2 = repoScopes.toSet
+    val toSet2 = fileScopes.toSet
     val diff2 = repoScopes.filterNot(toSet2)
 
     if(diff1.isEmpty && diff2.isEmpty) {
       "Scopes in file & repo exactly match."
     } else if (!diff1.isEmpty) {
-      s"In JSON file ${diff1.size} does not match REPO Scopes"
+      s"In JSON file ${diff1.size} scope(s) does not match REPO Scopes. Example: ${diff1.head}"
     }
     else {
-      s"In REPO ${diff2.size} does not match JSON Scopes"
+      s"In REPO ${diff2.size} scope(s) does not match JSON Scopes. Example: ${diff2.head}"
     }
   }
 }
