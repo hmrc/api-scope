@@ -18,7 +18,7 @@ package uk.gov.hmrc.apiscope.services
 
 import javax.inject.{Inject, Singleton}
 import play.api.Logger.logger
-import play.api.libs.json.{JsError, JsSuccess, Json, __}
+import play.api.libs.json.{JsError, JsSuccess, Json}
 import uk.gov.hmrc.apiscope.models.Scope
 import uk.gov.hmrc.apiscope.repository.ScopeRepository
 
