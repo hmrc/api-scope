@@ -18,7 +18,7 @@ package uk.gov.hmrc.apiscope.services
 
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
-import uk.gov.hmrc.apiscope.models.Scope
+import uk.gov.hmrc.apiscope.models.{ConfidenceLevel, Scope}
 import uk.gov.hmrc.apiscope.repository.ScopeRepository
 import uk.gov.hmrc.util.AsyncHmrcSpec
 
@@ -47,6 +47,37 @@ class ScopeJsonFileServiceSpec extends AsyncHmrcSpec {
       new ScopeJsonFileReader().readFile map {
         s => Json.parse(s) shouldBe a[JsValue]
       }
+    }
+  }
+
+  "scopes dryrun checks" should {
+    trait Setup {
+      val mockScopeRepository = mock[ScopeRepository]
+      val mockFileReader = mock[ScopeJsonFileReader]
+    }
+
+    val fileScopes = Seq(Scope("FK1", "FN1", "FD1", Some(L200)))
+    val repoScopes = Seq(Scope("FK1", "FN1", "FD1", Some(L200)))
+
+    "check that the scopes file contains exact scopes as repo" in new Setup  {
+      new ScopeJsonFileService(mockScopeRepository, mockFileReader)
+        .reconcileScopesInDryRun(fileScopes, repoScopes) shouldBe "Scopes in file & repo exactly match."
+    }
+
+    val fileScopes2 = Seq(Scope("FK1", "FN1", "FD1", Some(L200)), Scope("ABC", "", "", Some(L200)))
+    val repoScopes2 = Seq(Scope("FK1", "FN1", "FD1", Some(L200)))
+
+    "check that the scopes file contains one scope more than repo" in new Setup  {
+      new ScopeJsonFileService(mockScopeRepository, mockFileReader)
+        .reconcileScopesInDryRun(fileScopes2, repoScopes2) shouldBe "In JSON file 1 scope(s) does not match REPO Scopes. Example: Scope(ABC,,,Some(L200))"
+    }
+
+    val fileScopes3 = Seq(Scope("FK1", "FN1", "FD1", Some(L200)))
+    val repoScopes3 = Seq(Scope("FK1", "FN1", "FD1", Some(L200)), Scope("ABC", "DEF", "GHI", Some(L50)))
+
+    "check that the REPO contains one scope more than repo" in new Setup  {
+      new ScopeJsonFileService(mockScopeRepository, mockFileReader)
+        .reconcileScopesInDryRun(fileScopes3, repoScopes3) shouldBe "In REPO 1 scope(s) does not match JSON Scopes. Example: Scope(ABC,DEF,GHI,Some(L50))"
     }
   }
 

@@ -33,4 +33,14 @@ class ScopeJsonFileReader {
       None
     }
   }
+
+  def readDryRunFile: Option[String] = {
+    val path = Paths.get("conf/scopes-dryrun.json")
+    if (Files.exists(path)) {
+      Some(new String(Files.readAllBytes(path)))
+    } else {
+      logger.info("No Scopes dry run file to process")
+      None
+    }
+  }
 }
