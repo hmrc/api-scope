@@ -1,27 +1,903 @@
 [
   {
-    "key": "hello",
-    "name": "Say Hello",
-    "description": "Say Hello!"
+    "key":"hello",
+    "name":"Say Hello",
+    "description":"Say Hello!"
   },
   {
-    "key": "stop-autodeploy",
-    "name": "Stop AutoDeploy",
-    "description": "This is for Stop Auto Deploy testing and a BLOCKED 0.8.0 version is released!"
+    "key":"read:individual-benefits",
+    "name":"access benefits information",
+    "description":"Access personal and employment-based benefits information",
+    "confidenceLevel":200
   },
   {
-    "key": "common-transit-convention-guarantee-balance",
-    "name": "Common Transit Convention Guarantee Balance",
-    "description": "Common Transit Convention Guarantee Balance API"
+    "key":"read:individual-employment",
+    "name":"access employment information",
+    "description":"Access employment history",
+    "confidenceLevel":200
   },
   {
-    "key": "read:open-banking-payment-notification",
-    "name": "Open Banking Payment Notification",
-    "description": "Notification relating to an Open Banking payment"
+    "key":"read:individual-tax",
+    "name":"access tax account information",
+    "description":"Access personal and employment-related tax information",
+    "confidenceLevel":200
   },
   {
-    "key": "write:customs-declarations-information",
-    "name": "Request details of a declaration",
-    "description": "Search for and request details of a declaration"
+    "key":"read:individual-income",
+    "name":"access income information",
+    "description":"Access personal and employment-based income information",
+    "confidenceLevel":200
+  },
+  {
+    "key":"read:national-insurance",
+    "name":"access national insurance information",
+    "description":"Access National Insurance contribution information",
+    "confidenceLevel":200
+  },
+  {
+    "key":"read:marriage-allowance",
+    "name":"access marriage allowance information",
+    "description":"Access Marriage Allowance status and eligibility"
+  },
+  {
+    "key":"read:customer-profile",
+    "name":"Execute customer-profile call",
+    "description":"Retrieve the customer profile"
+  },
+  {
+    "key":"read:messages",
+    "name":"Execute messages call",
+    "description":"Retrieve the messages"
+  },
+  {
+    "key":"read:personal-income",
+    "name":"Execute tax-summary call",
+    "description":"Retrieve the tax-summary for a specific NINO and year"
+  },
+  {
+    "key":"read:submission-tracker",
+    "name":"Execute submission-tracker call",
+    "description":"Retrieve tracking data"
+  },
+  {
+    "key":"read:web-session",
+    "name":"access a web session",
+    "description":"Access a web session"
+  },
+  {
+    "key":"write:self-assessment-api",
+    "name":"Self-Assessment API - Write",
+    "description":"Allow write access to self assessment data"
+  },
+  {
+    "key":"read:self-assessment-api",
+    "name":"Self-Assessment API - Read",
+    "description":"Allow read access to self assessment data"
+  },
+  {
+    "key":"read:self-assessment",
+    "name":"View your Self Assessment information",
+    "description":"Allow read access to self assessment data",
+    "confidenceLevel":200
+  },
+  {
+    "key":"write:self-assessment",
+    "name":"Change your Self Assessment information",
+    "description":"Allow write access to self assessment data",
+    "confidenceLevel":200
+  },
+  {
+    "key":"write:push-registration",
+    "name":"Register device details",
+    "description":"Register device details for push registration"
+  },
+  {
+    "key":"read:paye-charges",
+    "name":"access employer charges information",
+    "description":"Access employer charges information for particular period of a tax year"
+  },
+  {
+    "key":"read:paye-credits",
+    "name":"access employer credits information",
+    "description":"Access employer credits information for a particular tax year"
+  },
+  {
+    "key":"read:paye-interest",
+    "name":"access employer interest information",
+    "description":"Access employer interest information for a particular tax year"
+  },
+  {
+    "key":"read:paye-payments",
+    "name":"access employer payments information",
+    "description":"Access employer payments information for particular period of a tax year"
+  },
+  {
+    "key":"read:apprenticeship-levy",
+    "name":"Access Apprenticeship Levy data associated with your payroll schemes.",
+    "description":"Access apprenticeship levy data"
+  },
+  {
+    "key":"read:native-apps-api-orchestration",
+    "name":"Native Apps API Orchestration",
+    "description":"Access APIs that are provided specifically for use by the HMRC mobile apps"
+  },
+  {
+    "key":"read:paye-penalties",
+    "name":"access employer penalties information",
+    "description":"Access employer penalties information for particular period of a tax year"
+  },
+  {
+    "key":"read:employers-paye",
+    "name":"access employer PAYE payments and liability information",
+    "description":"Access employer PAYE payments and liability information for a particular tax year"
+  },
+  {
+    "key":"openid:gov-uk-identifiers",
+    "name":"Access your tax identifiers",
+    "description":"Access your tax identifiers",
+    "confidenceLevel":200
+  },
+  {
+    "key":"openid",
+    "name":"Confirm HMRC has a record of you",
+    "description":"Confirm HMRC has a record of you",
+    "confidenceLevel":200
+  },
+  {
+    "key":"profile",
+    "name":"Access your name, gender and date of birth",
+    "description":"Access your name, gender and date of birth",
+    "confidenceLevel":200
+  },
+  {
+    "key":"address",
+    "name":"Access your address details",
+    "description":"Access your address details",
+    "confidenceLevel":200
+  },
+  {
+    "key":"your-tax-calculator",
+    "name":"Execute your-tax-calculator call",
+    "description":"Your Tax Calculator"
+  },
+  {
+    "key":"write:tax-free-childcare-applicant",
+    "name":"Tax-Free Childcare Applicant",
+    "description":"Tax-Free Childcare applicant MDTP integration service",
+    "confidenceLevel":200
+  },
+  {
+    "key":"voice-biometrics",
+    "name":"Access Voice Biometrics information",
+    "description":"Access Voice Biometrics information"
+  },
+  {
+    "key":"read:state-pension",
+    "name":"access State Pension",
+    "description":"Access State Pension information"
+  },
+  {
+    "key":"write:sent-invitations",
+    "name":"Modify invitations sent",
+    "description":"Request authorisation for a service"
+  },
+  {
+    "key":"read:sent-invitations",
+    "name":"Read invitations sent",
+    "description":"Reads authorisation requests sent by you"
+  },
+  {
+    "key":"read:received-invitations",
+    "name":"Read invitations received",
+    "description":"Reads invitations sent to you for acceptance."
+  },
+  {
+    "key":"write:received-invitations",
+    "name":"Modify invitations received",
+    "description":"Accept or reject invitations sent you for acceptance"
+  },
+  {
+    "key":"read:national-insurance-private-beta",
+    "name":"access national insurance information",
+    "description":"Access National Insurance contribution information"
+  },
+  {
+    "key":"read:subscriptions",
+    "name":"Read subscription requests",
+    "description":"Reads submitted subscription requests"
+  },
+  {
+    "key":"write:subscriptions",
+    "name":"Create subscription requests",
+    "description":"Create subscription requests"
+  },
+  {
+    "key":"read:national-insurance-record",
+    "name":"access National Insurance Record",
+    "description":"Access National Insurance Record information"
+  },
+  {
+    "key":"read:lisa",
+    "name":"access lifetime isa information",
+    "description":"Access Lifetime ISA information"
+  },
+  {
+    "key":"write:lisa",
+    "name":"create and update lifetime isa information",
+    "description":"Create and update Lifetime ISA information"
+  },
+  {
+    "key":"read:customs-tariff",
+    "name":"Access customs tariff information",
+    "description":"Determine customs tariff"
+  },
+  {
+    "key":"write:customs-supplementary-declaration",
+    "name":"Access customs supplementary declaration",
+    "description":"Customs Supplementary Declaration"
+  },
+  {
+    "key":"read:tax-free-childcare-provider-matching",
+    "name":"Tax Free Childcare Provider Matching",
+    "description":"Tax Free Childcare Provider Matching"
+  },
+  {
+    "key":"openid:hmrc_enrolments",
+    "name":"Access your enrolments",
+    "description":"Access your enrolments",
+    "confidenceLevel":200
+  },
+  {
+    "key":"email",
+    "name":"Shows your email address",
+    "description":"Shows your email address",
+    "confidenceLevel":200
+  },
+  {
+    "key":"openid:government_gateway",
+    "name":"Shows subset of your government gateway details",
+    "description":"Shows subset of yours government gateway details",
+    "confidenceLevel":200
+  },
+  {
+    "key":"read:individuals",
+    "name":"Access individual income and employments information",
+    "description":"Access personal and employment-based income information"
+  },
+  {
+    "key":"read:individual",
+    "name":"Access individual income and employments information",
+    "description":"Access personal and employment-based income information",
+    "confidenceLevel":50
+  },
+  {
+    "key":"openid:mdtp",
+    "name":"Shows your sessionId and deviceId",
+    "description":"Shows your sessionId and deviceId",
+    "confidenceLevel":200
+  },
+  {
+    "key":"openid:government-gateway",
+    "name":"Shows subset of your government gateway details",
+    "description":"Shows subset of yours government gateway details",
+    "confidenceLevel":200
+  },
+  {
+    "key":"openid:hmrc-enrolments",
+    "name":"Access your enrolments",
+    "description":"Access your enrolments",
+    "confidenceLevel":200
+  },
+  {
+    "key":"read:individual-employments",
+    "name":"access employment information",
+    "description":"Access employment history",
+    "confidenceLevel":200
+  },
+  {
+    "key":"read:individuals-employments",
+    "name":"access individuals employment information",
+    "description":"Access employments information for all individuals"
+  },
+  {
+    "key":"read:individuals-employments-paye",
+    "name":"access all paye individuals employment information",
+    "description":"Access paye employments history for all individuals"
+  },
+  {
+    "key":"read:individuals-income",
+    "name":"access income information for all individuals",
+    "description":"Access income information for all individuals"
+  },
+  {
+    "key":"read:individuals-income-sa-employments",
+    "name":"access self-assessment employments income information for all individuals",
+    "description":"Access self-assessment employments income information for all individuals"
+  },
+  {
+    "key":"read:individuals-income-sa-self-employments",
+    "name":"access self-assessment self employments income information for all individuals",
+    "description":"Access self-assessment self employments income information for all individuals"
+  },
+  {
+    "key":"read:individuals-income-sa",
+    "name":"access self-assessment information for all individuals",
+    "description":"Access self-assessment information for all individuals"
+  },
+  {
+    "key":"read:individuals-income-paye",
+    "name":"access PAYE income information for all individuals",
+    "description":"Access PAYE income information for all individuals"
+  },
+  {
+    "key":"read:individuals-matching",
+    "name":"match individual from their details",
+    "description":"Match individual from their details"
+  },
+  {
+    "key":"read:sso-in",
+    "name":"get session info id",
+    "description":"Get session info id"
+  },
+  {
+    "key":"read:individuals-income-sa-summary",
+    "name":"access self-assessment summary information for all individuals",
+    "description":"Access self-assessment summary information for all individuals"
+  },
+  {
+    "key":"read:individuals-income-sa-trusts",
+    "name":"access self-assessment trusts information for all individuals",
+    "description":"Access self-assessment trusts information for all individuals"
+  },
+  {
+    "key":"read:individuals-income-sa-other",
+    "name":"access self-assessment other income information for all individuals",
+    "description":"Access self-assessment other income information for all individuals"
+  },
+  {
+    "key":"read:individuals-income-sa-partnerships",
+    "name":"access self-assessment partnerships income information for all individuals",
+    "description":"Access self-assessment partnerships income information for all individuals"
+  },
+  {
+    "key":"read:individuals-income-sa-additional-information",
+    "name":"access self-assessment additional information for all individuals",
+    "description":"Access self-assessment additional information for all individuals"
+  },
+  {
+    "key":"read:individuals-income-sa-interests-and-dividends",
+    "name":"access self-assessment interests and dividends income information for all individuals",
+    "description":"Access self-assessment interests and dividends income information for all individuals"
+  },
+  {
+    "key":"read:individuals-income-sa-pensions-and-state-benefits",
+    "name":"access self-assessment pensions and state benefits income information for all individuals",
+    "description":"Access self-assessment pensions and state benefits income information for all individuals"
+  },
+  {
+    "key":"read:individuals-income-sa-foreign",
+    "name":"access self-assessment foreign income information for all individuals",
+    "description":"Access self-assessment foreign income information for all individuals"
+  },
+  {
+    "key":"read:individuals-income-sa-uk-properties",
+    "name":"access self-assessment UK properties income information for all individuals",
+    "description":"Access self-assessment UK properties income information for all individuals"
+  },
+  {
+    "key":"read:business-rates-list",
+    "name":"Business Rates List",
+    "description":"Access summary valuation information"
+  },
+  {
+    "key":"read:ras",
+    "name":"Relief At Source",
+    "description":"Access to Relief At Source API's"
+  },
+  {
+    "key":"read:api-platform-test",
+    "name":"Read API Platform Test",
+    "description":"Read API Platform Test"
+  },
+  {
+    "key":"write:api-platform-test",
+    "name":"Write API Platform Test",
+    "description":"Write API Platform Test"
+  },
+  {
+    "key":"read:vat",
+    "name":"View your VAT information",
+    "description":"Allow read access to VAT data"
+  },
+  {
+    "key":"write:vat",
+    "name":"Change your VAT information",
+    "description":"Allow write access to VAT data"
+  },
+  {
+    "key":"all:business-rates",
+    "name":"Business Rates",
+    "description":"VOA Business Rates APIs"
+  },
+  {
+    "key":"read:individuals-employments-payroll",
+    "name":"access all paye individuals payroll information",
+    "description":"Access paye payroll history for all individuals"
+  },
+  {
+    "key":"read:individuals-income-sa-source",
+    "name":"access self-assessment income source information for all individuals",
+    "description":"Access self-assessment income source information for all individuals"
+  },
+  {
+    "key":"read:help-to-save",
+    "name":"Get Help to save Eligibility for an applicant",
+    "description":"Get Help to save Eligibility for an applicant",
+    "confidenceLevel":200
+  },
+  {
+    "key":"write:help-to-save",
+    "name":"Create Help to save Account for an applicant",
+    "description":"Create Help to save Account for an applicant",
+    "confidenceLevel":200
+  },
+  {
+    "key":"read:enrolment-store-proxy",
+    "name":"access enrolments for HMRC services",
+    "description":"Access enrolments for HMRC services"
+  },
+  {
+    "key":"write:customs-declaration",
+    "name":"Submit a Customs Declaration",
+    "description":"Submit a Customs Declaration"
+  },
+  {
+    "key":"write:real-time-income-information",
+    "name":"access Real Time Income Information",
+    "description":"Access Real Time Income Information"
+  },
+  {
+    "key":"read:individual-paye",
+    "name":"access individual Pay As You Earn (PAYE) information - including employments (employer name, income, tax, student loan deductions and company benefits), private pensions (pension provider name, income and tax), State Pension (regular payments and lump sums), tax-free allowances and taxable social security benefits",
+    "description":"Access pay as you earn information",
+    "confidenceLevel":200
+  },
+  {
+    "key":"read:check-relationship",
+    "name":"Check Relationship Status",
+    "description":"Returns current status of relationship"
+  },
+  {
+    "key":"write:cancel-invitations",
+    "name":"Cancel Invitations",
+    "description":"Cancel a pending invitation"
+  },
+  {
+    "key":"read:transit-movement-api",
+    "name":"Execute transit-movement-api call",
+    "description":"Transit Movement API"
+  },
+  {
+    "key":"read:bulk-data-download-list",
+    "name":"List Available Files",
+    "description":"List files available for download from SDES"
+  },
+  {
+    "key":"read:state-pension-calculation",
+    "name":"Get State Pension calculation",
+    "description":"Get State Pension calculation"
+  },
+  {
+    "key":"customs-financials-api",
+    "name":"Statement Notifications",
+    "description":"Send C79, PVAT and Security statement notifications for new statements"
+  },
+  {
+    "key":"write:customs-inventory-linking-exports",
+    "name":"Inventory Exports Movement Request",
+    "description":"Submit an Inventory Exports Movement Request"
+  },
+  {
+    "key":"read:mobile-office-of-transit",
+    "name":"Execute mobile-office-of-transit call",
+    "description":"Mobile Office of Transit"
+  },
+  {
+    "key":"iv-orchestration",
+    "name":"iv-orchestration",
+    "description":"This service checks if users are authorised and allowed to retrieve session data"
+  },
+  {
+    "key":"read:userid-recovery-api",
+    "name":"Resend user ID for individuals with an SA enrolment",
+    "description":"Resend user ID for individuals with an SA enrolment"
+  },
+  {
+    "key":"write:customs-declarations-information",
+    "name":"Request details of a declaration",
+    "description":"Search for and request details of a declaration"
+  },
+  {
+    "key":"write:customs-il-imports-movement-validation",
+    "name":"Customs Inventory Linking Imports - Movement Validation",
+    "description":"Send validated movement response messages provided by the CSP as a result of a previous validate movement request"
+  },
+  {
+    "key":"write:customs-il-imports-arrival-notifications",
+    "name":"Customs Inventory Linking Imports - Arrival Notifications",
+    "description":"CSPs requesting to present their goods to Customs"
+  },
+  {
+    "key":"read:register-nino",
+    "name":"Register NINO",
+    "description":"Register NINO"
+  },
+  {
+    "key":"read:goods-movement-system-carrier",
+    "name":"carrier interactions with the goods vehicle movement service",
+    "description":"Goods Vehicle Movements Carrier API"
+  },
+  {
+    "key":"write:goods-movement-system",
+    "name":"read and write goods vehicle movement service records",
+    "description":"Goods Vehicle Movements API"
+  },
+  {
+    "key":"read:goods-movement-system-port",
+    "name":"read and write goods vehicle movement service records",
+    "description":"Goods Vehicle Movements API"
+  },
+  {
+    "key":"read:pull-notifications",
+    "name":"Read pull notifications",
+    "description":"Read pull notifications"
+  },
+  {
+    "key":"write:notifications",
+    "name":"Write notifications",
+    "description":"Write notifications"
+  },
+  {
+    "key":"write:import-control-system",
+    "name":"Access Import Control System",
+    "description":"Allow submission of entry summary declarations"
+  },
+  {
+    "key":"write:transfer-ready",
+    "name":"Transfer Ready",
+    "description":"Notify when a bulk transfer is ready for processing",
+    "confidenceLevel":200
+  },
+  {
+    "key":"write:transfer-complete",
+    "name":"Transfer Complete",
+    "description":"Notify when a bulk transfer is complete",
+    "confidenceLevel":200
+  },
+  {
+    "key":"read:individuals-matching-laa-c1",
+    "name":"match individual from their details for laa use case 1",
+    "description":"Scope for LAA use case 1 to match an individual from their details"
+  },
+  {
+    "key":"read:individuals-matching-laa-c2",
+    "name":"match individual from their details for laa use case 2",
+    "description":"Scope for LAA use case 2 to match an individual from their details"
+  },
+  {
+    "key":"read:individuals-matching-laa-c3",
+    "name":"match individual from their details for laa use case 3",
+    "description":"Scope for LAA use case 3 to match an individual from their details"
+  },
+  {
+    "key":"read:individuals-matching-laa-c4",
+    "name":"match individual from their details for laa use case 4",
+    "description":"Scope for LAA use case 4 to match an individual from their details"
+  },
+  {
+    "key":"read:individuals-matching-hmcts-c2",
+    "name":"match individual from their details for hmcts use case 2",
+    "description":"Scope for HMCTS use case 2 to match an individual from their details"
+  },
+  {
+    "key":"read:individuals-matching-hmcts-c3",
+    "name":"match individual from their details for hmcts use case 3",
+    "description":"Scope for HMCTS use case 3 to match an individual from their details"
+  },
+  {
+    "key":"read:individuals-matching-hmcts-c4",
+    "name":"match individual from their details for hmcts use case 4",
+    "description":"Scope for HMCTS use case 4 to match an individual from their details"
+  },
+  {
+    "key":"read:individuals-matching-lsani-c1",
+    "name":"match individual from their details for lsani use case 1",
+    "description":"Scope for LSANI use case 1 to match an individual from their details"
+  },
+  {
+    "key":"read:individuals-matching-lsani-c3",
+    "name":"match individual from their details for lsani use case 3",
+    "description":"Scope for LSANI use case 3 to match an individual from their details"
+  },
+  {
+    "key":"read:individuals-matching-nictsejo-c4",
+    "name":"match individual from their details for nictsejo use case 4",
+    "description":"Scope for NICTSEJO use case 4 to match an individual from their details"
+  },
+  {
+    "key":"assigned",
+    "name":"The scopes you have been assigned",
+    "description":"An OAuth 2.0 Bearer Token with the scopes you have been assigned"
+  },
+  {
+    "key":"read:individuals-income-laa-c1",
+    "name":"access all self assessment information of individuals for laa use case 1",
+    "description":"Scope for LAA use case 1 to access all self assessment information of individuals"
+  },
+  {
+    "key":"read:individuals-income-laa-c2",
+    "name":"access all self assessment information of individuals for laa use case 2",
+    "description":"Scope for LAA use case 2 to access all self assessment information of individuals"
+  },
+  {
+    "key":"read:individuals-income-laa-c3",
+    "name":"access all self assessment information of individuals for laa use case 3",
+    "description":"Scope for LAA use case 3 to access all self assessment information of individuals"
+  },
+  {
+    "key":"read:individuals-income-laa-c4",
+    "name":"access all self assessment information of individuals for laa use case 4",
+    "description":"Scope for LAA use case 4 to access all self assessment information of individuals"
+  },
+  {
+    "key":"read:individuals-income-hmcts-c2",
+    "name":"access all self assessment information of individuals for hmcts use case 2",
+    "description":"Scope for HMCTS use case 2 to access all self assessment information of individuals"
+  },
+  {
+    "key":"read:individuals-income-hmcts-c3",
+    "name":"access all self assessment information of individuals for hmcts use case 3",
+    "description":"Scope for HMCTS use case 3 to access all self assessment information of individuals"
+  },
+  {
+    "key":"read:individuals-income-hmcts-c4",
+    "name":"access all self assessment information of individuals for hmcts use case 4",
+    "description":"Scope for HMCTS use case 4 to access all self assessment information of individuals"
+  },
+  {
+    "key":"read:individuals-income-lsani-c1",
+    "name":"access all self assessment information of individuals for lsani use case 1",
+    "description":"Scope for LSANI use case 1 to access all self assessment information of individuals"
+  },
+  {
+    "key":"read:individuals-income-lsani-c3",
+    "name":"access all self assessment information of individuals for lsani use case 3",
+    "description":"Scope for LSANI use case 3 to access all self assessment information of individuals"
+  },
+  {
+    "key":"read:individuals-income-nictsejo-c4",
+    "name":"access all self assessment information of individuals for nictsejo use case 4",
+    "description":"Scope for NICTSEJO use case 4 to access all self assessment information of individuals"
+  },
+  {
+    "key":"read:individuals-employments-laa-c1",
+    "name":"access individuals employment information for LAA use case 1",
+    "description":"Scope for LAA use case 1 to access employments information on individuals"
+  },
+  {
+    "key":"read:individuals-employments-laa-c2",
+    "name":"access individuals employment information for LAA use case 2",
+    "description":"Scope for LAA use case 2 to access employments information on individuals"
+  },
+  {
+    "key":"read:individuals-employments-laa-c3",
+    "name":"access individuals employment information for LAA use case 3",
+    "description":"Scope for LAA use case 3 to access employments information on individuals"
+  },
+  {
+    "key":"read:individuals-employments-laa-c4",
+    "name":"access individuals employment information for LAA use case 4",
+    "description":"Scope for LAA use case 4 to access employments information on individuals"
+  },
+  {
+    "key":"read:individuals-employments-hmcts-c2",
+    "name":"access individuals employment information for HMCTS use case 2",
+    "description":"Scope for HMCTS use case 2 to access employments information on individuals"
+  },
+  {
+    "key":"read:individuals-employments-hmcts-c3",
+    "name":"access individuals employment information for HMCTS use case 3",
+    "description":"Scope for HMCTS use case 3 to access employments information on individuals"
+  },
+  {
+    "key":"read:individuals-employments-hmcts-c4",
+    "name":"access individuals employment information for HMCTS use case 4",
+    "description":"Scope for HMCTS use case 4 to access employments information on individuals"
+  },
+  {
+    "key":"read:individuals-employments-lsani-c1",
+    "name":"access individuals employment information for LSANI use case 1",
+    "description":"Scope for LSANI use case 1 to access employments information on individuals"
+  },
+  {
+    "key":"read:individuals-employments-lsani-c3",
+    "name":"access individuals employment information for LSANI use case 3",
+    "description":"Scope for LSANI use case 3 to access employments information on individuals"
+  },
+  {
+    "key":"read:individuals-employments-nictsejo-c4",
+    "name":"access individuals employment information for NICTSEJO use case 4",
+    "description":"Scope for NICTSEJO use case 4 to access employments information on individuals"
+  },
+  {
+    "key":"read:individuals-benefits-and-credits-laa-c1",
+    "name":"access individuals benefits and credits information for laa use case 1",
+    "description":"Scope for LAA use case 1 to access benefits and credits information on individuals"
+  },
+  {
+    "key":"read:individuals-benefits-and-credits-laa-c2",
+    "name":"access individuals benefits and credits information for laa use case 2",
+    "description":"Scope for LAA use case 2 to access benefits and credits information on individuals"
+  },
+  {
+    "key":"read:individuals-benefits-and-credits-laa-c3",
+    "name":"access individuals benefits and credits information for laa use case 3",
+    "description":"Scope for LAA use case 3 to access benefits and credits information on individuals"
+  },
+  {
+    "key":"read:individuals-benefits-and-credits-hmcts-c2",
+    "name":"access individuals benefits and credits information for hmcts use case 2",
+    "description":"Scope for HMCTS use case 2 to access benefits and credits information on individuals"
+  },
+  {
+    "key":"read:individuals-benefits-and-credits-hmcts-c3",
+    "name":"access individuals benefits and credits information for hmcts use case 3",
+    "description":"Scope for HMCTS use case 3 to access benefits and credits information on individuals"
+  },
+  {
+    "key":"read:individuals-benefits-and-credits-lsani-c1",
+    "name":"access individuals benefits and credits information for lsani use case 1",
+    "description":"Scope for LSANI use case 1 to access benefits and credits information on individuals"
+  },
+  {
+    "key":"read:individuals-benefits-and-credits-lsani-c3",
+    "name":"access individuals benefits and credits information for lsani use case 3",
+    "description":"Scope for LSANI use case 3 to access benefits and credits information on individuals"
+  },
+  {
+    "key":"read:individuals-details-laa-c3",
+    "name":"access individuals contact information for laa use case 3",
+    "description":"Scope for LAA use case 3 to access contact information on individuals"
+  },
+  {
+    "key":"read:individuals-details-laa-c4",
+    "name":"access individuals contact information for laa use case 4",
+    "description":"Scope for LAA use case 4 to access contact information on individuals"
+  },
+  {
+    "key":"read:individuals-details-hmcts-c3",
+    "name":"access individuals contact information for hmcts use case 3",
+    "description":"Scope for HMCTS use case 3 to access contact information on individuals"
+  },
+  {
+    "key":"read:individuals-details-hmcts-c4",
+    "name":"access individuals contact information for hmcts use case 4",
+    "description":"Scope for HMCTS use case 4 to access contact information on individuals"
+  },
+  {
+    "key":"read:individuals-details-lsani-c1",
+    "name":"access individuals contact information for lsani use case 1",
+    "description":"Scope for LSANI use case 1 to access contact information on individuals"
+  },
+  {
+    "key":"read:individuals-details-lsani-c3",
+    "name":"access individuals contact information for lsani use case 3",
+    "description":"Scope for LSANI use case 3 to access contact information on individuals"
+  },
+  {
+    "key":"read:individuals-details-nictsejo-c4",
+    "name":"access individuals contact information for nictsejo use case 4",
+    "description":"Scope for NICTSEJO use case 4 to access contact information on individuals"
+  },
+  {
+    "key":"common-transit-convention-traders",
+    "name":"Common Transit Convention Traders",
+    "description":"Common Transit Convention Traders Public API"
+  },
+  {
+    "key":"read:breathing-space-individual",
+    "name":"Breathing Space - Read Individual",
+    "description":"Return information about an individual who has sought help on the Breathing Space Program"
+  },
+  {
+    "key":"read:breathing-space-periods",
+    "name":"Breathing Space - Read Periods",
+    "description":"Return details of existing Breathing Space Periods"
+  },
+  {
+    "key":"read:breathing-space-debts",
+    "name":"Breathing Space - Read Debts",
+    "description":"Return debt details for individuals in Breathing Space"
+  },
+  {
+    "key":"write:breathing-space-periods",
+    "name":"Breathing Space - Modify Periods",
+    "description":"Create new or modify existing Breathing Space Periods"
+  },
+  {
+    "key":"tiv:verification",
+    "name":"Get verifiers associated with a taxpayer",
+    "description":"Get verifiers associated with a taxpayer"
+  },
+  {
+    "key":"tiv:result",
+    "name":"Record the result of a verification attempt",
+    "description":"Record the result of a verification attempt"
+  },
+  {
+    "key":"write:insolvent-vat",
+    "name":"Change your Insolvent VAT information",
+    "description":"Allow write access to Insolvent VAT data"
+  },
+  {
+    "key":"write:interest-restriction-return",
+    "name":"Create and Update your Interest Restriction Return information",
+    "description":"Allow write access to Interest Restriction Return data",
+    "confidenceLevel":200
+  },
+  {
+    "key":"read:individuals-income-ho-ecp",
+    "name":"access all self assessment information of individuals for HO ECP use case",
+    "description":"Scope for HO ECP use case to access all self assessment information of individuals"
+  },
+  {
+    "key":"read:individuals-employments-ho-rp2",
+    "name":"access individuals employment information for HO RP2",
+    "description":"Scope for HO RP2 to access employments information on individuals"
+  },
+  {
+    "key":"read:individuals-employments-ho-ecp",
+    "name":"access individuals employment information for HO ECP",
+    "description":"Scope for HO ECP to access employments information on individuals"
+  },
+  {
+    "key":"read:individuals-matching-ho-ecp",
+    "name":"match individual from their details for HO ECP",
+    "description":"Scope for HO ECP to match an individual from their details"
+  },
+  {
+    "key":"read:individuals-matching-ho-rp2",
+    "name":"match individual from their details for HO RP2",
+    "description":"Scope for HO RP2 to match an individual from their details"
+  },
+  {
+    "key":"read:interest-forecasting",
+    "name":"View interest forecasting",
+    "description":"Allow read access to interest forecasting data"
+  },
+  {
+    "key":"read:statement-of-liability",
+    "name":"View statements of liability",
+    "description":"Allow read access to statement of liability data"
+  },
+  {
+    "key":"stop-autodeploy",
+    "name":"Stop AutoDeploy",
+    "description":"This is for Stop Auto Deploy testing and a BLOCKED 0.8.0 version is released!"
+  },
+  {
+    "key":"common-transit-convention-guarantee-balance",
+    "name":"Common Transit Convention Guarantee Balance",
+    "description":"Common Transit Convention Guarantee Balance API"
+  },
+  {
+    "key":"open-banking-external-api",
+    "name":"Open Banking External API",
+    "description":"This API allows third party payment providers to give HMRC updates on the status of Open Banking payments."
+  },
+  {
+    "key":"read:open-banking-payment-notification",
+    "name":"Open Banking Payment Notification",
+    "description":"Notification relating to an Open Banking payment"
   }
 ]
