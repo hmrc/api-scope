@@ -33,21 +33,6 @@ class ScopeJsonFileService @Inject()(scopeRepository: ScopeRepository,
   private def saveScopes(scopes: Seq[Scope]): Future[Seq[Scope]] =
     Future.sequence(scopes.map(scopeRepository.save))
 
-  private def fetchScopes(): Future[Seq[Scope]] =
-    scopeRepository.fetchAll()
-
-  private def logScopes(): Unit = {
-    scopeRepository.fetchAll() onComplete{
-      case Success(seqScopes) => {
-        val perLogScopes = 30
-        val groupedSeq = seqScopes.grouped(perLogScopes)
-        logger.info("Fetching scopes during api-scopes application startup.")
-        groupedSeq.foreach(group => logger.info(Json.toJson(group).toString()))
-      }
-      case Failure(err) => logger.info(s"Fetching Scopes from api-scope repo failed with error $err..")
-    }
-  }
-
   try {
     fileReader.readFile.map(s => Json.parse(s).validate[Seq[Scope]] match {
       case JsSuccess(scopes: Seq[Scope], _) =>
@@ -55,41 +40,9 @@ class ScopeJsonFileService @Inject()(scopeRepository: ScopeRepository,
         saveScopes(scopes)
       case JsError(errors) => logger.error("Unable to parse JSON into Scopes", errors.mkString("; "))
     })
-    logScopes()
   } catch {
     case _: java.nio.file.NoSuchFileException => logger.info("No Scopes file found to process")
     case NonFatal(e) =>
       logger.error("Scopes file does not contain valid JSON", e)
-  }
-
-  try {
-    fileReader.readDryRunFile.map(s => Json.parse(s).validate[Seq[Scope]] match {
-      case JsSuccess(scopes: Seq[Scope], _) => {
-        logger.info(s"Fetching ${scopes.size} Scopes from scopes dry run file")
-        fetchScopes() map( repoScopes =>
-        logger.info(reconcileScopesInDryRun(scopes, repoScopes)))
-      }
-      case JsError(errors) => logger.error("Unable to parse dry run JSON file", errors.mkString("; "))
-    })
-  } catch {
-    case _: java.nio.file.NoSuchFileException => logger.info("No Scopes file found to process")
-    case NonFatal(e) =>
-      logger.error("Scopes file does not contain valid JSON", e)
-  }
-
-  def reconcileScopesInDryRun(fileScopes: Seq[Scope], repoScopes: Seq[Scope]) : String = {
-    val toSet1 = repoScopes.toSet
-    val diff1 = fileScopes.filterNot(toSet1)
-    val toSet2 = fileScopes.toSet
-    val diff2 = repoScopes.filterNot(toSet2)
-
-    if(diff1.isEmpty && diff2.isEmpty) {
-      "Scopes in file & repo exactly match."
-    } else if (!diff1.isEmpty) {
-      s"In JSON file ${diff1.size} scope(s) does not match REPO Scopes. Example: ${diff1.head}"
-    }
-    else {
-      s"In REPO ${diff2.size} scope(s) does not match JSON Scopes. Example: ${diff2.head}"
-    }
   }
 }
