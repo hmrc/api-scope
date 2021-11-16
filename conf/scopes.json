@@ -457,6 +457,16 @@
     "description":"Access Real Time Income Information"
   },
   {
+    "key": "filter:real-time-income-information-full",
+    "name": "filter Real Time Income Information Full Access",
+    "description": "Filter Real Time Income Information Full Access"
+  },
+  {
+    "key": "filter:real-time-income-information-sg",
+    "name": "filter Real Time Income Information Scottish Government",
+    "description": "Access Real Time Income Information Scottish Government"
+  },
+  {
     "key":"read:individual-paye",
     "name":"access individual Pay As You Earn (PAYE) information - including employments (employer name, income, tax, student loan deductions and company benefits), private pensions (pension provider name, income and tax), State Pension (regular payments and lump sums), tax-free allowances and taxable social security benefits",
     "description":"Access pay as you earn information",
