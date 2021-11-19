@@ -8,7 +8,7 @@ object AppDependencies {
 
   private lazy val bootstrapVersion = "5.16.0"
   private lazy val hmrcReactiveMongoTestVersion = "5.0.0-play-28"
-  private lazy val scalaJVersion = "2.4.1"
+  private lazy val scalaJVersion = "2.4.2"
   private lazy val scalatestPlusPlayVersion = "4.0.0"
   // we need to override the akka version for now as newer versions are not compatible with reactivemongo
   private lazy val akkaVersion = "2.6.14"
@@ -25,7 +25,7 @@ object AppDependencies {
     "org.scalaj" %% "scalaj-http" % scalaJVersion % "test,it",
     "uk.gov.hmrc"             %% "bootstrap-test-play-28"   % bootstrapVersion,
     "org.scalatestplus.play" %% "scalatestplus-play" % scalatestPlusPlayVersion % "test,it",
-    "org.mockito" %% "mockito-scala-scalatest" % "1.7.1" % "test, it",
+    "org.mockito" %% "mockito-scala-scalatest" % "1.16.46" % "test, it",
     "com.typesafe.play" %% "play-test" % PlayVersion.current % "test,it",
     "org.pegdown" % "pegdown" % "1.6.0" % "test, it"
   )

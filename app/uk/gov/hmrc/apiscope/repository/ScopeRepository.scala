@@ -30,7 +30,6 @@ import play.modules.reactivemongo.ReactiveMongoComponent
 import uk.gov.hmrc.mongo.ReactiveRepository
 import uk.gov.hmrc.mongo.json.ReactiveMongoFormats
 import uk.gov.hmrc.apiscope.models.Scope
-import uk.gov.hmrc.play.http.metrics.common.{API, ApiMetrics, RecordMetrics}
 
 private object ScopeFormats {
   implicit val objectIdFormats = ReactiveMongoFormats.objectIdFormats
@@ -38,15 +37,14 @@ private object ScopeFormats {
 }
 
 @Singleton
- class ScopeRepository @Inject()(mongo: ReactiveMongoComponent, val apiMetrics: ApiMetrics)(implicit val ec: ExecutionContext)
+ class ScopeRepository @Inject()(mongo: ReactiveMongoComponent)(implicit val ec: ExecutionContext)
   extends ReactiveRepository[Scope, BSONObjectID]("scope", mongo.mongoConnector.db,
-    ScopeFormats.scopeFormat, ReactiveMongoFormats.objectIdFormats) with RecordMetrics {
+    ScopeFormats.scopeFormat, ReactiveMongoFormats.objectIdFormats) {
 
-  val api:API = API("mongo-scope")
 
   ensureIndex("key", "keyIndex")
 
-  def save(scope: Scope) : Future[Scope] = record {
+  def save(scope: Scope) : Future[Scope] =  {
     collection
       .update(false).one(Json.obj("key" -> scope.key), scope, upsert = true)
       .map(_ => scope)
@@ -63,7 +61,7 @@ private object ScopeFormats {
     collection.indexesManager.ensure(createIndex)
   }
 
-  def fetch(key: String): Future[Option[Scope]] = record {
+  def fetch(key: String): Future[Option[Scope]] =  {
     collection.find[JsObject, Scope](Json.obj("key" -> key), None).one[Scope]. map {
       case Some(s) => Some(s)
       case None =>
@@ -72,7 +70,7 @@ private object ScopeFormats {
     }
   }
 
-  def fetchAll(): Future[Seq[Scope]] = record {
+  def fetchAll(): Future[Seq[Scope]] =  {
     collection.find[JsObject, Scope](Json.obj(), None).cursor[Scope]().collect[Seq](Int.MaxValue,Cursor.FailOnError[Seq[Scope]]())
   }
 

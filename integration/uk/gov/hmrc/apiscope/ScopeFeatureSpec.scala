@@ -33,9 +33,9 @@ class ScopeFeatureSpec extends BaseFeatureSpec {
 
   val repository = app.injector.instanceOf[ScopeRepository]
 
-  feature("Publish Scope on request") {
+  Feature("Publish Scope on request") {
 
-    scenario("Scope is created") {
+    Scenario("Scope is created") {
 
       Given("The scope does not exist")
 
@@ -46,7 +46,7 @@ class ScopeFeatureSpec extends BaseFeatureSpec {
       fetchScope("read:employment") shouldEqual Json.parse(scope("read:employment", "Read Employment"))
     }
 
-    scenario("Scope is updated") {
+    Scenario("Scope is updated") {
 
       Given("The scope does exist")
       postScope(scopeRequest("read:employment", "Read Employment"))

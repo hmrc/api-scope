@@ -42,7 +42,7 @@ class ScopeRepositorySpec extends AsyncHmrcSpec
   val scope1 = Scope("key1", "name1", "description1")
   val scope2 = Scope("key2", "name2", "description2", confidenceLevel = Some(L200))
 
-  private def createRepository = new ScopeRepository(reactiveMongoComponent, mockApiMetrics) {
+  private def createRepository = new ScopeRepository(reactiveMongoComponent) {
   }
 
   private def dropRepository(repo: ScopeRepository) = {
