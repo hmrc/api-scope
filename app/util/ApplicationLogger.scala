@@ -14,23 +14,10 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiscope.services
+package util
 
-import java.nio.file.{Files, Paths}
+import play.api.Logger
 
-import javax.inject.Singleton
-import util.ApplicationLogger
-
-@Singleton
-class ScopeJsonFileReader extends ApplicationLogger {
-
-  def readFile: Option[String] = {
-    val path = Paths.get("conf/scopes.json")
-    if (Files.exists(path)) {
-      Some(new String(Files.readAllBytes(path)))
-    } else {
-      logger.info("No Scopes file to process")
-      None
-    }
-  }
+trait ApplicationLogger {
+  protected val logger: Logger = Logger("application")
 }

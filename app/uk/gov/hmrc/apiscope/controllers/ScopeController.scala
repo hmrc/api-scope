@@ -18,7 +18,7 @@ package uk.gov.hmrc.apiscope.controllers
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
-import play.api.Logging
+import util.ApplicationLogger
 import play.api.libs.json._
 import play.api.mvc._
 import uk.gov.hmrc.apiscope.models.ErrorCode._
@@ -28,7 +28,7 @@ import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 @Singleton
 class ScopeController @Inject()(scopeService: ScopeService, cc: ControllerComponents, playBodyParsers: PlayBodyParsers)(implicit val ec: ExecutionContext)
-  extends BackendController(cc) with Logging {
+  extends BackendController(cc) with ApplicationLogger {
 
   def createOrUpdateScope(): Action[JsValue] = Action.async(playBodyParsers.json) { implicit request =>
     handleRequest[Seq[ScopeData]](request) {

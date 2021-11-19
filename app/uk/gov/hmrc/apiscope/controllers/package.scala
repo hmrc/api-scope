@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.apiscope
 
-import play.api.Logger
+import util.ApplicationLogger
 
 import scala.concurrent.Future
 import play.api.libs.json.Json.toJson
@@ -27,9 +27,8 @@ import uk.gov.hmrc.http.NotFoundException
 import uk.gov.hmrc.apiscope.models.ErrorCode.{API_INVALID_JSON, SCOPE_NOT_FOUND}
 import uk.gov.hmrc.apiscope.models.{ErrorCode, ErrorDescription, ErrorResponse}
 
-package object controllers {
+package object controllers extends ApplicationLogger {
 
-  val logger: Logger = Logger(this.getClass())
 
   private def validate[T](request:Request[JsValue])(implicit tjs: Reads[T]): Either[Result, JsResult[T]] = {
     try {
