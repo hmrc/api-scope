@@ -27,13 +27,13 @@ import uk.gov.hmrc.mongo.{MongoConnector, MongoSpecSupport}
 
 import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
 import uk.gov.hmrc.apiscope.models.Scope
-import uk.gov.hmrc.util.{AsyncHmrcSpec, MockMetrics}
+import uk.gov.hmrc.util.AsyncHmrcSpec
 
 class ScopeRepositorySpec extends AsyncHmrcSpec
   with BeforeAndAfterEach with BeforeAndAfterAll
   with MongoSpecSupport
   with Eventually
-  with MockMetrics {
+   {
 
   private val reactiveMongoComponent = new ReactiveMongoComponent { override def mongoConnector: MongoConnector = mongoConnectorForTest }
 
