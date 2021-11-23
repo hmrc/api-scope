@@ -14,19 +14,10 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiscope.module
+package util
 
-import play.api.inject.Binding
-import play.api.{Configuration, Environment}
-import uk.gov.hmrc.play.http.metrics.common.ApiMetrics
-import uk.gov.hmrc.play.http.metrics.{ApiMetricsProvider, Module}
+import play.api.Logger
 
-class ConfigModule extends Module {
-
-    override def bindings(environment: Environment, configuration: Configuration): Seq[Binding[_]] = {
-      Seq(
-        bind[ApiMetrics].toProvider[ApiMetricsProvider]
-      )
-    }
-
+trait ApplicationLogger {
+  protected val logger: Logger = Logger("application")
 }

@@ -50,7 +50,7 @@ class ScopeControllerSpec extends AsyncHmrcSpec
   val scopeBodyWithInvalidConfidenceLevel: String = """[{"key":"key1", "name":"name1", "description":"desc1", "confidenceLevel":1001}]"""
 
 
-  implicit lazy val materializer: Materializer = fakeApplication.materializer
+  implicit lazy val materializer: Materializer = mock[Materializer]
 
   trait Setup {
     val mockScopeService: ScopeService = mock[ScopeService]

@@ -17,7 +17,7 @@
 package uk.gov.hmrc.apiscope.services
 
 import javax.inject.{Inject, Singleton}
-import play.api.Logger.logger
+import util.ApplicationLogger
 import play.api.libs.json.{JsError, JsSuccess, Json}
 import uk.gov.hmrc.apiscope.models.Scope
 import uk.gov.hmrc.apiscope.repository.ScopeRepository
@@ -28,7 +28,8 @@ import scala.util.control.NonFatal
 
 @Singleton
 class ScopeJsonFileService @Inject()(scopeRepository: ScopeRepository,
-                                     fileReader: ScopeJsonFileReader)(implicit val ec: ExecutionContext) {
+                                     fileReader: ScopeJsonFileReader)
+                                    (implicit val ec: ExecutionContext) extends ApplicationLogger {
 
   private def saveScopes(scopes: Seq[Scope]): Future[Seq[Scope]] =
     Future.sequence(scopes.map(scopeRepository.save))
@@ -38,7 +39,7 @@ class ScopeJsonFileService @Inject()(scopeRepository: ScopeRepository,
       case JsSuccess(scopes: Seq[Scope], _) =>
         logger.info(s"Inserting ${scopes.size} Scopes from bundled file")
         saveScopes(scopes)
-      case JsError(errors) => logger.error("Unable to parse JSON into Scopes", errors.mkString("; "))
+      case JsError(errors) => logger.error(s"Unable to parse JSON into Scopes ${errors.mkString("; ")}")
     })
   } catch {
     case _: java.nio.file.NoSuchFileException => logger.info("No Scopes file found to process")

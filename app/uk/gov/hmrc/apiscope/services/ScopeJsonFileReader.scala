@@ -19,10 +19,10 @@ package uk.gov.hmrc.apiscope.services
 import java.nio.file.{Files, Paths}
 
 import javax.inject.Singleton
-import play.api.Logger.logger
+import util.ApplicationLogger
 
 @Singleton
-class ScopeJsonFileReader {
+class ScopeJsonFileReader extends ApplicationLogger {
 
   def readFile: Option[String] = {
     val path = Paths.get("conf/scopes.json")
