@@ -23,10 +23,7 @@ object AppDependencies {
     "uk.gov.hmrc" %% "reactivemongo-test" % hmrcReactiveMongoTestVersion % "test,it",
     "org.scalaj" %% "scalaj-http" % scalaJVersion % "test,it",
     "uk.gov.hmrc"             %% "bootstrap-test-play-28"   % bootstrapVersion,
-    "org.scalatestplus.play" %% "scalatestplus-play" % scalatestPlusPlayVersion % "test,it",
-    "org.mockito" %% "mockito-scala-scalatest" % "1.16.46" % "test, it",
-    "com.typesafe.play" %% "play-test" % PlayVersion.current % "test,it",
-    "org.pegdown" % "pegdown" % "1.6.0" % "test, it"
+    "org.mockito" %% "mockito-scala-scalatest" % "1.16.46" % "test, it"
   )
 
   private lazy val overrides = Seq(
