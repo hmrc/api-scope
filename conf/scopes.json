@@ -919,5 +919,10 @@
     "key":"write:protect-connect",
     "name":"Protect Connect",
     "description":"Scope for accessing protect connect APIs"
+  },
+  {
+    "key":"read:time-to-pay",
+    "name":"Time to pay",
+    "description":"Allow read access to time to pay data"
   }
 ]
