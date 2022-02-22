@@ -886,6 +886,11 @@
     "description":"Allow read access to interest forecasting data"
   },
   {
+    "key":"read:debt-management-api",
+    "name":"View debt management api",
+    "description":"Allow read access to debt management api data"
+  },
+  {
     "key":"read:statement-of-liability",
     "name":"View statements of liability",
     "description":"Allow read access to statement of liability data"
