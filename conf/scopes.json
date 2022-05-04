@@ -930,7 +930,7 @@
     "name":"Time to pay",
     "description":"Allow read access to time to pay data"
   },
-    {
+  {
     "key":"read:time-to-pay-proxy",
     "name":"Time to pay proxy",
     "description":"Allow read access to time to pay proxy"
