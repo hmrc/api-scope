@@ -830,6 +830,11 @@
     "description":"Return debt details for individuals in Breathing Space"
   },
   {
+    "key":"read:breathing-space-memorandum",
+    "name":"Breathing Space - Read Memorandum",
+    "description":"Return the breathing space status for individual"
+  },
+  {
     "key":"write:breathing-space-periods",
     "name":"Breathing Space - Modify Periods",
     "description":"Create new or modify existing Breathing Space Periods"
