@@ -939,5 +939,10 @@
     "key":"read:time-to-pay-proxy",
     "name":"Time to pay proxy",
     "description":"Allow read access to time to pay proxy"
+  },
+  {
+    "key":"write:ppns-boxes",
+    "name":"PPNS API",
+    "description":"Allow write access to ppns api"
   }
 ]
