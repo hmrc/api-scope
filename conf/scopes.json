@@ -943,6 +943,6 @@
   {
     "key":"write:ppns-boxes",
     "name":"PPNS API",
-    "description":"Allow write access to ppns api"
+    "description":"Allow creation and deletion of PPNS boxes"
   }
 ]
