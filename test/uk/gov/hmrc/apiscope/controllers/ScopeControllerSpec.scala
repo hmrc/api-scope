@@ -35,6 +35,7 @@ import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
 import uk.gov.hmrc.apiscope.models.{ErrorCode, ErrorDescription, ErrorResponse, Scope}
 import uk.gov.hmrc.apiscope.services.ScopeService
 import uk.gov.hmrc.util.AsyncHmrcSpec
+import uk.gov.hmrc.apiscope.models.ResponseFormatters._
 
 class ScopeControllerSpec extends AsyncHmrcSpec
   with GuiceOneAppPerSuite

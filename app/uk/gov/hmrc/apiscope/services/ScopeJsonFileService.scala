@@ -25,6 +25,7 @@ import uk.gov.hmrc.apiscope.repository.ScopeRepository
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
 import scala.util.control.NonFatal
+import uk.gov.hmrc.apiscope.models.ResponseFormatters._
 
 @Singleton
 class ScopeJsonFileService @Inject()(scopeRepository: ScopeRepository,

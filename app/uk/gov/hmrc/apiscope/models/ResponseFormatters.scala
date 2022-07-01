@@ -18,13 +18,7 @@ package uk.gov.hmrc.apiscope.models
 
 import play.api.libs.json.Json
 
+object ResponseFormatters {
+  implicit val scopeFormat = Json.format[Scope]
 
-case class ScopeData(key: String, name: String, description: String, confidenceLevel: Option[ConfidenceLevel] = None) {
-  require(key.trim.nonEmpty, s"scope key is required")
-  require(name.trim.nonEmpty, s"scope name is required")
-  require(description.trim.nonEmpty, s"scope description is required")
-}
-
-object ScopeData {
-  implicit val format1 = Json.format[ScopeData]
 }

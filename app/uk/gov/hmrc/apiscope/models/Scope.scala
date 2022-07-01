@@ -18,10 +18,10 @@ package uk.gov.hmrc.apiscope.models
 
 import play.api.libs.json.Json
 
-import uk.gov.hmrc.apiscope.models.ConfidenceLevel.ConfidenceLevel
 
 case class Scope(key: String, name: String, description: String, confidenceLevel: Option[ConfidenceLevel] = None)
 
-object Scope {
-  implicit val formats = Json.format[Scope]
-}
+//object Scope {
+//  implicit val formats = Json.format[Scope]
+//}
+

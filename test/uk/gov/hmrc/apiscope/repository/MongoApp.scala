@@ -14,17 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiscope.models
+package uk.gov.hmrc.apiscope.repository
 
-import play.api.libs.json.Json
+import org.scalatest.{BeforeAndAfterEach, Suite, TestSuite}
+import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
+trait MongoApp[A] extends DefaultPlayMongoRepositorySupport[A] with BeforeAndAfterEach {
+  me: Suite with TestSuite =>
 
-case class ScopeData(key: String, name: String, description: String, confidenceLevel: Option[ConfidenceLevel] = None) {
-  require(key.trim.nonEmpty, s"scope key is required")
-  require(name.trim.nonEmpty, s"scope name is required")
-  require(description.trim.nonEmpty, s"scope description is required")
-}
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    dropMongoDb()
+  }
 
-object ScopeData {
-  implicit val format1 = Json.format[ScopeData]
+  def dropMongoDb(): Unit =
+    mongoDatabase.drop()
+
 }

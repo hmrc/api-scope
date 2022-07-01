@@ -7,7 +7,8 @@ object AppDependencies {
   lazy val dependencyOverrides = overrides
 
   private lazy val bootstrapVersion = "5.16.0"
-  private lazy val hmrcReactiveMongoTestVersion = "5.0.0-play-28"
+  private lazy val hmrcMongoTestVersion = "0.64.0"
+  private lazy val hmrcMongoVersion = "0.64.0"
   private lazy val scalaJVersion = "2.4.2"
   private lazy val scalatestPlusPlayVersion = "4.0.0"
   // we need to override the akka version for now as newer versions are not compatible with reactivemongo
@@ -15,14 +16,15 @@ object AppDependencies {
 
   private lazy val compile = Seq(
     "uk.gov.hmrc"             %% "bootstrap-backend-play-28"  %  bootstrapVersion,
-    "uk.gov.hmrc"             %% "simple-reactivemongo"       % "8.0.0-play-28",
-    "com.beachape" %% "enumeratum-play" % "1.5.13"
+    "uk.gov.hmrc.mongo"       %% "hmrc-mongo-play-28"         % hmrcMongoVersion,
+    "com.beachape"            %% "enumeratum-play" % "1.5.13",
+    "uk.gov.hmrc"             %% "play-json-union-formatter"  % "1.15.0-play-28"
   )
 
   private lazy val test = Seq(
-    "uk.gov.hmrc" %% "reactivemongo-test" % hmrcReactiveMongoTestVersion % "test,it",
+    "uk.gov.hmrc.mongo" %% "hmrc-mongo-test-play-28" % hmrcMongoTestVersion % "test, ]it",
     "org.scalaj" %% "scalaj-http" % scalaJVersion % "test,it",
-    "uk.gov.hmrc"             %% "bootstrap-test-play-28"   % bootstrapVersion,
+    "uk.gov.hmrc"  %% "bootstrap-test-play-28"   % bootstrapVersion,
     "org.mockito" %% "mockito-scala-scalatest" % "1.16.46" % "test, it"
   )
 

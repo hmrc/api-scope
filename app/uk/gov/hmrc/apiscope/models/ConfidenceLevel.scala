@@ -16,38 +16,28 @@
 
 package uk.gov.hmrc.apiscope.models
 
-import play.api.libs.json._
+import enumeratum.values.{IntEnum, IntEnumEntry, IntPlayJsonValueEnum}
 
-object ConfidenceLevel extends Enumeration {
-  type ConfidenceLevel = Value
+import scala.collection.immutable
 
-  val L50, L200, L250, L500 = Value
+sealed abstract class ConfidenceLevel(val value: Int) extends IntEnumEntry
 
-  private val fromInt = Map(
-    50 -> L50,
-    200 -> L200,
-    250 -> L250,
-    500 -> L500
-  )
+object ConfidenceLevel extends IntEnum[ConfidenceLevel] with IntPlayJsonValueEnum[ConfidenceLevel] {
+  val values: immutable.IndexedSeq[ConfidenceLevel] = findValues
 
-  private val loadFromInt = Map(
-    50 -> L50,
-    100 -> L200,    // TODO - replace this value in the database once we know this allows Agent IV etc.
-    200 -> L200,
-    250 -> L250,
-    300 -> L200,    // TODO - replace this value in the database once we know this allows Agent IV etc.
-    500 -> L500
-  )
-
-  private val toInt = fromInt.map(_.swap)
-
-  val errorMessage = s"confidence level must be one of: ${fromInt.keys.toSeq.sorted.mkString(", ")}"
-
-  implicit val reads = Reads[ConfidenceLevel] { json =>
-    json.asOpt[Int].flatMap(loadFromInt.get)
-      .map(JsSuccess(_))
-      .getOrElse(JsError(errorMessage))
+  def fromDbLevel(dbLevel: Int): ConfidenceLevel = {
+    dbLevel match {
+      case 50 => L50
+      case 100 => L200
+      case 200 => L200
+      case 250 => L250
+      case 300 => L200
+      case 500 => L500
+    }
   }
 
-  implicit val writes = Writes[ConfidenceLevel] { LoC => JsNumber(toInt(LoC)) }
+  case object L50 extends ConfidenceLevel(50)
+  case object L200 extends ConfidenceLevel(200)
+  case object L250 extends ConfidenceLevel(250)
+  case object L500 extends ConfidenceLevel(500)
 }
