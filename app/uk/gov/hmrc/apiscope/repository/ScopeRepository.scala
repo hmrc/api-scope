@@ -17,24 +17,24 @@
 package uk.gov.hmrc.apiscope.repository
 
 import org.bson.codecs.configuration.CodecRegistries.{fromCodecs, fromRegistries}
-import org.mongodb.scala.{MongoClient, MongoCollection}
 import org.mongodb.scala.model.Filters.equal
 import org.mongodb.scala.model.Indexes.ascending
 import org.mongodb.scala.model.Updates.{combine, set}
 import org.mongodb.scala.model.{FindOneAndUpdateOptions, IndexModel, IndexOptions, ReturnDocument}
+import org.mongodb.scala.{MongoClient, MongoCollection}
 import play.api.Logger
+import play.api.libs.json.{Json, OFormat}
+import uk.gov.hmrc.apiscope.models.Scope
+import uk.gov.hmrc.mongo.MongoComponent
+import uk.gov.hmrc.mongo.play.json.{Codecs, CollectionFactory, PlayMongoRepository}
 
 import javax.inject.{Inject, Singleton}
 import scala.collection.Seq
 import scala.concurrent.{ExecutionContext, Future}
-import play.api.libs.json.{JsObject, Json}
-import uk.gov.hmrc.apiscope.models.{ConfidenceLevel, ResponseFormatters, Scope, ScopeFormat}
-import uk.gov.hmrc.mongo.MongoComponent
-import uk.gov.hmrc.mongo.play.json.{Codecs, CollectionFactory, PlayMongoRepository}
 
 
 object ScopeFormats {
-  implicit val scopeFormat = Json.format[Scope]
+  implicit val scopeFormat:OFormat[Scope] = Json.format[Scope]
 }
 
 @Singleton
@@ -58,13 +58,7 @@ object ScopeFormats {
       .withCodecRegistry(
         fromRegistries(
           fromCodecs(
-            Codecs.playFormatCodec(domainFormat),
-            Codecs.playFormatCodec(ResponseFormatters.scopeFormat),
-//            Codecs.playFormatCodec(PlayHmrcMongoFormatters.formatScope),
-            Codecs.playFormatCodec(PlayHmrcMongoFormatters.formatScopeL50),
-            Codecs.playFormatCodec(PlayHmrcMongoFormatters.formatScopeL200),
-            Codecs.playFormatCodec(PlayHmrcMongoFormatters.formatScopeL250),
-            Codecs.playFormatCodec(PlayHmrcMongoFormatters.formatScopeL500)
+            Codecs.playFormatCodec(domainFormat)
           ),
           MongoClient.DEFAULT_CODEC_REGISTRY
         )

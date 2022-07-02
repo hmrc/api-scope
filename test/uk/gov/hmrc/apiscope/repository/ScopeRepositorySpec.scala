@@ -72,16 +72,16 @@ class ScopeRepositorySpec extends AsyncHmrcSpec
     }
 
     "update a scope" in {
-//      await(repo.save(scope1))
+      await(repo.save(scope1))
       await(repo.save(scope2))
 
       val updatedScope1 = Scope(scope1.key, "updatedName1", "updatedDescription1")
       val updatedScope2 = Scope(scope2.key, "updatedName2", "updatedDescription2", confidenceLevel = Some(L50))
 
-//      await(repo.save(updatedScope1))
+      await(repo.save(updatedScope1))
       await(repo.save(updatedScope2))
 
-//      await(repo.fetch(scope1.key)).get shouldEqual updatedScope1
+      await(repo.fetch(scope1.key)).get shouldEqual updatedScope1
       await(repo.fetch(scope2.key)).get shouldEqual updatedScope2
     }
   }
