@@ -33,7 +33,7 @@ import scala.collection.Seq
 import scala.concurrent.{ExecutionContext, Future}
 
 
-object ScopeFormats {
+private object ScopeFormats {
   implicit val scopeFormat:OFormat[Scope] = Json.format[Scope]
 }
 
