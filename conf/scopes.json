@@ -944,5 +944,10 @@
     "key":"write:ppns-boxes",
     "name":"PPNS API",
     "description":"Allow creation and deletion of PPNS boxes"
+  },
+  {
+    "key":"read:ppns-boxes",
+    "name":"PPNS API",
+    "description":"Allow read access of PPNS boxes"
   }
 ]
