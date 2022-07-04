@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.apiscope.repository
 
-import org.mongodb.scala.bson.BsonDocument
+import org.mongodb.scala.bson.{BsonDocument, BsonString}
 import org.scalatest.concurrent.Eventually
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
@@ -25,7 +25,8 @@ import uk.gov.hmrc.apiscope.models.Scope
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 import uk.gov.hmrc.mongo.test.CleanMongoCollectionSupport
 import uk.gov.hmrc.util.AsyncHmrcSpec
-import org.mongodb.scala.{Document, bson}
+import org.mongodb.scala.{Document}
+import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -94,23 +95,17 @@ class ScopeRepositorySpec extends AsyncHmrcSpec
 
       val allScopes = await(repo.fetchAll())
 
-      allScopes should contain theSameElementsAs Seq(scope1, scope2)
+      allScopes should contain allOf(scope1, scope2)
     }
   }
 
   "The indexes in the 'scope' collection" should {
     "have all the indexes" in {
 
-      import scala.concurrent.duration._
-
-      val expectedIndexes = List(
-        BsonDocument("name" -> "keyIndex", "key" -> BsonDocument("key" -> 1), "background" -> true, "unique" -> true),
-        BsonDocument("name" -> "_id_", "key" -> BsonDocument("_id" -> 1), "unique" -> true)
-      )
-
-      eventually(timeout(4.seconds), interval(100.milliseconds)) {
-        getIndexes() should contain theSameElementsAs  expectedIndexes
-      }
+      val indexes = getIndexes()
+      indexes.size mustEqual 2
+      indexes(1).get("name") mustEqual BsonString("keyIndex")
+      indexes(1).get("key") mustEqual BsonDocument("key" -> 1)
     }
   }
 }

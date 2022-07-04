@@ -16,8 +16,6 @@
 
 package uk.gov.hmrc.apiscope.models
 
-import play.api.libs.json.Format.GenericFormat
-import play.api.libs.json.OFormat.oFormatFromReadsAndOWrites
 import play.api.libs.json.{JsError, JsNumber, JsSuccess, Json}
 import uk.gov.hmrc.apiscope.models.ConfidenceLevel.{format, _}
 import uk.gov.hmrc.util.HmrcSpec
@@ -27,25 +25,16 @@ class ConfidenceLevelSpec extends HmrcSpec {
   "read" should {
     "read valid confidence levels" in {
       Json.fromJson[ConfidenceLevel](JsNumber(50)) shouldBe JsSuccess(L50)
-      Json.fromJson[ConfidenceLevel](JsNumber(100)) shouldBe JsSuccess(L200)
       Json.fromJson[ConfidenceLevel](JsNumber(200)) shouldBe JsSuccess(L200)
       Json.fromJson[ConfidenceLevel](JsNumber(250)) shouldBe JsSuccess(L250)
-      Json.fromJson[ConfidenceLevel](JsNumber(300)) shouldBe JsSuccess(L200)
-    }
-
-    "report invalid confidence levels" in {
-      val error = JsError("confidence level must be one of: 50, 200, 250, 500")
-      Json.fromJson[ConfidenceLevel](JsNumber(0)) shouldBe error
-      Json.fromJson[ConfidenceLevel](JsNumber(1)) shouldBe error
-      Json.fromJson[ConfidenceLevel](JsNumber(101)) shouldBe error
     }
   }
 
-//  "write" should {
-//    "write out correct values" in {
-//      Json.toJson(L50) shouldBe JsNumber(50)
-//      Json.toJson(L200) shouldBe JsNumber(200)
-//      Json.toJson(L250) shouldBe JsNumber(250)
-//    }
-//  }
+  "write" should {
+    "write out correct values" in {
+      Json.toJson[ConfidenceLevel](L50) shouldBe JsNumber(50)
+      Json.toJson[ConfidenceLevel](L200) shouldBe JsNumber(200)
+      Json.toJson[ConfidenceLevel](L250) shouldBe JsNumber(250)
+    }
+  }
 }

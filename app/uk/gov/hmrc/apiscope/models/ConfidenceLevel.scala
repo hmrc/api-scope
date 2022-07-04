@@ -25,17 +25,6 @@ sealed abstract class ConfidenceLevel(val value: Int) extends IntEnumEntry
 object ConfidenceLevel extends IntEnum[ConfidenceLevel] with IntPlayJsonValueEnum[ConfidenceLevel] {
   val values: immutable.IndexedSeq[ConfidenceLevel] = findValues
 
-  def fromDbLevel(dbLevel: Int): ConfidenceLevel = {
-    dbLevel match {
-      case 50 => L50
-      case 100 => L200
-      case 200 => L200
-      case 250 => L250
-      case 300 => L200
-      case 500 => L500
-    }
-  }
-
   case object L50 extends ConfidenceLevel(50)
   case object L200 extends ConfidenceLevel(200)
   case object L250 extends ConfidenceLevel(250)
