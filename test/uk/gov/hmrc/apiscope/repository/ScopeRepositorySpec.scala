@@ -23,7 +23,6 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
 import uk.gov.hmrc.apiscope.models.Scope
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
-import uk.gov.hmrc.mongo.test.CleanMongoCollectionSupport
 import uk.gov.hmrc.util.AsyncHmrcSpec
 import org.mongodb.scala.{Document}
 import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
@@ -33,7 +32,6 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class ScopeRepositorySpec extends AsyncHmrcSpec
   with BeforeAndAfterEach with BeforeAndAfterAll
-  with CleanMongoCollectionSupport
   with GuiceOneAppPerSuite
   with MongoApp[Scope]
   with Eventually
@@ -55,12 +53,6 @@ class ScopeRepositorySpec extends AsyncHmrcSpec
    d.remove("v") // version
    d.remove("ns")
    d
-  }
-
-  override def beforeEach() {
-    super.beforeEach()
-    dropMongoDb()
-    await(repo.ensureIndexes)
   }
 
   "saveScope" should {
@@ -104,8 +96,8 @@ class ScopeRepositorySpec extends AsyncHmrcSpec
 
       val indexes = getIndexes()
       indexes.size mustEqual 2
-      indexes(1).get("name") mustEqual BsonString("keyIndex")
-      indexes(1).get("key") mustEqual BsonDocument("key" -> 1)
+      indexes.map(ind => ind.get("name"))  contains  BsonString("keyIndex")
+      indexes.map(ind => ind.get("key")) contains BsonDocument("key" -> 1)
     }
   }
 }
