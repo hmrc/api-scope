@@ -11,7 +11,7 @@ ThisBuild / scalafixDependencies += "com.github.liancheng" %% "organize-imports"
 
 inThisBuild(
   List(
-    scalaVersion := "2.12.12",
+    scalaVersion := "2.12.15",
     semanticdbEnabled := true,
     semanticdbVersion := scalafixSemanticdb.revision
   )
@@ -33,7 +33,6 @@ lazy val microservice = Project(appName, file("."))
     targetJvm := "jvm-1.8",
     scalaVersion := "2.12.12",
     libraryDependencies ++= AppDependencies.libraryDependencies,
-    dependencyOverrides ++= AppDependencies.dependencyOverrides,
     retrieveManaged := true
   )
   .settings(
