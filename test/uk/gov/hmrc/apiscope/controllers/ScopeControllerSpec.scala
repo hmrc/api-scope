@@ -207,11 +207,11 @@ class ScopeControllerSpec extends AsyncHmrcSpec
 
       val result = underTest.validate()(request.withBody(Json.parse(scopeBodyMissingKeyAndDesc)))
 
-      contentAsJson(result) shouldEqual Json.toJson(
+      contentAsJson(result) shouldBe Json.toJson(
         ErrorResponse(ErrorCode.API_INVALID_JSON, "Json cannot be converted to API Scope",
           Some(Seq(
-            ErrorDescription("(0)/description", "element is missing"),
             ErrorDescription("(0)/key", "element is missing"),
+            ErrorDescription("(0)/description", "element is missing"),
             ErrorDescription("(1)/description", "element is missing")
           ))))
     }
