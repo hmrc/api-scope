@@ -23,11 +23,6 @@ trait MongoApp[A] extends DefaultPlayMongoRepositorySupport[A] with BeforeAndAft
   me: Suite with TestSuite =>
 
   override def beforeEach(): Unit = {
-    super.beforeEach()
-    dropMongoDb()
+    prepareDatabase()
   }
-
-  def dropMongoDb(): Unit =
-    mongoDatabase.drop()
-
 }

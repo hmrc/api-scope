@@ -24,7 +24,7 @@ import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
 import uk.gov.hmrc.apiscope.models.Scope
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 import uk.gov.hmrc.util.AsyncHmrcSpec
-import org.mongodb.scala.{Document}
+import org.mongodb.scala.Document
 import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -39,7 +39,7 @@ class ScopeRepositorySpec extends AsyncHmrcSpec
 
   val scope1 = Scope("key1", "name1", "description1")
   val scope2 = Scope("key2", "name2", "description2", confidenceLevel = Some(L200))
-  def repo: ScopeRepository = app.injector.instanceOf[ScopeRepository]
+  val repo = repository.asInstanceOf[ScopeRepository]
 
   override protected def repository: PlayMongoRepository[Scope] = app.injector.instanceOf[ScopeRepository]
 
