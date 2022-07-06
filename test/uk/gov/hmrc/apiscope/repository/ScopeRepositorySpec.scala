@@ -16,106 +16,88 @@
 
 package uk.gov.hmrc.apiscope.repository
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
+import org.mongodb.scala.bson.{BsonDocument, BsonString}
 import org.scalatest.concurrent.Eventually
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
-import reactivemongo.api.indexes.{Index, IndexType}
-
-import play.modules.reactivemongo.ReactiveMongoComponent
-import uk.gov.hmrc.mongo.{MongoConnector, MongoSpecSupport}
-
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
 import uk.gov.hmrc.apiscope.models.Scope
+import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 import uk.gov.hmrc.util.AsyncHmrcSpec
+import org.mongodb.scala.Document
+import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
+
+import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class ScopeRepositorySpec extends AsyncHmrcSpec
   with BeforeAndAfterEach with BeforeAndAfterAll
-  with MongoSpecSupport
+  with GuiceOneAppPerSuite
+  with MongoApp[Scope]
   with Eventually
    {
 
-  private val reactiveMongoComponent = new ReactiveMongoComponent { override def mongoConnector: MongoConnector = mongoConnectorForTest }
-
-  private val repository = createRepository
-
   val scope1 = Scope("key1", "name1", "description1")
   val scope2 = Scope("key2", "name2", "description2", confidenceLevel = Some(L200))
+  val repo = repository.asInstanceOf[ScopeRepository]
 
-  private def createRepository = new ScopeRepository(reactiveMongoComponent) {
+  override protected def repository: PlayMongoRepository[Scope] = app.injector.instanceOf[ScopeRepository]
+
+  private def getIndexes(): List[BsonDocument] = {
+    await(repo.collection.listIndexes().map(toBsonDocument).toFuture().map(_.toList))
   }
 
-  private def dropRepository(repo: ScopeRepository) = {
-    await(repo.drop)
-  }
-
-  private def getIndexes(repo: ScopeRepository): List[Index] = {
-    val indexesFuture = repo.collection.indexesManager.list()
-    await(indexesFuture)
-  }
-
-  override def beforeEach() {
-    dropRepository(repository)
-    await(repository.ensureIndexes)
-  }
-
-  override protected def afterAll() {
-    dropRepository(repository)
+  private def toBsonDocument(index: Document): BsonDocument = {
+   val d = index.toBsonDocument
+   // calling index.remove("v") leaves index untouched - convert to BsonDocument first..
+   d.remove("v") // version
+   d.remove("ns")
+   d
   }
 
   "saveScope" should {
     "create scopes and retrieve them from database" in {
-      await(repository.save(scope1))
-      await(repository.save(scope2))
+      await(repo.save(scope1))
+      await(repo.save(scope2))
 
-      await(repository.fetch(scope1.key)).get shouldBe scope1
-      await(repository.fetch(scope2.key)).get shouldBe scope2
+      await(repo.fetch(scope1.key)).get shouldBe scope1
+      await(repo.fetch(scope2.key)).get shouldBe scope2
     }
 
     "update a scope" in {
-      await(repository.save(scope1))
-      await(repository.save(scope2))
+      await(repo.save(scope1))
+      await(repo.save(scope2))
 
       val updatedScope1 = Scope(scope1.key, "updatedName1", "updatedDescription1")
       val updatedScope2 = Scope(scope2.key, "updatedName2", "updatedDescription2", confidenceLevel = Some(L50))
 
-      await(repository.save(updatedScope1))
-      await(repository.save(updatedScope2))
+      await(repo.save(updatedScope1))
+      await(repo.save(updatedScope2))
 
-      await(repository.fetch(scope1.key)).get shouldEqual updatedScope1
-      await(repository.fetch(scope2.key)).get shouldEqual updatedScope2
+      await(repo.fetch(scope1.key)).get shouldEqual updatedScope1
+      await(repo.fetch(scope2.key)).get shouldEqual updatedScope2
     }
   }
 
   "fetchAll" should {
     "retrieve all the scopes from database" in {
 
-      await(repository.save(scope1))
-      await(repository.save(scope2))
+      await(repo.save(scope1))
+      await(repo.save(scope2))
 
-      val allScopes = await(repository.fetchAll())
+      val allScopes = await(repo.fetchAll())
 
-      allScopes should contain theSameElementsAs Seq(scope1, scope2)
+      allScopes should contain allOf(scope1, scope2)
     }
   }
 
   "The indexes in the 'scope' collection" should {
     "have all the indexes" in {
 
-      import scala.concurrent.duration._
-
-      val expectedIndexes = List(
-        Index(key = Seq("key" -> IndexType.Ascending), name = Some("keyIndex"), unique = true, background = true, version = Some(2)),
-        Index(key = Seq("_id" -> IndexType.Ascending), name = Some("_id_"), unique = false, background = false, version = Some(2))
-      )
-
-      val repo: ScopeRepository = createRepository
-
-      eventually(timeout(4.seconds), interval(100.milliseconds)) {
-        getIndexes(repo) shouldBe expectedIndexes
-      }
-
-      dropRepository(repo)
+      val indexes = getIndexes()
+      indexes.size mustEqual 2
+      indexes.map(ind => ind.get("name"))  contains  BsonString("keyIndex")
+      indexes.map(ind => ind.get("key")) contains BsonDocument("key" -> 1)
     }
   }
 }

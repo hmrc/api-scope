@@ -16,62 +16,84 @@
 
 package uk.gov.hmrc.apiscope.repository
 
-import javax.inject.{Inject, Singleton}
+import org.bson.codecs.configuration.CodecRegistries.{fromCodecs, fromRegistries}
+import org.mongodb.scala.model.Filters.equal
+import org.mongodb.scala.model.Indexes.ascending
+import org.mongodb.scala.model.Updates.{combine, set}
+import org.mongodb.scala.model.{FindOneAndUpdateOptions, IndexModel, IndexOptions, ReturnDocument}
+import org.mongodb.scala.{MongoClient, MongoCollection}
+import play.api.Logger
+import play.api.libs.json.{Json, OFormat}
+import uk.gov.hmrc.apiscope.models.Scope
+import uk.gov.hmrc.mongo.MongoComponent
+import uk.gov.hmrc.mongo.play.json.{Codecs, CollectionFactory, PlayMongoRepository}
 
+import javax.inject.{Inject, Singleton}
 import scala.collection.Seq
 import scala.concurrent.{ExecutionContext, Future}
-import reactivemongo.api.Cursor
-import reactivemongo.api.indexes.{Index, IndexType}
-import reactivemongo.bson.BSONObjectID
-import reactivemongo.play.json.ImplicitBSONHandlers._
-import play.api.libs.json.{JsObject, Json}
-import play.api.libs.json.Json._
-import play.modules.reactivemongo.ReactiveMongoComponent
-import uk.gov.hmrc.mongo.ReactiveRepository
-import uk.gov.hmrc.mongo.json.ReactiveMongoFormats
-import uk.gov.hmrc.apiscope.models.Scope
+
 
 private object ScopeFormats {
-  implicit val objectIdFormats = ReactiveMongoFormats.objectIdFormats
-  implicit val scopeFormat = Json.format[Scope]
+  implicit val scopeFormat:OFormat[Scope] = Json.format[Scope]
 }
 
 @Singleton
- class ScopeRepository @Inject()(mongo: ReactiveMongoComponent)(implicit val ec: ExecutionContext)
-  extends ReactiveRepository[Scope, BSONObjectID]("scope", mongo.mongoConnector.db,
-    ScopeFormats.scopeFormat, ReactiveMongoFormats.objectIdFormats) {
+ class ScopeRepository @Inject()(mongoComponent: MongoComponent)(implicit val ec: ExecutionContext)
+  extends PlayMongoRepository[Scope](
+    mongoComponent = mongoComponent,
+    collectionName = "scope",
+    domainFormat = ScopeFormats.scopeFormat,
+    indexes = Seq(IndexModel(ascending("key"),
+      IndexOptions()
+        .name("keyIndex")
+        .background(true)
+        .unique(true))),
+    replaceIndexes = true
+  ) {
+  private val logger = Logger(this.getClass)
 
-
-  ensureIndex("key", "keyIndex")
+  override lazy val collection: MongoCollection[Scope] =
+    CollectionFactory
+      .collection(mongoComponent.database, collectionName, domainFormat)
+      .withCodecRegistry(
+        fromRegistries(
+          fromCodecs(
+            Codecs.playFormatCodec(domainFormat)
+          ),
+          MongoClient.DEFAULT_CODEC_REGISTRY
+        )
+      )
 
   def save(scope: Scope) : Future[Scope] =  {
-    collection
-      .update(false).one(Json.obj("key" -> scope.key), scope, upsert = true)
-      .map(_ => scope)
-  }
-
-  private def ensureIndex(field: String, indexName: String, isUnique: Boolean = true, isBackground: Boolean = true): Future[Boolean] = {
-    def createIndex = Index(
-      key = Seq(field -> IndexType.Ascending),
-      name = Some(indexName),
-      unique = isUnique,
-      background = isBackground
-    )
-
-    collection.indexesManager.ensure(createIndex)
+    var updateSeq = Seq(
+      set("key", Codecs.toBson(scope.key)),
+      set("name", Codecs.toBson(scope.name)),
+      set("description", Codecs.toBson(scope.description)))
+    scope.confidenceLevel match {
+      case Some(value) =>
+        logger.info(s"confidenceLevel value id ${value} and value enumeration ${value.value}")
+        updateSeq = updateSeq :+ set("confidenceLevel", Codecs.toBson(value))
+      case None => Future.successful(None)
+    }
+    logger.info(s"updateSeq: $updateSeq")
+    collection.findOneAndUpdate(equal("key", Codecs.toBson(scope.key)),
+      update = combine(updateSeq: _*),
+      options = FindOneAndUpdateOptions().upsert(true).returnDocument(ReturnDocument.AFTER)
+    ).map(_.asInstanceOf[Scope]).head()
   }
 
   def fetch(key: String): Future[Option[Scope]] =  {
-    collection.find[JsObject, Scope](Json.obj("key" -> key), None).one[Scope]. map {
-      case Some(s) => Some(s)
-      case None =>
-        logger.info(s"The scope $key doesn't exist")
-        None
-    }
+    collection.find(equal("key", key)).headOption()
+      .flatMap {
+        case Some(scope) => Future.successful(Some(scope))
+        case None =>
+          logger.info(s"The scope $key doesn't exist")
+          Future.successful(None)
+      }
   }
 
   def fetchAll(): Future[Seq[Scope]] =  {
-    collection.find[JsObject, Scope](Json.obj(), None).cursor[Scope]().collect[Seq](Int.MaxValue,Cursor.FailOnError[Seq[Scope]]())
+    collection.find().toFuture()
   }
 
 }

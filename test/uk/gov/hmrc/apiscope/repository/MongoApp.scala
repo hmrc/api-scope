@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiscope.models
+package uk.gov.hmrc.apiscope.repository
 
-import enumeratum.values.{IntEnum, IntEnumEntry, IntPlayJsonValueEnum}
+import org.scalatest.{BeforeAndAfterEach, Suite, TestSuite}
+import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
-import scala.collection.immutable
+trait MongoApp[A] extends DefaultPlayMongoRepositorySupport[A] with BeforeAndAfterEach {
+  me: Suite with TestSuite =>
 
-sealed abstract class ConfidenceLevel(val value: Int) extends IntEnumEntry
-
-object ConfidenceLevel extends IntEnum[ConfidenceLevel] with IntPlayJsonValueEnum[ConfidenceLevel] {
-  val values: immutable.IndexedSeq[ConfidenceLevel] = findValues
-
-  case object L50 extends ConfidenceLevel(50)
-  case object L200 extends ConfidenceLevel(200)
-  case object L250 extends ConfidenceLevel(250)
-  case object L500 extends ConfidenceLevel(500)
+  override def beforeEach(): Unit = {
+    prepareDatabase()
+  }
 }

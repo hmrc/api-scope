@@ -16,17 +16,9 @@
 
 package uk.gov.hmrc.apiscope.models
 
-import enumeratum.values.{IntEnum, IntEnumEntry, IntPlayJsonValueEnum}
+import play.api.libs.json.Json
 
-import scala.collection.immutable
+object ResponseFormatters {
+  implicit val scopeFormat = Json.format[Scope]
 
-sealed abstract class ConfidenceLevel(val value: Int) extends IntEnumEntry
-
-object ConfidenceLevel extends IntEnum[ConfidenceLevel] with IntPlayJsonValueEnum[ConfidenceLevel] {
-  val values: immutable.IndexedSeq[ConfidenceLevel] = findValues
-
-  case object L50 extends ConfidenceLevel(50)
-  case object L200 extends ConfidenceLevel(200)
-  case object L250 extends ConfidenceLevel(250)
-  case object L500 extends ConfidenceLevel(500)
 }

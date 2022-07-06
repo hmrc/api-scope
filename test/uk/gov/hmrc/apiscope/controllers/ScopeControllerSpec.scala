@@ -35,6 +35,7 @@ import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
 import uk.gov.hmrc.apiscope.models.{ErrorCode, ErrorDescription, ErrorResponse, Scope}
 import uk.gov.hmrc.apiscope.services.ScopeService
 import uk.gov.hmrc.util.AsyncHmrcSpec
+import uk.gov.hmrc.apiscope.models.ResponseFormatters._
 
 class ScopeControllerSpec extends AsyncHmrcSpec
   with GuiceOneAppPerSuite
@@ -206,11 +207,11 @@ class ScopeControllerSpec extends AsyncHmrcSpec
 
       val result = underTest.validate()(request.withBody(Json.parse(scopeBodyMissingKeyAndDesc)))
 
-      contentAsJson(result) shouldEqual Json.toJson(
+      contentAsJson(result) shouldBe Json.toJson(
         ErrorResponse(ErrorCode.API_INVALID_JSON, "Json cannot be converted to API Scope",
           Some(Seq(
-            ErrorDescription("(0)/description", "element is missing"),
             ErrorDescription("(0)/key", "element is missing"),
+            ErrorDescription("(0)/description", "element is missing"),
             ErrorDescription("(1)/description", "element is missing")
           ))))
     }
@@ -223,17 +224,6 @@ class ScopeControllerSpec extends AsyncHmrcSpec
           Some(Seq(
             ErrorDescription("(0)/name", "element is missing")
           ))))
-    }
-
-    "fail with status 422 (UnprocessableEntity) when the confidenceLevel is invalid" in new Setup {
-      val result = underTest.validate()(request.withBody(Json.parse(scopeBodyWithInvalidConfidenceLevel)))
-
-      contentAsJson(result) shouldEqual Json.toJson(
-        ErrorResponse(ErrorCode.API_INVALID_JSON, "Json cannot be converted to API Scope",
-          Some(Seq(
-            ErrorDescription("(0)/confidenceLevel", "confidence level must be one of: 50, 200, 250, 500")
-          )))
-      )
     }
   }
 

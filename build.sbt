@@ -7,16 +7,6 @@ import uk.gov.hmrc.DefaultBuildSettings._
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin._
 import bloop.integrations.sbt.BloopDefaults
 
-ThisBuild / scalafixDependencies += "com.github.liancheng" %% "organize-imports" % "0.5.0"
-
-inThisBuild(
-  List(
-    scalaVersion := "2.12.12",
-    semanticdbEnabled := true,
-    semanticdbVersion := scalafixSemanticdb.revision
-  )
-)
-
 lazy val appName = "api-scope"
 
 lazy val playSettings: Seq[Setting[_]] = Seq.empty
@@ -31,9 +21,8 @@ lazy val microservice = Project(appName, file("."))
   .settings(
     majorVersion := 0,
     targetJvm := "jvm-1.8",
-    scalaVersion := "2.12.12",
+    scalaVersion := "2.12.15",
     libraryDependencies ++= AppDependencies.libraryDependencies,
-    dependencyOverrides ++= AppDependencies.dependencyOverrides,
     retrieveManaged := true
   )
   .settings(
