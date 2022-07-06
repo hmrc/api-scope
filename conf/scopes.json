@@ -810,6 +810,16 @@
     "description":"Scope for NICTSEJO use case 4 to access contact information on individuals"
   },
   {
+    "key": "read:organisations-details-ho-suv",
+    "name": "The organisations details scope",
+    "description": "An OAuth 2.0 Bearer Token with the read:organisations-details-ho-suv scope"
+  },
+  {
+    "key": "read:organisations-matching-ho",
+    "name": "The organisations matching scope",
+    "description": "An OAuth 2.0 Bearer Token with the read:organisations-matching-ho scope"
+  },
+  {
     "key":"common-transit-convention-traders",
     "name":"Common Transit Convention Traders",
     "description":"Common Transit Convention Traders Public API"
