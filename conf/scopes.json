@@ -810,6 +810,16 @@
     "description":"Scope for NICTSEJO use case 4 to access contact information on individuals"
   },
   {
+    "key": "read:organisations-details-ho-suv",
+    "name": "The organisations details scope for HO SUV",
+    "description": "Scope for accessing organisations details, to be used for HO Scale-Up Visa"
+  },
+  {
+    "key": "read:organisations-matching-ho",
+    "name": "The organisations matching scope for HO",
+    "description": "Scope to be used by HO for Match ID generation"
+  },
+  {
     "key":"common-transit-convention-traders",
     "name":"Common Transit Convention Traders",
     "description":"Common Transit Convention Traders Public API"
