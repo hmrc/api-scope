@@ -23,7 +23,7 @@ import org.mongodb.scala.model.Updates.{combine, set}
 import org.mongodb.scala.model.{FindOneAndUpdateOptions, IndexModel, IndexOptions, ReturnDocument}
 import org.mongodb.scala.{MongoClient, MongoCollection}
 import play.api.Logger
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json._
 import uk.gov.hmrc.apiscope.models.Scope
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.{Codecs, CollectionFactory, PlayMongoRepository}
@@ -31,10 +31,30 @@ import uk.gov.hmrc.mongo.play.json.{Codecs, CollectionFactory, PlayMongoReposito
 import javax.inject.{Inject, Singleton}
 import scala.collection.Seq
 import scala.concurrent.{ExecutionContext, Future}
-
+import play.api.libs.json.Reads
+import uk.gov.hmrc.apiscope.models.ConfidenceLevel
+import play.api.libs.functional.syntax._
 
 private object ScopeFormats {
-  implicit val scopeFormat:OFormat[Scope] = Json.format[Scope]
+  implicit val scopeRead: Reads[Scope] = (
+    (JsPath \ "key").read[String] and
+    (JsPath \ "name").read[String] and
+    (JsPath \ "description").read[String] and
+    (JsPath \ "confidenceLevel").readNullable[Int]
+      .map[Option[ConfidenceLevel]](_ match {
+        case None => None
+        case Some(50)  => Some(ConfidenceLevel.L50)
+        case Some(100) => Some(ConfidenceLevel.L200)
+        case Some(200) => Some(ConfidenceLevel.L200)
+        case Some(250) => Some(ConfidenceLevel.L250)
+        case Some(300) => Some(ConfidenceLevel.L200)
+        case Some(500) => Some(ConfidenceLevel.L500)
+        case Some(i) => throw new RuntimeException(s"Bad data in confidence level of $i")
+      })
+  )(Scope.apply _)
+
+  implicit val scopeWrites:OWrites[Scope] = Json.writes[Scope]
+  implicit val scopeFormat: OFormat[Scope] = OFormat(scopeRead,scopeWrites)
 }
 
 @Singleton
@@ -48,21 +68,10 @@ private object ScopeFormats {
         .name("keyIndex")
         .background(true)
         .unique(true))),
-    replaceIndexes = true
+    replaceIndexes = true,
+    extraCodecs = Seq(Codecs.playFormatCodec(ScopeFormats.scopeFormat))
   ) {
   private val logger = Logger(this.getClass)
-
-  override lazy val collection: MongoCollection[Scope] =
-    CollectionFactory
-      .collection(mongoComponent.database, collectionName, domainFormat)
-      .withCodecRegistry(
-        fromRegistries(
-          fromCodecs(
-            Codecs.playFormatCodec(domainFormat)
-          ),
-          MongoClient.DEFAULT_CODEC_REGISTRY
-        )
-      )
 
   def save(scope: Scope) : Future[Scope] =  {
     var updateSeq = Seq(
