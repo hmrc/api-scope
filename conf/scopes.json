@@ -963,11 +963,11 @@
   {
     "key":"read:self-assessment-assist",
     "name":"Read self assessment assist data",
-    "description":"Allow ability to read the self assessment data as a report"
+    "description":"Allows the ability to generate and return a self assessment assist report"
   },
   {
     "key":"write:self-assessment-assist",
     "name":"Write self assessment assist data",
-    "description":"Allow ability to write acknowledgement"
+    "description":"Acknowledges the self assessment assist report has been read"
   }
 ]
