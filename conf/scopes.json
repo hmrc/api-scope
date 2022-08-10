@@ -884,7 +884,7 @@
     "key":"read:individuals-income-ho-v2",
     "name":"access all self assessment information of individuals for HO V2 use case",
     "description":"Scope for HO V2 that replicates the V1 of the same"
-  }
+  },
   {
     "key":"read:individuals-employments-ho-rp2",
     "name":"access individuals employment information for HO RP2",
