@@ -635,6 +635,11 @@
     "description":"Scope for NICTSEJO use case 4 to match an individual from their details"
   },
   {
+    "key": "read:individuals-matching-ho-v2",
+    "name": "match individual from their details for HO v2",
+    "description": "Scope for HO that replicates the v1 version of the same scope"
+  },
+  {
     "key":"assigned",
     "name":"The scopes you have been assigned",
     "description":"An OAuth 2.0 Bearer Token with the scopes you have been assigned"
@@ -876,6 +881,11 @@
     "description":"Scope for HO ECP use case to access all self assessment information of individuals"
   },
   {
+    "key":"read:individuals-income-ho-v2",
+    "name":"access all self assessment information of individuals for HO V2 use case",
+    "description":"Scope for HO V2 that replicates the V1 of the same"
+  },
+  {
     "key":"read:individuals-employments-ho-rp2",
     "name":"access individuals employment information for HO RP2",
     "description":"Scope for HO RP2 to access employments information on individuals"
@@ -884,6 +894,11 @@
     "key":"read:individuals-employments-ho-ecp",
     "name":"access individuals employment information for HO ECP",
     "description":"Scope for HO ECP to access employments information on individuals"
+  },
+  {
+    "key":"read:individuals-employments-ho-v2",
+    "name":"access individuals employment information for HO V2",
+    "description":"Scope for HO that replicates the v1 version of the same scope"
   },
   {
     "key":"read:individuals-matching-ho-ecp",
