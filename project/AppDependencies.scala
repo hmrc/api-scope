@@ -18,7 +18,7 @@ object AppDependencies {
   private lazy val test = Seq(
     "uk.gov.hmrc.mongo" %% "hmrc-mongo-test-play-28" % hmrcMongoVersion % "test, it",
     "org.scalaj" %% "scalaj-http" % scalaJVersion % "test,it",
-    "uk.gov.hmrc"  %% "bootstrap-test-play-28"   % bootstrapVersion,
+    "uk.gov.hmrc"  %% "bootstrap-test-play-28"   % bootstrapVersion % "test, it",
     "org.mockito" %% "mockito-scala-scalatest" % "1.16.46" % "test, it"
   )
 
