@@ -568,8 +568,8 @@
     "description":"Write notifications"
   },
   {
-    "key":"write:import-control-system",
-    "name":"Access Import Control System",
+    "key":"write:import-control-system-2",
+    "name":"Access Import Control System 2",
     "description":"Allow access to entry summary declaration outcomes"
   },
   {
