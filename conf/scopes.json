@@ -573,6 +573,11 @@
     "description":"Allow access to entry summary declaration outcomes"
   },
   {
+    "key":"write:import-control-system-2",
+    "name":"Access Import Control System 2",
+    "description": "Allow access to presentation of goods"
+  },
+  {
     "key":"write:transfer-ready",
     "name":"Transfer Ready",
     "description":"Notify when a bulk transfer is ready for processing",
