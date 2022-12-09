@@ -878,7 +878,7 @@
     "key":"write:interest-restriction-return",
     "name":"Create and Update your Interest Restriction Return information",
     "description":"Allow write access to Interest Restriction Return data",
-    "confidenceLevel":200
+    "confidenceLevel":50
   },
   {
     "key":"read:individuals-income-ho-ecp",
