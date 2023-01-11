@@ -6,6 +6,7 @@ import sbt._
 import uk.gov.hmrc.DefaultBuildSettings._
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin._
 import bloop.integrations.sbt.BloopDefaults
+import uk.gov.hmrc.DefaultBuildSettings
 
 lazy val appName = "api-scope"
 
@@ -36,9 +37,8 @@ lazy val microservice = Project(appName, file("."))
     ),
     Test / parallelExecution := false
   )
-  .configs(IntegrationTest)
+  .settings(DefaultBuildSettings.integrationTestSettings())
   .settings(
-    Defaults.itSettings,
     inConfig(IntegrationTest)(scalafixConfigSettings(IntegrationTest)),
     inConfig(IntegrationTest)(BloopDefaults.configSettings),
     addTestReportOption(IntegrationTest, "int-test-reports"),
