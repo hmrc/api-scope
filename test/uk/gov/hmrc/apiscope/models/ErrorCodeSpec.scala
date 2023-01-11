@@ -29,10 +29,10 @@ class ErrorCodeSpec extends HmrcSpec {
 
     "report invalid error code" in {
       Json.fromJson[ErrorCode.Value](JsNumber(0)) should matchPattern {
-        case e : JsError =>
+        case e: JsError =>
       }
       Json.fromJson[ErrorCode.Value](JsString("NOT VALID")) should matchPattern {
-        case e : JsError =>
+        case e: JsError =>
       }
     }
   }

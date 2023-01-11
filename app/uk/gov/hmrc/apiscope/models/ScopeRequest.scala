@@ -18,7 +18,6 @@ package uk.gov.hmrc.apiscope.models
 
 import play.api.libs.json.Json
 
-
 case class ScopeData(key: String, name: String, description: String, confidenceLevel: Option[ConfidenceLevel] = None) {
   require(key.trim.nonEmpty, s"scope key is required")
   require(name.trim.nonEmpty, s"scope name is required")

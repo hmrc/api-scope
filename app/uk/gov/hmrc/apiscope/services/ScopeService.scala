@@ -23,15 +23,15 @@ import uk.gov.hmrc.apiscope.models.Scope
 import uk.gov.hmrc.apiscope.repository.ScopeRepository
 
 @Singleton
-class ScopeService @Inject()(scopeRepository: ScopeRepository)(implicit val ec: ExecutionContext) {
+class ScopeService @Inject() (scopeRepository: ScopeRepository)(implicit val ec: ExecutionContext) {
 
   def saveScopes(scopes: Seq[Scope]): Future[Seq[Scope]] =
     Future.sequence(scopes.map(scopeRepository.save))
 
-  def fetchScope(key: String) : Future[Option[Scope]] =
+  def fetchScope(key: String): Future[Option[Scope]] =
     scopeRepository.fetch(key)
 
-  def fetchScopes(keys: Set[String]) : Future[Seq[Scope]] = {
+  def fetchScopes(keys: Set[String]): Future[Seq[Scope]] = {
     val futures = keys.map(scopeRepository.fetch)
     Future.sequence(futures).map(_.flatten.toSeq)
   }

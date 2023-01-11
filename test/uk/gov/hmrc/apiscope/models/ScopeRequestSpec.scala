@@ -20,20 +20,21 @@ import uk.gov.hmrc.util.HmrcSpec
 
 class ScopeRequestSpec extends HmrcSpec {
 
-  val scopeData = ScopeData("key", "name", "description")
+  val scopeData    = ScopeData("key", "name", "description")
   val scopeRequest = Seq(scopeData)
 
   val testCases = Map(
-    "scope key is empty" -> { s: Seq[ScopeData] => Seq(scopeData.copy(key = "")) },
-    "scope key is empty string" -> { s: Seq[ScopeData] => Seq(scopeData.copy(key = "   ")) },
-    "scope name is empty" -> { s: Seq[ScopeData] => Seq(scopeData.copy(name = "")) },
-    "scope name is empty string" -> { s: Seq[ScopeData] => Seq(scopeData.copy(name = "   ")) },
-    "scope description is empty" -> { s: Seq[ScopeData] => Seq(scopeData.copy(description = "")) },
+    "scope key is empty"                -> { s: Seq[ScopeData] => Seq(scopeData.copy(key = "")) },
+    "scope key is empty string"         -> { s: Seq[ScopeData] => Seq(scopeData.copy(key = "   ")) },
+    "scope name is empty"               -> { s: Seq[ScopeData] => Seq(scopeData.copy(name = "")) },
+    "scope name is empty string"        -> { s: Seq[ScopeData] => Seq(scopeData.copy(name = "   ")) },
+    "scope description is empty"        -> { s: Seq[ScopeData] => Seq(scopeData.copy(description = "")) },
     "scope description is empty string" -> { s: Seq[ScopeData] => Seq(scopeData.copy(description = "   ")) }
   )
   "scopeRequest" should {
     testCases foreach {
-      e => s"throw an exception when ${e._1}" in {
+      e =>
+        s"throw an exception when ${e._1}" in {
           verifyExceptionIsThrownFor(e._2)
         }
     }

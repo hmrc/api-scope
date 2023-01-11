@@ -21,6 +21,7 @@ import play.api.libs.json._
 object EnumJson {
 
   def enumReads[E <: Enumeration](enum: E): Reads[E#Value] = new Reads[E#Value] {
+
     def reads(json: JsValue): JsResult[E#Value] = json match {
       case JsString(s) =>
         try {
@@ -29,7 +30,7 @@ object EnumJson {
           case _: NoSuchElementException =>
             JsError(s"Enumeration expected of type: '${enum.getClass}', but it does not contain '$s'")
         }
-      case _ => JsError("String value expected")
+      case _           => JsError("String value expected")
     }
   }
 

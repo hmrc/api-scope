@@ -29,17 +29,15 @@ import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-
 class ScopeRepositorySpec extends AsyncHmrcSpec
-  with BeforeAndAfterEach with BeforeAndAfterAll
-  with GuiceOneAppPerSuite
-  with MongoApp[Scope]
-  with Eventually
-   {
+    with BeforeAndAfterEach with BeforeAndAfterAll
+    with GuiceOneAppPerSuite
+    with MongoApp[Scope]
+    with Eventually {
 
   val scope1 = Scope("key1", "name1", "description1")
   val scope2 = Scope("key2", "name2", "description2", confidenceLevel = Some(L200))
-  val repo = repository.asInstanceOf[ScopeRepository]
+  val repo   = repository.asInstanceOf[ScopeRepository]
 
   override protected def repository: PlayMongoRepository[Scope] = app.injector.instanceOf[ScopeRepository]
 
@@ -48,11 +46,11 @@ class ScopeRepositorySpec extends AsyncHmrcSpec
   }
 
   private def toBsonDocument(index: Document): BsonDocument = {
-   val d = index.toBsonDocument
-   // calling index.remove("v") leaves index untouched - convert to BsonDocument first..
-   d.remove("v") // version
-   d.remove("ns")
-   d
+    val d = index.toBsonDocument
+    // calling index.remove("v") leaves index untouched - convert to BsonDocument first..
+    d.remove("v") // version
+    d.remove("ns")
+    d
   }
 
   "saveScope" should {
@@ -87,7 +85,7 @@ class ScopeRepositorySpec extends AsyncHmrcSpec
 
       val allScopes = await(repo.fetchAll())
 
-      allScopes should contain allOf(scope1, scope2)
+      allScopes should contain allOf (scope1, scope2)
     }
   }
 
@@ -96,7 +94,7 @@ class ScopeRepositorySpec extends AsyncHmrcSpec
 
       val indexes = getIndexes()
       indexes.size mustEqual 2
-      indexes.map(ind => ind.get("name"))  contains  BsonString("keyIndex")
+      indexes.map(ind => ind.get("name")) contains BsonString("keyIndex")
       indexes.map(ind => ind.get("key")) contains BsonDocument("key" -> 1)
     }
   }
