@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-sbt clean compile coverage test it:test coverageOff coverageReport
+sbt clean scalafmtAll scalafixAll compile coverage test it:test coverageReport

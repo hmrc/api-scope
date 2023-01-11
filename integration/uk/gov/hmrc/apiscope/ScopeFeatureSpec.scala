@@ -19,7 +19,9 @@ package uk.gov.hmrc.apiscope
 import java.util.concurrent.TimeUnit
 import scala.concurrent.Await.result
 import scala.concurrent.duration.Duration
+
 import scalaj.http.Http
+
 import play.api.libs.json.{JsValue, Json}
 
 import uk.gov.hmrc.apiscope.repository.ScopeRepository
@@ -86,7 +88,6 @@ class ScopeFeatureSpec extends BaseFeatureSpec {
        |    }
     """.stripMargin.replaceAll("\n", "")
   }
-
 
   override def afterEach(): Unit = {
     dropDatabase

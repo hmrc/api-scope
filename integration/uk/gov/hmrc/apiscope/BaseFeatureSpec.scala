@@ -21,13 +21,13 @@ import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 
 abstract class BaseFeatureSpec extends FeatureSpec
-  with GuiceOneServerPerSuite
-  with GivenWhenThen
-  with ScalaFutures
-  with BeforeAndAfter
-  with BeforeAndAfterEach
-  with BeforeAndAfterAll
-  with Matchers {
+    with GuiceOneServerPerSuite
+    with GivenWhenThen
+    with ScalaFutures
+    with BeforeAndAfter
+    with BeforeAndAfterEach
+    with BeforeAndAfterAll
+    with Matchers {
 
   val serverUrl = s"http://localhost:$port"
 }

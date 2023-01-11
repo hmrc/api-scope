@@ -28,10 +28,10 @@ import uk.gov.hmrc.util.AsyncHmrcSpec
 
 class ScopeJsonFileServiceSpec extends AsyncHmrcSpec {
 
-  val scope1                 = Scope("key1", "name1", "description1")
-  val scope2                 = Scope("key2", "name2", "description2", confidenceLevel = Some(L200))
-  val scope1AsJsonString     = """[{"key": "key1", "name": "name1", "description": "description1"}]"""
-  val jsonButNotScope        = """[{"random": "values", "that": "aren't", "anything": "like scopes"}]"""
+  val scope1             = Scope("key1", "name1", "description1")
+  val scope2             = Scope("key2", "name2", "description2", confidenceLevel = Some(L200))
+  val scope1AsJsonString = """[{"key": "key1", "name": "name1", "description": "description1"}]"""
+  val jsonButNotScope    = """[{"random": "values", "that": "aren't", "anything": "like scopes"}]"""
 
   val bothScopesAsJsonString =
     """[{"key": "key1", "name": "name1", "description": "description1"},
