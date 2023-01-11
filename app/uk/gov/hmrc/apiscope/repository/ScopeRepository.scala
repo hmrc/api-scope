@@ -16,24 +16,22 @@
 
 package uk.gov.hmrc.apiscope.repository
 
-import org.bson.codecs.configuration.CodecRegistries.{fromCodecs, fromRegistries}
+import javax.inject.{Inject, Singleton}
+import scala.collection.Seq
+import scala.concurrent.{ExecutionContext, Future}
+
 import org.mongodb.scala.model.Filters.equal
 import org.mongodb.scala.model.Indexes.ascending
 import org.mongodb.scala.model.Updates.{combine, set}
 import org.mongodb.scala.model.{FindOneAndUpdateOptions, IndexModel, IndexOptions, ReturnDocument}
-import org.mongodb.scala.{MongoClient, MongoCollection}
-import play.api.Logger
-import play.api.libs.json._
-import uk.gov.hmrc.apiscope.models.Scope
-import uk.gov.hmrc.mongo.MongoComponent
-import uk.gov.hmrc.mongo.play.json.{Codecs, CollectionFactory, PlayMongoRepository}
 
-import javax.inject.{Inject, Singleton}
-import scala.collection.Seq
-import scala.concurrent.{ExecutionContext, Future}
-import play.api.libs.json.Reads
-import uk.gov.hmrc.apiscope.models.ConfidenceLevel
+import play.api.Logger
 import play.api.libs.functional.syntax._
+import play.api.libs.json.{Reads, _}
+import uk.gov.hmrc.mongo.MongoComponent
+import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
+
+import uk.gov.hmrc.apiscope.models.{ConfidenceLevel, Scope}
 
 private object ScopeFormats {
 

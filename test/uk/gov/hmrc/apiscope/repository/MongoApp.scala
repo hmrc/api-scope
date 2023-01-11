@@ -17,6 +17,7 @@
 package uk.gov.hmrc.apiscope.repository
 
 import org.scalatest.{BeforeAndAfterEach, Suite, TestSuite}
+
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
 trait MongoApp[A] extends DefaultPlayMongoRepositorySupport[A] with BeforeAndAfterEach {

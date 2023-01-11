@@ -17,6 +17,7 @@
 package uk.gov.hmrc.apiscope.module
 
 import com.google.inject.AbstractModule
+
 import uk.gov.hmrc.apiscope.services.ScopeJsonFileService
 
 class ScopeJsonFileReaderModule extends AbstractModule {

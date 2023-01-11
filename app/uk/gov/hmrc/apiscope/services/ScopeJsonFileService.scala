@@ -17,15 +17,16 @@
 package uk.gov.hmrc.apiscope.services
 
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
+import scala.util.control.NonFatal
+
 import util.ApplicationLogger
+
 import play.api.libs.json.{JsError, JsSuccess, Json}
+
+import uk.gov.hmrc.apiscope.models.ResponseFormatters._
 import uk.gov.hmrc.apiscope.models.Scope
 import uk.gov.hmrc.apiscope.repository.ScopeRepository
-
-import scala.concurrent.{ExecutionContext, Future}
-import scala.util.{Failure, Success}
-import scala.util.control.NonFatal
-import uk.gov.hmrc.apiscope.models.ResponseFormatters._
 
 @Singleton
 class ScopeJsonFileService @Inject() (scopeRepository: ScopeRepository, fileReader: ScopeJsonFileReader)(implicit val ec: ExecutionContext) extends ApplicationLogger {

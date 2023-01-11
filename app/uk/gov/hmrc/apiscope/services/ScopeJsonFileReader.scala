@@ -17,8 +17,8 @@
 package uk.gov.hmrc.apiscope.services
 
 import java.nio.file.{Files, Paths}
-
 import javax.inject.Singleton
+
 import util.ApplicationLogger
 
 @Singleton

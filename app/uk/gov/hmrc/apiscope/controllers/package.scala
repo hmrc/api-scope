@@ -16,14 +16,16 @@
 
 package uk.gov.hmrc.apiscope
 
+import scala.concurrent.Future
+
 import util.ApplicationLogger
 
-import scala.concurrent.Future
 import play.api.libs.json.Json.toJson
 import play.api.libs.json._
 import play.api.mvc.Results._
 import play.api.mvc.{Request, Result}
 import uk.gov.hmrc.http.NotFoundException
+
 import uk.gov.hmrc.apiscope.models.ErrorCode.{API_INVALID_JSON, SCOPE_NOT_FOUND}
 import uk.gov.hmrc.apiscope.models.{ErrorCode, ErrorDescription, ErrorResponse}
 

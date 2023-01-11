@@ -18,14 +18,17 @@ package uk.gov.hmrc.apiscope.controllers
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
+
 import util.ApplicationLogger
+
 import play.api.libs.json._
 import play.api.mvc._
+import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
+
 import uk.gov.hmrc.apiscope.models.ErrorCode._
+import uk.gov.hmrc.apiscope.models.ResponseFormatters._
 import uk.gov.hmrc.apiscope.models.{Scope, ScopeData}
 import uk.gov.hmrc.apiscope.services.ScopeService
-import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-import uk.gov.hmrc.apiscope.models.ResponseFormatters._
 
 @Singleton
 class ScopeController @Inject() (scopeService: ScopeService, cc: ControllerComponents, playBodyParsers: PlayBodyParsers)(implicit val ec: ExecutionContext)

@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.apiscope.models
 
-import enumeratum.values.{IntEnum, IntEnumEntry, IntPlayJsonValueEnum}
-
 import scala.collection.immutable
+
+import enumeratum.values.{IntEnum, IntEnumEntry, IntPlayJsonValueEnum}
 
 sealed abstract class ConfidenceLevel(val value: Int) extends IntEnumEntry
 

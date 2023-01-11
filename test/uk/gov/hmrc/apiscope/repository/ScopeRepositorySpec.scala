@@ -16,18 +16,20 @@
 
 package uk.gov.hmrc.apiscope.repository
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
+import org.mongodb.scala.Document
 import org.mongodb.scala.bson.{BsonDocument, BsonString}
 import org.scalatest.concurrent.Eventually
+import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+
+import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
+
 import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
 import uk.gov.hmrc.apiscope.models.Scope
-import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 import uk.gov.hmrc.util.AsyncHmrcSpec
-import org.mongodb.scala.Document
-import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
-
-import scala.concurrent.ExecutionContext.Implicits.global
 
 class ScopeRepositorySpec extends AsyncHmrcSpec
     with BeforeAndAfterEach with BeforeAndAfterAll

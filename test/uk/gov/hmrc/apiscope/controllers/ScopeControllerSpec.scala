@@ -32,10 +32,10 @@ import play.api.test.{FakeRequest, StubControllerComponentsFactory, StubPlayBody
 import play.mvc.Http.Status.{INTERNAL_SERVER_ERROR, NOT_FOUND, NO_CONTENT, OK}
 
 import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
+import uk.gov.hmrc.apiscope.models.ResponseFormatters._
 import uk.gov.hmrc.apiscope.models.{ErrorCode, ErrorDescription, ErrorResponse, Scope}
 import uk.gov.hmrc.apiscope.services.ScopeService
 import uk.gov.hmrc.util.AsyncHmrcSpec
-import uk.gov.hmrc.apiscope.models.ResponseFormatters._
 
 class ScopeControllerSpec extends AsyncHmrcSpec
     with GuiceOneAppPerSuite

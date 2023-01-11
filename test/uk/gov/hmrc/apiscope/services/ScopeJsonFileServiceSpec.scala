@@ -16,14 +16,15 @@
 
 package uk.gov.hmrc.apiscope.services
 
-import play.api.libs.json.{JsValue, Json}
-import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
-import uk.gov.hmrc.apiscope.models.{ConfidenceLevel, Scope}
-import uk.gov.hmrc.apiscope.repository.ScopeRepository
-import uk.gov.hmrc.util.AsyncHmrcSpec
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future.successful
+
+import play.api.libs.json.{JsValue, Json}
+
+import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
+import uk.gov.hmrc.apiscope.models.Scope
+import uk.gov.hmrc.apiscope.repository.ScopeRepository
+import uk.gov.hmrc.util.AsyncHmrcSpec
 
 class ScopeJsonFileServiceSpec extends AsyncHmrcSpec {
 
