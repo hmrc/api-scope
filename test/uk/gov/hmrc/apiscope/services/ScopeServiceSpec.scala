@@ -31,7 +31,7 @@ class ScopeServiceSpec extends AsyncHmrcSpec {
 
   trait Setup {
     val mockScopeRepository = mock[ScopeRepository]
-    
+
     val underTest = new ScopeService(mockScopeRepository)
   }
 
@@ -57,7 +57,7 @@ class ScopeServiceSpec extends AsyncHmrcSpec {
 
       intercept[RuntimeException] {
         await(underTest.saveScopes(scopes))
-      } 
+      }
     }
   }
 

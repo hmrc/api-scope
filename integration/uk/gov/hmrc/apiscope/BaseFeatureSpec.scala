@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,13 +21,13 @@ import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 
 abstract class BaseFeatureSpec extends FeatureSpec
-  with GuiceOneServerPerSuite
-  with GivenWhenThen
-  with ScalaFutures
-  with BeforeAndAfter
-  with BeforeAndAfterEach
-  with BeforeAndAfterAll
-  with Matchers {
+    with GuiceOneServerPerSuite
+    with GivenWhenThen
+    with ScalaFutures
+    with BeforeAndAfter
+    with BeforeAndAfterEach
+    with BeforeAndAfterAll
+    with Matchers {
 
   val serverUrl = s"http://localhost:$port"
 }

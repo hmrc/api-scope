@@ -24,10 +24,10 @@ object ErrorCode extends Enumeration {
 
   type ErrorCode = Value
 
-  val SCOPE_NOT_FOUND = Value("SCOPE_NOT_FOUND")
-  val INVALID_REQUEST_PAYLOAD = Value("INVALID_REQUEST_PAYLOAD")
-  val UNKNOWN_ERROR = Value("UNKNOWN_ERROR")
-  val API_INVALID_JSON = Value("API_INVALID_JSON")
+  val SCOPE_NOT_FOUND          = Value("SCOPE_NOT_FOUND")
+  val INVALID_REQUEST_PAYLOAD  = Value("INVALID_REQUEST_PAYLOAD")
+  val UNKNOWN_ERROR            = Value("UNKNOWN_ERROR")
+  val API_INVALID_JSON         = Value("API_INVALID_JSON")
   val API_SCOPE_ALREADY_IN_USE = Value("API_SCOPE_ALREADY_IN_USE")
 }
 

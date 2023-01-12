@@ -32,31 +32,30 @@ import play.api.test.{FakeRequest, StubControllerComponentsFactory, StubPlayBody
 import play.mvc.Http.Status.{INTERNAL_SERVER_ERROR, NOT_FOUND, NO_CONTENT, OK}
 
 import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
+import uk.gov.hmrc.apiscope.models.ResponseFormatters._
 import uk.gov.hmrc.apiscope.models.{ErrorCode, ErrorDescription, ErrorResponse, Scope}
 import uk.gov.hmrc.apiscope.services.ScopeService
 import uk.gov.hmrc.util.AsyncHmrcSpec
-import uk.gov.hmrc.apiscope.models.ResponseFormatters._
 
 class ScopeControllerSpec extends AsyncHmrcSpec
-  with GuiceOneAppPerSuite
-  with StubControllerComponentsFactory
-  with StubPlayBodyParsersFactory{
+    with GuiceOneAppPerSuite
+    with StubControllerComponentsFactory
+    with StubPlayBodyParsersFactory {
 
   val scope: Scope = Scope("key1", "name1", "desc1")
 
-  val validScopeBody: String = """[{"key":"key1", "name":"name1", "description":"desc1"}]"""
-  val validScopeBodyWithConfidenceLevel: String = """[{"key":"key1", "name":"name1", "description":"desc1", "confidenceLevel":200}]"""
-  val scopeBodyMissingName: String = """[{"key":"key1", "description":"desc1"}]"""
-  val scopeBodyMissingKeyAndDesc: String = """[{"name":"name1"},{"key":"key2","name":"name2"}]"""
+  val validScopeBody: String                      = """[{"key":"key1", "name":"name1", "description":"desc1"}]"""
+  val validScopeBodyWithConfidenceLevel: String   = """[{"key":"key1", "name":"name1", "description":"desc1", "confidenceLevel":200}]"""
+  val scopeBodyMissingName: String                = """[{"key":"key1", "description":"desc1"}]"""
+  val scopeBodyMissingKeyAndDesc: String          = """[{"name":"name1"},{"key":"key2","name":"name2"}]"""
   val scopeBodyWithInvalidConfidenceLevel: String = """[{"key":"key1", "name":"name1", "description":"desc1", "confidenceLevel":1001}]"""
-
 
   implicit lazy val materializer: Materializer = mock[Materializer]
 
   trait Setup {
-    val mockScopeService: ScopeService = mock[ScopeService]
+    val mockScopeService: ScopeService             = mock[ScopeService]
     val controllerComponents: ControllerComponents = stubControllerComponents()
-    
+
     val underTest = new ScopeController(mockScopeService, controllerComponents, stubPlayBodyParsers(materializer))
 
     implicit lazy val request = FakeRequest()
@@ -90,8 +89,7 @@ class ScopeControllerSpec extends AsyncHmrcSpec
         (scopeBodyWithInvalidConfidenceLevel, 422)
       )
 
-      forAll (invalidRequests) { (invalidBody, expectedResponseCode) =>
-
+      forAll(invalidRequests) { (invalidBody, expectedResponseCode) =>
         val result = underTest.createOrUpdateScope()(request.withBody(Json.parse(invalidBody)))
 
         status(result) shouldBe expectedResponseCode
@@ -144,8 +142,8 @@ class ScopeControllerSpec extends AsyncHmrcSpec
   }
 
   "fetchScopes" should {
-      val scope1 = Scope("key1", "name1", "desc1")
-      val scope2 = Scope("key2", "name2", "desc2")
+    val scope1 = Scope("key1", "name1", "desc1")
+    val scope2 = Scope("key2", "name2", "desc2")
 
     "return 200 (ok) with the scopes requested when keys parameter is defined" in new Setup {
       when(mockScopeService.fetchScopes(Set("key1", "key2"))).thenReturn(successful(Seq(scope1, scope2)))
@@ -208,22 +206,30 @@ class ScopeControllerSpec extends AsyncHmrcSpec
       val result = underTest.validate()(request.withBody(Json.parse(scopeBodyMissingKeyAndDesc)))
 
       contentAsJson(result) shouldBe Json.toJson(
-        ErrorResponse(ErrorCode.API_INVALID_JSON, "Json cannot be converted to API Scope",
+        ErrorResponse(
+          ErrorCode.API_INVALID_JSON,
+          "Json cannot be converted to API Scope",
           Some(Seq(
             ErrorDescription("(0)/key", "element is missing"),
             ErrorDescription("(0)/description", "element is missing"),
             ErrorDescription("(1)/description", "element is missing")
-          ))))
+          ))
+        )
+      )
     }
 
     "fail with status 422 (UnprocessableEntity) when the name element is missing" in new Setup {
       val result = underTest.validate()(request.withBody(Json.parse(scopeBodyMissingName)))
 
       contentAsJson(result) shouldEqual Json.toJson(
-        ErrorResponse(ErrorCode.API_INVALID_JSON, "Json cannot be converted to API Scope",
+        ErrorResponse(
+          ErrorCode.API_INVALID_JSON,
+          "Json cannot be converted to API Scope",
           Some(Seq(
             ErrorDescription("(0)/name", "element is missing")
-          ))))
+          ))
+        )
+      )
     }
   }
 

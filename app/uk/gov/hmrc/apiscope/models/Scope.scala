@@ -16,8 +16,4 @@
 
 package uk.gov.hmrc.apiscope.models
 
-
 case class Scope(key: String, name: String, description: String, confidenceLevel: Option[ConfidenceLevel] = None)
-
-
-

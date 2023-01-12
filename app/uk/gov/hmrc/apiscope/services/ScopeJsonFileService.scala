@@ -17,34 +17,35 @@
 package uk.gov.hmrc.apiscope.services
 
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
+import scala.util.control.NonFatal
+
 import util.ApplicationLogger
+
 import play.api.libs.json.{JsError, JsSuccess, Json}
+
+import uk.gov.hmrc.apiscope.models.ResponseFormatters._
 import uk.gov.hmrc.apiscope.models.Scope
 import uk.gov.hmrc.apiscope.repository.ScopeRepository
 
-import scala.concurrent.{ExecutionContext, Future}
-import scala.util.{Failure, Success}
-import scala.util.control.NonFatal
-import uk.gov.hmrc.apiscope.models.ResponseFormatters._
-
 @Singleton
-class ScopeJsonFileService @Inject()(scopeRepository: ScopeRepository,
-                                     fileReader: ScopeJsonFileReader)
-                                    (implicit val ec: ExecutionContext) extends ApplicationLogger {
+class ScopeJsonFileService @Inject() (scopeRepository: ScopeRepository, fileReader: ScopeJsonFileReader)(implicit val ec: ExecutionContext) extends ApplicationLogger {
 
   private def saveScopes(scopes: Seq[Scope]): Future[Seq[Scope]] =
     Future.sequence(scopes.map(scopeRepository.save))
 
   try {
-    fileReader.readFile.map(s => Json.parse(s).validate[Seq[Scope]] match {
-      case JsSuccess(scopes: Seq[Scope], _) =>
-        logger.info(s"Inserting ${scopes.size} Scopes from bundled file")
-        saveScopes(scopes)
-      case JsError(errors) => logger.error(s"Unable to parse JSON into Scopes ${errors.mkString("; ")}")
-    })
+    fileReader.readFile.map(s =>
+      Json.parse(s).validate[Seq[Scope]] match {
+        case JsSuccess(scopes: Seq[Scope], _) =>
+          logger.info(s"Inserting ${scopes.size} Scopes from bundled file")
+          saveScopes(scopes)
+        case JsError(errors)                  => logger.error(s"Unable to parse JSON into Scopes ${errors.mkString("; ")}")
+      }
+    )
   } catch {
     case _: java.nio.file.NoSuchFileException => logger.info("No Scopes file found to process")
-    case NonFatal(e) =>
+    case NonFatal(e)                          =>
       logger.error("Scopes file does not contain valid JSON", e)
   }
 }

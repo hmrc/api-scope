@@ -16,21 +16,22 @@
 
 package uk.gov.hmrc.apiscope
 
+import scala.concurrent.Future
+
 import util.ApplicationLogger
 
-import scala.concurrent.Future
 import play.api.libs.json.Json.toJson
 import play.api.libs.json._
 import play.api.mvc.Results._
 import play.api.mvc.{Request, Result}
 import uk.gov.hmrc.http.NotFoundException
+
 import uk.gov.hmrc.apiscope.models.ErrorCode.{API_INVALID_JSON, SCOPE_NOT_FOUND}
 import uk.gov.hmrc.apiscope.models.{ErrorCode, ErrorDescription, ErrorResponse}
 
 package object controllers extends ApplicationLogger {
 
-
-  private def validate[T](request:Request[JsValue])(implicit tjs: Reads[T]): Either[Result, JsResult[T]] = {
+  private def validate[T](request: Request[JsValue])(implicit tjs: Reads[T]): Either[Result, JsResult[T]] = {
     try {
       Right(request.body.validate[T])
     } catch {
@@ -42,21 +43,25 @@ package object controllers extends ApplicationLogger {
 
     val either: Either[Result, JsResult[T]] = validate(request)
 
-    either.fold(Future.successful, {
-      result => result.fold(
-        errors => Future.successful(UnprocessableEntity(validationResult(errors))),
-        entity => f(entity)
-      )
-    })
+    either.fold(
+      Future.successful,
+      {
+        result =>
+          result.fold(
+            errors => Future.successful(UnprocessableEntity(validationResult(errors))),
+            entity => f(entity)
+          )
+      }
+    )
   }
 
-  def validationResult(errors : Seq[(JsPath, Seq[JsonValidationError])]): JsValue = {
+  def validationResult(errors: Seq[(JsPath, Seq[JsonValidationError])]): JsValue = {
 
     val errs: Seq[ErrorDescription] = errors flatMap { case (jsPath, seqValidationError) =>
       seqValidationError map {
         validationError =>
           val isMissingPath = validationError.message == "error.path.missing"
-          val message = if (isMissingPath) "element is missing" else validationError.message
+          val message       = if (isMissingPath) "element is missing" else validationError.message
           ErrorDescription(jsPath.toString, message)
       }
     }
@@ -66,7 +71,7 @@ package object controllers extends ApplicationLogger {
 
   def recovery: PartialFunction[Throwable, Result] = {
     case nfe: NotFoundException => NotFound(error(SCOPE_NOT_FOUND, nfe.getMessage))
-    case e =>
+    case e                      =>
       logger.error(s"An unexpected error occurred: ${e.getMessage}", e)
       InternalServerError(error(ErrorCode.UNKNOWN_ERROR, "An unexpected error occurred"))
   }

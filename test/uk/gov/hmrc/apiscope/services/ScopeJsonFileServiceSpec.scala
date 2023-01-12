@@ -16,21 +16,23 @@
 
 package uk.gov.hmrc.apiscope.services
 
-import play.api.libs.json.{JsValue, Json}
-import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
-import uk.gov.hmrc.apiscope.models.{ConfidenceLevel, Scope}
-import uk.gov.hmrc.apiscope.repository.ScopeRepository
-import uk.gov.hmrc.util.AsyncHmrcSpec
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future.successful
 
+import play.api.libs.json.{JsValue, Json}
+
+import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
+import uk.gov.hmrc.apiscope.models.Scope
+import uk.gov.hmrc.apiscope.repository.ScopeRepository
+import uk.gov.hmrc.util.AsyncHmrcSpec
+
 class ScopeJsonFileServiceSpec extends AsyncHmrcSpec {
 
-  val scope1 = Scope("key1", "name1", "description1")
-  val scope2 = Scope("key2", "name2", "description2", confidenceLevel = Some(L200))
+  val scope1             = Scope("key1", "name1", "description1")
+  val scope2             = Scope("key2", "name2", "description2", confidenceLevel = Some(L200))
   val scope1AsJsonString = """[{"key": "key1", "name": "name1", "description": "description1"}]"""
-  val jsonButNotScope = """[{"random": "values", "that": "aren't", "anything": "like scopes"}]"""
+  val jsonButNotScope    = """[{"random": "values", "that": "aren't", "anything": "like scopes"}]"""
+
   val bothScopesAsJsonString =
     """[{"key": "key1", "name": "name1", "description": "description1"},
       |{"key": "key2", "name": "name2", "description": "description2", "confidenceLevel": 200}]""".stripMargin
@@ -53,7 +55,7 @@ class ScopeJsonFileServiceSpec extends AsyncHmrcSpec {
   "saveScopes" should {
     trait Setup {
       val mockScopeRepository = mock[ScopeRepository]
-      val mockFileReader = mock[ScopeJsonFileReader]
+      val mockFileReader      = mock[ScopeJsonFileReader]
     }
 
     "save single scope in repository" in new Setup {

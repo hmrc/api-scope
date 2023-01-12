@@ -6,10 +6,21 @@ import sbt._
 import uk.gov.hmrc.DefaultBuildSettings._
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin._
 import bloop.integrations.sbt.BloopDefaults
+import uk.gov.hmrc.DefaultBuildSettings
 
 lazy val appName = "api-scope"
 
 lazy val playSettings: Seq[Setting[_]] = Seq.empty
+
+ThisBuild / scalafixDependencies += "com.github.liancheng" %% "organize-imports" % "0.5.0"
+
+inThisBuild(
+  List(
+    scalaVersion := "2.12.15",
+    semanticdbEnabled := true,
+    semanticdbVersion := scalafixSemanticdb.revision
+  )
+)
 
 lazy val microservice = Project(appName, file("."))
   .enablePlugins(PlayScala, SbtAutoBuildPlugin, SbtDistributablesPlugin)
@@ -20,7 +31,6 @@ lazy val microservice = Project(appName, file("."))
   .settings(ScoverageSettings(): _*)
   .settings(
     majorVersion := 0,
-    targetJvm := "jvm-1.8",
     scalaVersion := "2.12.15",
     libraryDependencies ++= AppDependencies.libraryDependencies,
     retrieveManaged := true
@@ -36,9 +46,9 @@ lazy val microservice = Project(appName, file("."))
     ),
     Test / parallelExecution := false
   )
+  .settings(DefaultBuildSettings.integrationTestSettings())
   .configs(IntegrationTest)
   .settings(
-    Defaults.itSettings,
     inConfig(IntegrationTest)(scalafixConfigSettings(IntegrationTest)),
     inConfig(IntegrationTest)(BloopDefaults.configSettings),
     addTestReportOption(IntegrationTest, "int-test-reports"),
