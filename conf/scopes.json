@@ -820,6 +820,11 @@
     "description":"Scope for NICTSEJO use case 4 to access contact information on individuals"
   },
   {
+    "key": "read:organisations-details-ho-ssp",
+    "name": "The organisations details scope for HO SSP",
+    "description": "Scope for accessing organisations details, to be used for HO SSP"
+  },
+  {
     "key": "read:organisations-details-ho-suv",
     "name": "The organisations details scope for HO SUV",
     "description": "Scope for accessing organisations details, to be used for HO Scale-Up Visa"
