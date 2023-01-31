@@ -558,6 +558,11 @@
     "description":"Goods Vehicle Movements API"
   },
   {
+    "key":"read:goods-movement-system-search",
+    "name":"read goods vehicle movement service records",
+    "description":"Goods Vehicle Movements Search API"
+  },
+  {
     "key":"read:pull-notifications",
     "name":"Read pull notifications",
     "description":"Read pull notifications"
