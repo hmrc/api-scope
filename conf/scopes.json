@@ -560,7 +560,7 @@
   {
     "key":"read:goods-movement-system-search",
     "name":"read goods vehicle movement service records",
-    "description":"Goods Vehicle Movements Search API"
+    "description":"Search goods vehicle movement service records"
   },
   {
     "key":"read:pull-notifications",
