@@ -467,6 +467,11 @@
     "description": "Access Real Time Income Information Scottish Government"
   },
   {
+    "key": "filter:real-time-income-information-csp",
+    "name": "filter Real Time Income Information Carer Support Payment",
+    "description": "Access Real Time Income Information Carer Support Payment"
+  },
+  {
     "key":"read:individual-paye",
     "name":"access individual Pay As You Earn (PAYE) information - including employments (employer name, income, tax, student loan deductions and company benefits), private pensions (pension provider name, income and tax), State Pension (regular payments and lump sums), tax-free allowances and taxable social security benefits",
     "description":"Access pay as you earn information",
