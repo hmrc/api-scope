@@ -10,17 +10,12 @@ import uk.gov.hmrc.DefaultBuildSettings
 
 lazy val appName = "api-scope"
 
+scalaVersion := "2.13.8"
 lazy val playSettings: Seq[Setting[_]] = Seq.empty
 
-ThisBuild / scalafixDependencies += "com.github.liancheng" %% "organize-imports" % "0.5.0"
-
-inThisBuild(
-  List(
-    scalaVersion := "2.12.15",
-    semanticdbEnabled := true,
-    semanticdbVersion := scalafixSemanticdb.revision
-  )
-)
+ThisBuild / scalafixDependencies += "com.github.liancheng" %% "organize-imports" % "0.6.0"
+ThisBuild / semanticdbEnabled := true
+ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
 
 lazy val microservice = Project(appName, file("."))
   .enablePlugins(PlayScala, SbtAutoBuildPlugin, SbtDistributablesPlugin)
@@ -31,7 +26,6 @@ lazy val microservice = Project(appName, file("."))
   .settings(ScoverageSettings(): _*)
   .settings(
     majorVersion := 0,
-    scalaVersion := "2.12.15",
     libraryDependencies ++= AppDependencies.libraryDependencies,
     retrieveManaged := true
   )
@@ -59,4 +53,12 @@ lazy val microservice = Project(appName, file("."))
       baseDirectory.value / "test-common"
     ),
     IntegrationTest / parallelExecution := false
+  )
+  .settings(
+    scalacOptions ++= Seq(
+      "-Wconf:cat=unused&src=views/.*\\.scala:s",
+      "-Wconf:cat=unused&src=.*RoutesPrefix\\.scala:s",
+      "-Wconf:cat=unused&src=.*Routes\\.scala:s",
+      "-Wconf:cat=unused&src=.*ReverseRoutes\\.scala:s"
+    )
   )

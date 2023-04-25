@@ -55,16 +55,16 @@ package object controllers extends ApplicationLogger {
     )
   }
 
-  def validationResult(errors: Seq[(JsPath, Seq[JsonValidationError])]): JsValue = {
+  def validationResult(errors: collection.Seq[(JsPath, collection.Seq[JsonValidationError])]): JsValue = {
 
-    val errs: Seq[ErrorDescription] = errors flatMap { case (jsPath, seqValidationError) =>
+    val errs: Seq[ErrorDescription] = (errors flatMap { case (jsPath, seqValidationError) =>
       seqValidationError map {
         validationError =>
           val isMissingPath = validationError.message == "error.path.missing"
           val message       = if (isMissingPath) "element is missing" else validationError.message
           ErrorDescription(jsPath.toString, message)
       }
-    }
+    }).toSeq
 
     toJson(ErrorResponse(API_INVALID_JSON, "Json cannot be converted to API Scope", Some(errs)))
   }

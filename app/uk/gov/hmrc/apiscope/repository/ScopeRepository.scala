@@ -17,7 +17,7 @@
 package uk.gov.hmrc.apiscope.repository
 
 import javax.inject.{Inject, Singleton}
-import scala.collection.Seq
+import scala.collection.immutable.Seq
 import scala.concurrent.{ExecutionContext, Future}
 
 import org.mongodb.scala.model.Filters.equal
