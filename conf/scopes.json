@@ -1004,5 +1004,15 @@
     "key":"write:self-assessment-assist",
     "name":"Write self assessment assist data",
     "description":"Acknowledges the self assessment assist report has been read"
+  },
+  {
+    "key":"read:individuals-child-benefit",
+    "name":"Read data for Child Benefit claims",
+    "description":"Allow the reading of data for Child Benefit claims"
+  },
+  {
+    "key":"write:individuals-child-benefit",
+    "name":"Write data for Child Benefit claims",
+    "description":"Allow the writing of data for Child Benefit claims"
   }
 ]
