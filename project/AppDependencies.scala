@@ -12,7 +12,7 @@ object AppDependencies {
   private lazy val compile = Seq(
     "uk.gov.hmrc"             %% "bootstrap-backend-play-28"  %  bootstrapVersion,
     "uk.gov.hmrc.mongo"       %% "hmrc-mongo-play-28"         % hmrcMongoVersion,
-    "com.beachape"            %% "enumeratum-play"            % "1.5.13"
+    "com.beachape"            %% "enumeratum-play"            % "1.7.2"
   )
 
   private lazy val test = Seq(

@@ -210,8 +210,8 @@ class ScopeControllerSpec extends AsyncHmrcSpec
           ErrorCode.API_INVALID_JSON,
           "Json cannot be converted to API Scope",
           Some(Seq(
-            ErrorDescription("(0)/key", "element is missing"),
             ErrorDescription("(0)/description", "element is missing"),
+            ErrorDescription("(0)/key", "element is missing"),
             ErrorDescription("(1)/description", "element is missing")
           ))
         )
