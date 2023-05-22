@@ -523,6 +523,11 @@
     "description":"This service checks if users are authorised and allowed to retrieve session data"
   },
   {
+    "key":"read:verification",
+    "name":"Read verification services data",
+    "description":"Read data from the verification services"
+  },
+  {
     "key":"read:userid-recovery-api",
     "name":"Resend user ID for individuals with an SA enrolment",
     "description":"Resend user ID for individuals with an SA enrolment"
