@@ -1003,12 +1003,14 @@
   {
     "key":"read:self-assessment-assist",
     "name":"Read self assessment assist data",
-    "description":"Allows the ability to generate and return a self assessment assist report"
+    "description":"Allows the ability to generate and return a self assessment assist report",
+    "confidenceLevel":250
   },
   {
     "key":"write:self-assessment-assist",
     "name":"Write self assessment assist data",
-    "description":"Acknowledges the self assessment assist report has been read"
+    "description":"Acknowledges the self assessment assist report has been read",
+    "confidenceLevel":250
   },
   {
     "key":"read:individuals-child-benefit",
