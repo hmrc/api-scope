@@ -1021,5 +1021,10 @@
     "key":"write:individuals-child-benefit",
     "name":"Write data for Child Benefit claims",
     "description":"Allow the writing of data for Child Benefit claims"
+  },
+  {
+    "key": "excise-movement-control-system",
+    "name": "Excise Movement Control System",
+    "description": "Excise Movement Control System Public API"
   }
 ]
