@@ -5,6 +5,12 @@
     "description":"Say Hello!"
   },
   {
+    "key":"read:basis-period-reform",
+    "name":"access basis period information",
+    "description":"Access basis period reform information",
+    "confidenceLevel":200
+  },
+  {
     "key":"read:individual-benefits",
     "name":"access benefits information",
     "description":"Access personal and employment-based benefits information",
