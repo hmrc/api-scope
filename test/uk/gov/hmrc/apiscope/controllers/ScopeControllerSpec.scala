@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import org.scalatest.prop.Tables.Table
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 
 import play.api.libs.json.{JsDefined, JsString, Json}
-import play.api.mvc.ControllerComponents
+import play.api.mvc.{AnyContentAsEmpty, ControllerComponents}
 import play.api.test.Helpers._
 import play.api.test.{FakeRequest, StubControllerComponentsFactory, StubPlayBodyParsersFactory}
 import play.mvc.Http.Status.{INTERNAL_SERVER_ERROR, NOT_FOUND, NO_CONTENT, OK}
@@ -58,7 +58,7 @@ class ScopeControllerSpec extends AsyncHmrcSpec
 
     val underTest = new ScopeController(mockScopeService, controllerComponents, stubPlayBodyParsers(materializer))
 
-    implicit lazy val request = FakeRequest()
+    implicit lazy val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
     when(mockScopeService.saveScopes(any[Seq[Scope]])).thenReturn(successful(Seq()))
     when(mockScopeService.fetchScopes(Set(scope.key))).thenReturn(successful(Seq(scope)))

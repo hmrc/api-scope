@@ -16,10 +16,10 @@ object AppDependencies {
   )
 
   private lazy val test = Seq(
-    "uk.gov.hmrc.mongo"   %% "hmrc-mongo-test-play-28"    % hmrcMongoVersion  % "test, it",
-    "org.scalaj"          %% "scalaj-http"                % scalaJVersion     % "test,it",
-    "uk.gov.hmrc"         %% "bootstrap-test-play-28"     % bootstrapVersion  % "test, it",
-    "org.mockito"         %% "mockito-scala-scalatest"    % "1.16.46"         % "test, it"
-  )
+    "uk.gov.hmrc.mongo"       %% "hmrc-mongo-test-play-28"    % hmrcMongoVersion,
+    "org.scalaj"              %% "scalaj-http"                % scalaJVersion,
+    "uk.gov.hmrc"             %% "bootstrap-test-play-28"     % bootstrapVersion,
+    "org.mockito"             %% "mockito-scala-scalatest"    % "1.17.29"       
+  ).map(_ % "test, it")
 
 }
