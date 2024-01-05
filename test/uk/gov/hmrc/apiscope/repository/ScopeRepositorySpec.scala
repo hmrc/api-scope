@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -81,21 +81,21 @@ class ScopeRepositorySpec extends AsyncHmrcSpec
 
   "fetchAll" should {
     "retrieve all the scopes from database" in {
-
       await(repo.save(scope1))
       await(repo.save(scope2))
 
       val allScopes = await(repo.fetchAll())
 
-      allScopes should contain allOf (scope1, scope2)
+      allScopes.should(contain.allOf(scope1, scope2))
     }
   }
 
   "The indexes in the 'scope' collection" should {
     "have all the indexes" in {
-
       val indexes = getIndexes()
+
       indexes.size mustEqual 2
+
       indexes.map(ind => ind.get("name")) contains BsonString("keyIndex")
       indexes.map(ind => ind.get("key")) contains BsonDocument("key" -> 1)
     }

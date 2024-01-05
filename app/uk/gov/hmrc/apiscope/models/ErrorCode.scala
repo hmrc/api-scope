@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import play.api.libs.json._
 
 object ErrorCode extends Enumeration {
 
-  implicit val format = EnumJson.enumFormat(ErrorCode)
+  implicit val format: Format[ErrorCode.Value] = EnumJson.enumFormat(ErrorCode)
 
   type ErrorCode = Value
 
@@ -34,13 +34,13 @@ object ErrorCode extends Enumeration {
 case class ErrorResponse(code: ErrorCode.Value, message: String, details: Option[Seq[ErrorDescription]] = None)
 
 object ErrorResponse {
-  implicit val format1 = Json.format[ErrorDescription]
-  implicit val format2 = EnumJson.enumFormat(ErrorCode)
-  implicit val format3 = Json.format[ErrorResponse]
+  implicit val format1: OFormat[ErrorDescription] = Json.format[ErrorDescription]
+  implicit val format2: Format[ErrorCode.Value]   = EnumJson.enumFormat(ErrorCode)
+  implicit val format3: OFormat[ErrorResponse]    = Json.format[ErrorResponse]
 }
 
 case class ErrorDescription(field: String, message: String)
 
 object ErrorDescription {
-  implicit val format = Json.format[ErrorDescription]
+  implicit val format: OFormat[ErrorDescription] = Json.format[ErrorDescription]
 }

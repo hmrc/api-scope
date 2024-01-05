@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,11 @@ package uk.gov.hmrc.apiscope
 
 import org.scalatest._
 import org.scalatest.concurrent.ScalaFutures
+import org.scalatest.featurespec.AnyFeatureSpec
+import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 
-abstract class BaseFeatureSpec extends FeatureSpec
+abstract class BaseFeatureSpec extends AnyFeatureSpec
     with GuiceOneServerPerSuite
     with GivenWhenThen
     with ScalaFutures
