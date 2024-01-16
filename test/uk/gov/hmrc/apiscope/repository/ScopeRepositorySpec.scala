@@ -37,11 +37,11 @@ class ScopeRepositorySpec extends AsyncHmrcSpec
     with MongoApp[Scope]
     with Eventually {
 
-  val scope1 = Scope("key1", "name1", "description1")
-  val scope2 = Scope("key2", "name2", "description2", confidenceLevel = Some(L200))
-  val repo   = repository.asInstanceOf[ScopeRepository]
+  val scope1: Scope = Scope("key1", "name1", "description1")
+  val scope2: Scope = Scope("key2", "name2", "description2", confidenceLevel = Some(L200))
 
-  override protected def repository: PlayMongoRepository[Scope] = app.injector.instanceOf[ScopeRepository]
+  override protected val repository: PlayMongoRepository[Scope] = app.injector.instanceOf[ScopeRepository]
+  val repo: ScopeRepository                                     = repository.asInstanceOf[ScopeRepository]
 
   private def getIndexes(): List[BsonDocument] = {
     await(repo.collection.listIndexes().map(toBsonDocument).toFuture().map(_.toList))

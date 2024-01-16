@@ -17,25 +17,28 @@
 package uk.gov.hmrc.apiscope.models
 
 import play.api.libs.json._
+import uk.gov.hmrc.apiplatform.modules.common.domain.services.SealedTraitJsonFormatting
 
-object ErrorCode extends Enumeration {
+sealed trait ErrorCode
 
-  implicit val format: Format[ErrorCode.Value] = EnumJson.enumFormat(ErrorCode)
+object ErrorCode {
+  case object SCOPE_NOT_FOUND          extends ErrorCode
+  case object INVALID_REQUEST_PAYLOAD  extends ErrorCode
+  case object UNKNOWN_ERROR            extends ErrorCode
+  case object API_INVALID_JSON         extends ErrorCode
+  case object API_SCOPE_ALREADY_IN_USE extends ErrorCode
+  val values: Set[ErrorCode]                 = Set(SCOPE_NOT_FOUND, INVALID_REQUEST_PAYLOAD, UNKNOWN_ERROR, API_INVALID_JSON, API_SCOPE_ALREADY_IN_USE)
+  def apply(text: String): Option[ErrorCode] = ErrorCode.values.find(_.toString() == text.toUpperCase)
 
-  type ErrorCode = Value
+  def unsafeApply(text: String): ErrorCode = apply(text).getOrElse(throw new RuntimeException(s"$text is not a valid Error Code"))
 
-  val SCOPE_NOT_FOUND          = Value("SCOPE_NOT_FOUND")
-  val INVALID_REQUEST_PAYLOAD  = Value("INVALID_REQUEST_PAYLOAD")
-  val UNKNOWN_ERROR            = Value("UNKNOWN_ERROR")
-  val API_INVALID_JSON         = Value("API_INVALID_JSON")
-  val API_SCOPE_ALREADY_IN_USE = Value("API_SCOPE_ALREADY_IN_USE")
+  implicit val format: Format[ErrorCode] = SealedTraitJsonFormatting.createFormatFor[ErrorCode]("Error Code", apply)
 }
 
-case class ErrorResponse(code: ErrorCode.Value, message: String, details: Option[Seq[ErrorDescription]] = None)
+case class ErrorResponse(code: ErrorCode, message: String, details: Option[Seq[ErrorDescription]] = None)
 
 object ErrorResponse {
   implicit val format1: OFormat[ErrorDescription] = Json.format[ErrorDescription]
-  implicit val format2: Format[ErrorCode.Value]   = EnumJson.enumFormat(ErrorCode)
   implicit val format3: OFormat[ErrorResponse]    = Json.format[ErrorResponse]
 }
 

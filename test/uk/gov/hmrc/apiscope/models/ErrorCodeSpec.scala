@@ -24,14 +24,14 @@ class ErrorCodeSpec extends HmrcSpec {
 
   "read" should {
     "read valid error code" in {
-      Json.fromJson[ErrorCode.Value](JsString("SCOPE_NOT_FOUND")) shouldBe JsSuccess(ErrorCode.SCOPE_NOT_FOUND)
+      Json.fromJson[ErrorCode](JsString("SCOPE_NOT_FOUND")) shouldBe JsSuccess(ErrorCode.SCOPE_NOT_FOUND)
     }
 
     "report invalid error code" in {
-      Json.fromJson[ErrorCode.Value](JsNumber(0)) should matchPattern {
+      Json.fromJson[ErrorCode](JsNumber(0)) should matchPattern {
         case e: JsError =>
       }
-      Json.fromJson[ErrorCode.Value](JsString("NOT VALID")) should matchPattern {
+      Json.fromJson[ErrorCode](JsString("NOT VALID")) should matchPattern {
         case e: JsError =>
       }
     }

@@ -16,17 +16,28 @@
 
 package uk.gov.hmrc.apiscope.models
 
-import scala.collection.immutable
+import play.api.libs.json._
 
-import enumeratum.values.{IntEnum, IntEnumEntry, IntPlayJsonValueEnum}
+sealed abstract class ConfidenceLevel(val value: Int)
 
-sealed abstract class ConfidenceLevel(val value: Int) extends IntEnumEntry
-
-object ConfidenceLevel extends IntEnum[ConfidenceLevel] with IntPlayJsonValueEnum[ConfidenceLevel] {
-  val values: immutable.IndexedSeq[ConfidenceLevel] = findValues
+object ConfidenceLevel {
 
   case object L50  extends ConfidenceLevel(50)
   case object L200 extends ConfidenceLevel(200)
   case object L250 extends ConfidenceLevel(250)
   case object L500 extends ConfidenceLevel(500)
+  val values: Set[ConfidenceLevel]             = Set(L50, L200, L250, L500)
+  def apply(int: Int): Option[ConfidenceLevel] = ConfidenceLevel.values.find(_.value == int)
+
+  def unsafeApply(int: Int): ConfidenceLevel = apply(int).getOrElse(throw new RuntimeException(s"$int is not a valid Confidence Level"))
+
+  private val reads: Reads[ConfidenceLevel] = {
+    case JsNumber(number) => apply(number.intValue).fold[JsResult[ConfidenceLevel]] { JsError(s"$number is not a valid Confidence Level") }(JsSuccess(_))
+    case e                => JsError(s"Cannot parse Confidence Level from '$e'")
+  }
+
+  private val writes: Writes[ConfidenceLevel] = level => JsNumber(level.value)
+
+  implicit val format: Format[ConfidenceLevel] = Format(reads, writes)
+
 }

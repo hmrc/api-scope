@@ -76,7 +76,7 @@ package object controllers extends ApplicationLogger {
       InternalServerError(error(ErrorCode.UNKNOWN_ERROR, "An unexpected error occurred"))
   }
 
-  def error(code: ErrorCode.Value, message: String): JsValue = {
+  def error(code: ErrorCode, message: String): JsValue = {
     toJson(ErrorResponse(code, message))
   }
 

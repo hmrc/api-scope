@@ -95,7 +95,7 @@ class ScopeFeatureSpec extends BaseFeatureSpec {
 
   def dropDatabase = {
     repository.collection.drop()
-    result(repository.ensureIndexes, timeout)
+    result(repository.ensureIndexes(), timeout)
   }
 
 }

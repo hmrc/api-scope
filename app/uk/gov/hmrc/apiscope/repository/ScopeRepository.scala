@@ -72,7 +72,8 @@ class ScopeRepository @Inject() (mongoComponent: MongoComponent)(implicit val ec
       replaceIndexes = true,
       extraCodecs = Seq(Codecs.playFormatCodec(ScopeFormats.scopeFormat))
     ) {
-  private val logger = Logger(this.getClass)
+  private val logger                 = Logger(this.getClass)
+  override lazy val requiresTtlIndex = false
 
   def save(scope: Scope): Future[Scope] = {
     var updateSeq = Seq(
