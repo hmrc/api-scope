@@ -44,6 +44,7 @@
     </logger>
 
     <logger name="com.google.inject" level="INFO"/>
+    <logger name="org.apache.pekko" level="ERROR"/>
     <logger name="org.asynchttpclient.netty.channel.DefaultChannelPool" level="INFO"/>
     <logger name="io.netty" level="INFO"/>
 

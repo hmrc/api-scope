@@ -19,7 +19,7 @@ package uk.gov.hmrc.apiscope.controllers
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future.{failed, successful}
 
-import akka.stream.Materializer
+import org.apache.pekko.stream.Materializer
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.TableFor2
 import org.scalatest.prop.Tables.Table
