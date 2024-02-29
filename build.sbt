@@ -16,44 +16,27 @@ lazy val playSettings: Seq[Setting[_]] = Seq.empty
 
 ThisBuild / semanticdbEnabled := true
 ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
-
+ThisBuild / scalaVersion := "2.13.12"
+ThisBuild / majorVersion := 0
 ThisBuild / libraryDependencySchemes += "org.scala-lang.modules" %% "scala-xml" % VersionScheme.Always
 
-lazy val microservice = Project(appName, file("."))
+lazy val microservice: Project = Project(appName, file("."))
   .enablePlugins(PlayScala, SbtDistributablesPlugin)
   .settings(playSettings: _*)
   .settings(scalaSettings: _*)
   .settings(defaultSettings(): _*)
   .settings(ScoverageSettings(): _*)
   .settings(
-    majorVersion := 0,
     libraryDependencies ++= AppDependencies.libraryDependencies,
     retrieveManaged := true
   )
   .settings(
-    inConfig(Test)(BloopDefaults.configSettings),
     addTestReportOption(Test, "test-reports"),
     Test / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-eT"),
-    Test / fork := false,
     Test / unmanagedSourceDirectories ++= Seq(
       baseDirectory.value / "test",
       baseDirectory.value / "test-common"
     ),
-    Test / parallelExecution := false
-  )
-  .settings(DefaultBuildSettings.integrationTestSettings())
-  .configs(IntegrationTest)
-  .settings(
-    inConfig(IntegrationTest)(scalafixConfigSettings(IntegrationTest)),
-    inConfig(IntegrationTest)(BloopDefaults.configSettings),
-    addTestReportOption(IntegrationTest, "int-test-reports"),
-    IntegrationTest / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-eT"),
-    IntegrationTest / fork := false,
-    IntegrationTest / unmanagedSourceDirectories ++= Seq(
-      baseDirectory.value / "integration",
-      baseDirectory.value / "test-common"
-    ),
-    IntegrationTest / parallelExecution := false
   )
   .settings(
     scalacOptions ++= Seq(
@@ -64,11 +47,26 @@ lazy val microservice = Project(appName, file("."))
     )
   )
 
+lazy val it = (project in file("it"))
+  .enablePlugins(PlayScala)
+  .dependsOn(microservice % "test->test")
+  .settings(DefaultBuildSettings.itSettings())
+  .settings(
+    Test / testOptions := Seq(Tests.Argument(TestFrameworks.ScalaTest, "-eT")),
+    Test / unmanagedSourceDirectories += baseDirectory.value / "testcommon",
+    addTestReportOption(Test, "int-test-reports"),
+  )
+ 
 commands ++= Seq(
-  Command.command("run-all-tests") { state => "test" :: "it:test" :: state },
+  Command.command("cleanAll") { state => "clean" :: "it/clean" :: state },
+  Command.command("fmtAll") { state => "scalafmtAll" :: "it/scalafmtAll" :: state },
+  Command.command("fixAll") { state => "scalafixAll" :: "it/scalafixAll" :: state },
+  Command.command("testAll") { state => "test" :: "it/test" :: state },
 
-  Command.command("clean-and-test") { state => "clean" :: "compile" :: "run-all-tests" :: state },
+  Command.command("run-all-tests") { state => "testAll" :: state },
+
+  Command.command("clean-and-test") { state => "cleanAll" :: "compile" :: "run-all-tests" :: state },
 
   // Coverage does not need compile !
-  Command.command("pre-commit") { state => "clean" :: "scalafmtAll" :: "scalafixAll" :: "coverage" :: "run-all-tests" :: "coverageOff" :: "coverageAggregate" :: state }
+  Command.command("pre-commit") { state => "cleanAll" :: "fmtAll" :: "fixAll" :: "coverage" :: "testAll" :: "coverageOff" :: "coverageAggregate" :: state }
 )
