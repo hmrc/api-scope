@@ -1036,6 +1036,6 @@
   {
     "key": "trader-goods-profiles",
     "name": "Trader Goods Profiles",
-    "description": "Allow full access to the Trader Goods Profiles Public API"
+    "description": "Allow full access to the Trader Goods Profiles public API"
   }
 ]
