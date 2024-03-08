@@ -1032,5 +1032,10 @@
     "key": "excise-movement-control-system",
     "name": "Excise Movement Control System",
     "description": "Excise Movement Control System Public API"
+  },
+  {
+    "key": "trader-goods-profiles",
+    "name": "Trader Goods Profiles",
+    "description": "Allow full access to the Trader Goods Profiles Public API"
   }
 ]
