@@ -1037,5 +1037,10 @@
     "key": "trader-goods-profiles",
     "name": "Trader Goods Profiles",
     "description": "Allow full access to the Trader Goods Profiles public API"
+  },
+  {
+    "key":"read:olgj",
+    "name":"Read One Login Gateway logout data",
+    "description":"Read data from the One Login Gateway services' logout endpoint"
   }
 ]
