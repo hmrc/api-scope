@@ -5,10 +5,10 @@ object AppDependencies {
 
   lazy val libraryDependencies = compile ++ test
 
-  private lazy val bootstrapVersion = "8.4.0"
+  private lazy val bootstrapVersion = "8.5.0"
   private lazy val hmrcMongoVersion = "1.7.0"
   private lazy val scalaJVersion    = "2.4.2"
-  val commonDomainVersion           = "0.10.0"
+  val commonDomainVersion           = "0.13.0"
 
   private lazy val compile = Seq(
     "uk.gov.hmrc"       %% "bootstrap-backend-play-30"  % bootstrapVersion,
