@@ -1042,5 +1042,29 @@
     "key": "tax-free-childcare-payments",
     "name": "Tax Free Childcare Payments",
     "description": "Allow External payment provider to access Tax free childcare account"
+  },
+  {
+    "key": "read:performance-tests",
+    "name": "Performance Tests",
+    "description": "Performance tests",
+    "confidenceLevel": 50
+  },
+  {
+    "key": "read:performance-tests-100",
+    "name": "Performance Tests 100",
+    "description": "Performance tests confidenceLevel 100",
+    "confidenceLevel": 100
+  },
+  {
+    "key": "read:performance-tests-200",
+    "name": "Performance Tests 200",
+    "description": "Performance tests confidenceLevel 200",
+    "confidenceLevel": 200
+  },
+  {
+    "key": "read:performance-tests-300",
+    "name": "Performance Tests 300",
+    "description": "Performance tests confidenceLevel 300",
+    "confidenceLevel": 300
   }
 ]
