@@ -18,33 +18,49 @@ package uk.gov.hmrc.apiscope.repository
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
+import org.bson.codecs.configuration.CodecRegistries
 import org.mongodb.scala.Document
+import org.mongodb.scala.MongoClient.DEFAULT_CODEC_REGISTRY
 import org.mongodb.scala.bson.{BsonDocument, BsonString}
-import org.scalatest.concurrent.Eventually
+import org.scalatest.BeforeAndAfterEach
 import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 
-import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
+import play.api.Application
+import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.libs.json.{Format, JsObject, Json}
+import uk.gov.hmrc.mongo.play.json.Codecs
+import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
 import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
 import uk.gov.hmrc.apiscope.models.Scope
 import uk.gov.hmrc.util.AsyncHmrcSpec
 
 class ScopeRepositorySpec extends AsyncHmrcSpec
-    with BeforeAndAfterEach with BeforeAndAfterAll
+    with BeforeAndAfterEach
     with GuiceOneAppPerSuite
-    with MongoApp[Scope]
-    with Eventually {
+    with DefaultPlayMongoRepositorySupport[Scope] {
 
-  val scope1: Scope = Scope("key1", "name1", "description1")
-  val scope2: Scope = Scope("key2", "name2", "description2", confidenceLevel = Some(L200))
+  val basicScope: Scope         = Scope("key1", "name1", "description1")
+  val scopeConfidence200: Scope = Scope("key2", "name2", "description2", confidenceLevel = Some(L200))
+  val scopeConfidence500: Scope = Scope("key3", "name3", "description3", confidenceLevel = Some(L500))
 
-  override protected val repository: PlayMongoRepository[Scope] = app.injector.instanceOf[ScopeRepository]
-  val repo: ScopeRepository                                     = repository.asInstanceOf[ScopeRepository]
+  override val repository: ScopeRepository    = app.injector.instanceOf[ScopeRepository]
+  override implicit lazy val app: Application = appBuilder.build()
 
   private def getIndexes(): List[BsonDocument] = {
-    await(repo.collection.listIndexes().map(toBsonDocument).toFuture().map(_.toList))
+    await(repository.collection.listIndexes().map(toBsonDocument).toFuture().map(_.toList))
+  }
+
+  def insertRaw(raw: JsObject) = {
+    val db = mongoComponent.database.withCodecRegistry(
+      CodecRegistries.fromRegistries(
+        CodecRegistries.fromCodecs(Codecs.playFormatCodec[Scope](repository.domainFormat)),
+        CodecRegistries.fromCodecs(Codecs.playFormatCodec[JsObject](implicitly[Format[JsObject]])),
+        DEFAULT_CODEC_REGISTRY
+      )
+    )
+    await(db.getCollection[JsObject](repository.collectionName).insertOne(raw).toFuture())
   }
 
   private def toBsonDocument(index: Document): BsonDocument = {
@@ -55,38 +71,97 @@ class ScopeRepositorySpec extends AsyncHmrcSpec
     d
   }
 
+  protected def appBuilder: GuiceApplicationBuilder =
+    new GuiceApplicationBuilder()
+      .configure(
+        "mongodb.uri" -> s"mongodb://127.0.0.1:27017/test-${this.getClass.getSimpleName}"
+      )
+
   "saveScope" should {
     "create scopes and retrieve them from database" in {
-      await(repo.save(scope1))
-      await(repo.save(scope2))
+      await(repository.save(basicScope))
+      await(repository.save(scopeConfidence200))
 
-      await(repo.fetch(scope1.key)).get shouldBe scope1
-      await(repo.fetch(scope2.key)).get shouldBe scope2
+      await(repository.fetch(basicScope.key)).get shouldBe basicScope
+      await(repository.fetch(scopeConfidence200.key)).get shouldBe scopeConfidence200
+    }
+
+    "create scope with ConfidenceLevel of 500 and retrieve from database" in {
+      await(repository.save(scopeConfidence500))
+
+      await(repository.fetch(scopeConfidence500.key)).get shouldBe scopeConfidence500
+    }
+
+    "create scope with ConfidenceLevel of 250 and retrieve from database" in {
+      await(repository.save(basicScope.copy(confidenceLevel = Some(L250))))
+
+      await(repository.fetch(basicScope.key)).head.confidenceLevel shouldBe Some(L250)
     }
 
     "update a scope" in {
-      await(repo.save(scope1))
-      await(repo.save(scope2))
+      await(repository.save(basicScope))
+      await(repository.save(scopeConfidence200))
 
-      val updatedScope1 = Scope(scope1.key, "updatedName1", "updatedDescription1")
-      val updatedScope2 = Scope(scope2.key, "updatedName2", "updatedDescription2", confidenceLevel = Some(L50))
+      val updatedScope1 = Scope(basicScope.key, "updatedName1", "updatedDescription1")
+      val updatedScope2 = Scope(scopeConfidence200.key, "updatedName2", "updatedDescription2", confidenceLevel = Some(L50))
 
-      await(repo.save(updatedScope1))
-      await(repo.save(updatedScope2))
+      await(repository.save(updatedScope1))
+      await(repository.save(updatedScope2))
 
-      await(repo.fetch(scope1.key)).get shouldEqual updatedScope1
-      await(repo.fetch(scope2.key)).get shouldEqual updatedScope2
+      await(repository.fetch(basicScope.key)).get shouldEqual updatedScope1
+      await(repository.fetch(scopeConfidence200.key)).get shouldEqual updatedScope2
+    }
+  }
+  "read a scope" should {
+    val scopeName        = "some scope name"
+    val scopeKey         = "read:some-scope-key"
+    val scopeDescription = "some scope description"
+    "map deprecated confidence level 100 to supported 200" in {
+
+      val outdatedScope: JsObject =
+        Json.obj("key" -> scopeKey, "name" -> scopeName, "description" -> scopeDescription, "confidenceLevel" -> 100)
+      insertRaw(outdatedScope)
+
+      val scopesRead = await(repository.fetchAll())
+      scopesRead.size shouldEqual 1
+      scopesRead.head.confidenceLevel shouldEqual Some(L200)
+    }
+
+    "map deprecated confidence level 300 to supported 200" in {
+      val outdatedScope: JsObject =
+        Json.obj("key" -> scopeKey, "name" -> scopeName, "description" -> scopeDescription, "confidenceLevel" -> 300)
+      insertRaw(outdatedScope)
+
+      val scopesRead = await(repository.fetchAll())
+      scopesRead.size shouldEqual 1
+      scopesRead.head.confidenceLevel shouldEqual Some(L200)
+    }
+
+    "handle an unsupported confidence level" in {
+      val invalidScope: JsObject =
+        Json.obj("key" -> scopeKey, "name" -> scopeName, "description" -> scopeDescription, "confidenceLevel" -> 666)
+      insertRaw(invalidScope)
+
+      val e: RuntimeException = intercept[RuntimeException] {
+        await(repository.fetch(scopeKey))
+      }
+      e.getMessage should include("Bad data in confidence level of 666")
+    }
+
+    "handle a key which cannot be found" in {
+      val scopesRead: Option[Scope] = await(repository.fetch("some-non-existent-key"))
+      scopesRead shouldBe Option.empty
     }
   }
 
   "fetchAll" should {
     "retrieve all the scopes from database" in {
-      await(repo.save(scope1))
-      await(repo.save(scope2))
+      await(repository.save(basicScope))
+      await(repository.save(scopeConfidence200))
 
-      val allScopes = await(repo.fetchAll())
+      val allScopes = await(repository.fetchAll())
 
-      allScopes.should(contain.allOf(scope1, scope2))
+      allScopes.should(contain.allOf(basicScope, scopeConfidence200))
     }
   }
 
