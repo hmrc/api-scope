@@ -1050,21 +1050,21 @@
     "confidenceLevel": 50
   },
   {
-    "key": "read:performance-tests-100",
-    "name": "Performance Tests 100",
-    "description": "Performance tests confidenceLevel 100",
-    "confidenceLevel": 100
-  },
-  {
     "key": "read:performance-tests-200",
     "name": "Performance Tests 200",
     "description": "Performance tests confidenceLevel 200",
     "confidenceLevel": 200
   },
   {
-    "key": "read:performance-tests-300",
-    "name": "Performance Tests 300",
-    "description": "Performance tests confidenceLevel 300",
-    "confidenceLevel": 300
+    "key": "read:performance-tests-250",
+    "name": "Performance Tests 250",
+    "description": "Performance tests confidenceLevel 250",
+    "confidenceLevel": 250
+  },
+  {
+    "key": "read:performance-tests-500",
+    "name": "Performance Tests 500",
+    "description": "Performance tests confidenceLevel 500",
+    "confidenceLevel": 500
   }
 ]
