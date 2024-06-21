@@ -1039,6 +1039,11 @@
     "description": "Allow full access to the Trader Goods Profiles public API"
   },
   {
+    "key": "trader-goods-profiles-test-support",
+    "name": "Trader Goods Profiles Test Support",
+    "description": "Allow full access to the Trader Goods Profiles test support API"
+  },
+  {
     "key": "tax-free-childcare-payments",
     "name": "Tax Free Childcare Payments",
     "description": "Allow External payment provider to access Tax free childcare account"
