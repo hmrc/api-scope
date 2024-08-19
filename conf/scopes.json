@@ -1045,8 +1045,8 @@
   },
   {
     "key": "tax-free-childcare-payments",
-    "name": "Tax Free Childcare Payments",
-    "description": "Allow External payment provider to access Tax free childcare account"
+    "name": "Access Tax-Free Childcare account details, and process requests for payments to childcare providers ",
+    "description": "Access Tax-Free Childcare account details, and process requests for payments to childcare providers "
   },
   {
     "key": "read:performance-tests",
