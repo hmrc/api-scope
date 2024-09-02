@@ -401,6 +401,16 @@
     "description":"Access to Relief At Source API's"
   },
   {
+    "key": "read:api-documentation",
+    "name": "Read scope",
+    "description": "Read scope"
+  },
+  {
+    "key": "write:api-documentation",
+    "name": "Write scope",
+    "description": "Write scope"
+  },
+  {
     "key":"read:api-platform-test",
     "name":"Read API Platform Test",
     "description":"Read API Platform Test"
@@ -409,6 +419,16 @@
     "key":"write:api-platform-test",
     "name":"Write API Platform Test",
     "description":"Write API Platform Test"
+  },
+  {
+    "key": "catch-the-mouse",
+    "name": "catch-the-mouse scope",
+    "description": "dummy scope used for restricted endpoints"
+  },
+  {
+    "key": "yippie-kai-yay",
+    "name": "yippie-kai-yay scope",
+    "description": "Read from OAuth2 Client Credentials protected endpoints (aka Bruce)"
   },
   {
     "key":"read:vat",
