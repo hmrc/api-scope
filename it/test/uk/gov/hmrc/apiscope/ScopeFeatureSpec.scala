@@ -23,6 +23,7 @@ import scala.concurrent.duration.Duration
 import sttp.client3.{UriContext, basicRequest}
 
 import play.api.libs.json.{JsValue, Json}
+import play.mvc.Http.{HeaderNames, MimeTypes}
 
 import uk.gov.hmrc.apiscope.repository.ScopeRepository
 
@@ -70,7 +71,7 @@ class ScopeFeatureSpec extends BaseFeatureSpec {
     http(
       basicRequest
         .post(uri"$serverUrl/scope")
-        .header("Content-Type", "application/json")
+        .header(HeaderNames.CONTENT_TYPE, MimeTypes.JSON)
         .body(body)
     )
   }
