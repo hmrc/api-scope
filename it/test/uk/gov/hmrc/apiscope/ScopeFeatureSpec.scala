@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit
 import scala.concurrent.Await.result
 import scala.concurrent.duration.Duration
 
-import scalaj.http.Http
+import sttp.client3.{UriContext, basicRequest}
 
 import play.api.libs.json.{JsValue, Json}
 
@@ -59,14 +59,20 @@ class ScopeFeatureSpec extends BaseFeatureSpec {
   }
 
   private def fetchScope(key: String): JsValue = {
-    val response = Http(s"$serverUrl/scope/$key").asString.body
-    Json.parse(response)
+    val response = http(
+      basicRequest
+        .get(uri"$serverUrl/scope/$key")
+    )
+    Json.parse(response.body.value)
   }
 
   private def postScope(body: String) = {
-    Http(s"$serverUrl/scope")
-      .header("Content-Type", "application/json")
-      .postData(body).asString
+    http(
+      basicRequest
+        .post(uri"$serverUrl/scope")
+        .header("Content-Type", "application/json")
+        .body(body)
+    )
   }
 
   private def scopeRequest(key: String, name: String) = {
