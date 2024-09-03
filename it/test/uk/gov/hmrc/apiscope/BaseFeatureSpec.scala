@@ -21,6 +21,7 @@ import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.featurespec.AnyFeatureSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
+import sttp.client3.{Request, Response, SimpleHttpClient}
 
 abstract class BaseFeatureSpec extends AnyFeatureSpec
     with GuiceOneServerPerSuite
@@ -29,7 +30,15 @@ abstract class BaseFeatureSpec extends AnyFeatureSpec
     with BeforeAndAfter
     with BeforeAndAfterEach
     with BeforeAndAfterAll
-    with Matchers {
+    with Matchers
+    with EitherValues {
+
+  def http(request: => Request[Either[String, String], Any]): Response[Either[String, String]] = {
+    val httpClient = SimpleHttpClient()
+    val response   = httpClient.send(request.followRedirects(false))
+    httpClient.close()
+    response
+  }
 
   val serverUrl = s"http://localhost:$port"
 }
