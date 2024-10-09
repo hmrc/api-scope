@@ -1065,8 +1065,9 @@
   },
   {
     "key": "tax-free-childcare-payments",
-    "name": "Access Tax-Free Childcare account details, and process requests for payments to childcare providers ",
-    "description": "Access Tax-Free Childcare account details, and process requests for payments to childcare providers "
+    "name": "Access Tax-Free Childcare account details, and process requests for payments to childcare providers",
+    "description": "Access Tax-Free Childcare account details, and process requests for payments to childcare providers",
+    "confidenceLevel": 200
   },
   {
     "key": "read:performance-tests",
