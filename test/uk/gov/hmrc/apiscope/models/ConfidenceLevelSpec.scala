@@ -17,9 +17,9 @@
 package uk.gov.hmrc.apiscope.models
 
 import play.api.libs.json.{JsNumber, JsSuccess, Json}
+import uk.gov.hmrc.apiplatform.modules.common.utils.HmrcSpec
 
 import uk.gov.hmrc.apiscope.models.ConfidenceLevel.{format, _}
-import uk.gov.hmrc.util.HmrcSpec
 
 class ConfidenceLevelSpec extends HmrcSpec {
 
