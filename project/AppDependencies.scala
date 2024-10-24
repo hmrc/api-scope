@@ -5,10 +5,9 @@ object AppDependencies {
 
   lazy val libraryDependencies = compile ++ test
 
-  private lazy val bootstrapVersion = "9.0.0"
-  private lazy val hmrcMongoVersion = "1.7.0"
-  private lazy val scalaJVersion    = "2.4.2"
-  val commonDomainVersion           = "0.13.0"
+  private lazy val bootstrapVersion = "9.5.0"
+  private lazy val hmrcMongoVersion = "2.2.0"
+  val commonDomainVersion           = "0.17.0"
 
   private lazy val compile = Seq(
     "uk.gov.hmrc"                   %% "bootstrap-backend-play-30"        % bootstrapVersion,
@@ -17,11 +16,11 @@ object AppDependencies {
   )
 
   private lazy val test = Seq(
-    "uk.gov.hmrc.mongo"             %% "hmrc-mongo-test-play-30"          % hmrcMongoVersion,
-    "com.softwaremill.sttp.client3" %% "core"                             % "3.9.8",
-    "uk.gov.hmrc"                   %% "bootstrap-test-play-30"           % bootstrapVersion,
-    "org.mockito"                   %% "mockito-scala-scalatest"          % "1.17.29",
-    "uk.gov.hmrc"                   %% "api-platform-test-common-domain"  % commonDomainVersion
+    "uk.gov.hmrc.mongo"             %% "hmrc-mongo-test-play-30"              % hmrcMongoVersion,
+    "com.softwaremill.sttp.client3" %% "core"                                 % "3.9.8",
+    "uk.gov.hmrc"                   %% "bootstrap-test-play-30"               % bootstrapVersion,
+    "org.mockito"                   %% "mockito-scala-scalatest"              % "1.17.29",
+    "uk.gov.hmrc"                   %% "api-platform-common-domain-fixtures"  % commonDomainVersion
   ).map(_ % "test")
 
 }

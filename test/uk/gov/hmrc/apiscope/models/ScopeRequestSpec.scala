@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.apiscope.models
 
-import uk.gov.hmrc.util.HmrcSpec
+import uk.gov.hmrc.apiplatform.modules.common.utils.HmrcSpec
 
 class ScopeRequestSpec extends HmrcSpec {
 
