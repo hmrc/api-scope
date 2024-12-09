@@ -1097,5 +1097,15 @@
     "key": "breathing-space-test-support",
     "name": "Breathing Space Test Support",
     "description": "Breathing Space Test Support API"
+  },
+  {
+    "key": "read:pillar2",
+    "name": "Read data for Pillar2",
+    "description": "Read data related to Pillar2 subcriptions"
+  },
+  {
+    "key": "write:pillar2",
+    "name": "Write data for Pillar2",
+    "description": "Write data related to Pillar2 subcriptions"
   }
 ]
