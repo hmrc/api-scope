@@ -1101,11 +1101,11 @@
   {
     "key": "read:pillar2",
     "name": "Read data for Pillar2",
-    "description": "Read data related to Pillar2 subcriptions"
+    "description": "Read data related to Pillar2 subscriptions"
   },
   {
     "key": "write:pillar2",
     "name": "Write data for Pillar2",
-    "description": "Write data related to Pillar2 subcriptions"
+    "description": "Write data related to Pillar2 subscriptions"
   }
 ]
