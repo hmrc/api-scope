@@ -48,6 +48,7 @@ private object ScopeFormats {
           case Some(250) => Some(ConfidenceLevel.L250)
           case Some(300) => Some(ConfidenceLevel.L200)
           case Some(500) => Some(ConfidenceLevel.L500)
+          case Some(600) => Some(ConfidenceLevel.L600)
           case Some(i)   => throw new RuntimeException(s"Bad data in confidence level of $i")
         })
   )(Scope.apply _)
@@ -81,6 +82,7 @@ class ScopeRepository @Inject() (mongoComponent: MongoComponent)(implicit val ec
       set("name", Codecs.toBson(scope.name)),
       set("description", Codecs.toBson(scope.description))
     )
+    
     scope.confidenceLevel match {
       case Some(value) =>
         logger.info(s"confidenceLevel value id ${value} and value enumeration ${value.value}")

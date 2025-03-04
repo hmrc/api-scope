@@ -29,6 +29,7 @@ class ConfidenceLevelSpec extends HmrcSpec {
       Json.fromJson[ConfidenceLevel](JsNumber(200)) shouldBe JsSuccess(L200)
       Json.fromJson[ConfidenceLevel](JsNumber(250)) shouldBe JsSuccess(L250)
       Json.fromJson[ConfidenceLevel](JsNumber(500)) shouldBe JsSuccess(L500)
+      Json.fromJson[ConfidenceLevel](JsNumber(600)) shouldBe JsSuccess(L600)
     }
   }
 
@@ -38,6 +39,7 @@ class ConfidenceLevelSpec extends HmrcSpec {
       Json.toJson[ConfidenceLevel](L200) shouldBe JsNumber(200)
       Json.toJson[ConfidenceLevel](L250) shouldBe JsNumber(250)
       Json.toJson[ConfidenceLevel](L500) shouldBe JsNumber(500)
+      Json.toJson[ConfidenceLevel](L600) shouldBe JsNumber(600)
     }
   }
 }

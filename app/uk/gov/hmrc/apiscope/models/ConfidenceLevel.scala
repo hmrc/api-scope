@@ -26,7 +26,8 @@ object ConfidenceLevel {
   case object L200 extends ConfidenceLevel(200)
   case object L250 extends ConfidenceLevel(250)
   case object L500 extends ConfidenceLevel(500)
-  val values: Set[ConfidenceLevel]             = Set(L50, L200, L250, L500)
+  case object L600 extends ConfidenceLevel(600)
+  val values: Set[ConfidenceLevel]             = Set(L50, L200, L250, L500, L600)
   def apply(int: Int): Option[ConfidenceLevel] = ConfidenceLevel.values.find(_.value == int)
 
   def unsafeApply(int: Int): ConfidenceLevel = apply(int).getOrElse(throw new RuntimeException(s"$int is not a valid Confidence Level"))

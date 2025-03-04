@@ -98,6 +98,12 @@ class ScopeRepositorySpec extends AsyncHmrcSpec
       await(repository.fetch(basicScope.key)).head.confidenceLevel shouldBe Some(L250)
     }
 
+    "create scope with ConfidenceLevel of 600 and retrieve from database" in {
+      await(repository.save(basicScope.copy(confidenceLevel = Some(L600))))
+
+      await(repository.fetch(basicScope.key)).head.confidenceLevel shouldBe Some(L600)
+    }
+
     "update a scope" in {
       await(repository.save(basicScope))
       await(repository.save(scopeConfidence200))
