@@ -1082,6 +1082,12 @@
     "confidenceLevel": 200
   },
   {
+    "key": "read:test-cl600",
+    "name": "CL600 Test",
+    "description": "Testing CL600",
+    "confidenceLevel": 600
+  },
+  {
     "key": "read:performance-tests-250",
     "name": "Performance Tests 250",
     "description": "Performance tests confidenceLevel 250",
