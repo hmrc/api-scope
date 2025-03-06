@@ -29,10 +29,10 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.{Format, JsObject, Json}
+import uk.gov.hmrc.auth.core.ConfidenceLevel
 import uk.gov.hmrc.mongo.play.json.Codecs
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
-import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
 import uk.gov.hmrc.apiscope.models.Scope
 import uk.gov.hmrc.util.AsyncHmrcSpec
 
@@ -42,8 +42,8 @@ class ScopeRepositorySpec extends AsyncHmrcSpec
     with DefaultPlayMongoRepositorySupport[Scope] {
 
   val basicScope: Scope         = Scope("key1", "name1", "description1")
-  val scopeConfidence200: Scope = Scope("key2", "name2", "description2", confidenceLevel = Some(L200))
-  val scopeConfidence500: Scope = Scope("key3", "name3", "description3", confidenceLevel = Some(L500))
+  val scopeConfidence200: Scope = Scope("key2", "name2", "description2", confidenceLevel = Some(ConfidenceLevel.L200))
+  val scopeConfidence500: Scope = Scope("key3", "name3", "description3", confidenceLevel = Some(ConfidenceLevel.L500))
 
   override val repository: ScopeRepository    = app.injector.instanceOf[ScopeRepository]
   override implicit lazy val app: Application = appBuilder.build()
@@ -93,9 +93,15 @@ class ScopeRepositorySpec extends AsyncHmrcSpec
     }
 
     "create scope with ConfidenceLevel of 250 and retrieve from database" in {
-      await(repository.save(basicScope.copy(confidenceLevel = Some(L250))))
+      await(repository.save(basicScope.copy(confidenceLevel = Some(ConfidenceLevel.L250))))
 
-      await(repository.fetch(basicScope.key)).head.confidenceLevel shouldBe Some(L250)
+      await(repository.fetch(basicScope.key)).head.confidenceLevel shouldBe Some(ConfidenceLevel.L250)
+    }
+
+    "create scope with ConfidenceLevel of 600 and retrieve from database" in {
+      await(repository.save(basicScope.copy(confidenceLevel = Some(ConfidenceLevel.L600))))
+
+      await(repository.fetch(basicScope.key)).head.confidenceLevel shouldBe Some(ConfidenceLevel.L600)
     }
 
     "update a scope" in {
@@ -103,7 +109,7 @@ class ScopeRepositorySpec extends AsyncHmrcSpec
       await(repository.save(scopeConfidence200))
 
       val updatedScope1 = Scope(basicScope.key, "updatedName1", "updatedDescription1")
-      val updatedScope2 = Scope(scopeConfidence200.key, "updatedName2", "updatedDescription2", confidenceLevel = Some(L50))
+      val updatedScope2 = Scope(scopeConfidence200.key, "updatedName2", "updatedDescription2", confidenceLevel = Some(ConfidenceLevel.L50))
 
       await(repository.save(updatedScope1))
       await(repository.save(updatedScope2))
@@ -124,7 +130,7 @@ class ScopeRepositorySpec extends AsyncHmrcSpec
 
       val scopesRead = await(repository.fetchAll())
       scopesRead.size shouldEqual 1
-      scopesRead.head.confidenceLevel shouldEqual Some(L200)
+      scopesRead.head.confidenceLevel shouldEqual Some(ConfidenceLevel.L200)
     }
 
     "map deprecated confidence level 300 to supported 200" in {
@@ -134,7 +140,7 @@ class ScopeRepositorySpec extends AsyncHmrcSpec
 
       val scopesRead = await(repository.fetchAll())
       scopesRead.size shouldEqual 1
-      scopesRead.head.confidenceLevel shouldEqual Some(L200)
+      scopesRead.head.confidenceLevel shouldEqual Some(ConfidenceLevel.L200)
     }
 
     "handle an unsupported confidence level" in {

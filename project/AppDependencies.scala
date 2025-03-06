@@ -5,7 +5,7 @@ object AppDependencies {
 
   lazy val libraryDependencies = compile ++ test
 
-  private lazy val bootstrapVersion = "9.7.0"
+  private lazy val bootstrapVersion = "9.9.0"
   private lazy val hmrcMongoVersion = "2.4.0"
   val commonDomainVersion           = "0.17.0"
 

@@ -30,8 +30,8 @@ import play.api.mvc.{AnyContentAsEmpty, ControllerComponents}
 import play.api.test.Helpers._
 import play.api.test.{FakeRequest, StubControllerComponentsFactory, StubPlayBodyParsersFactory}
 import play.mvc.Http.Status.{INTERNAL_SERVER_ERROR, NOT_FOUND, NO_CONTENT, OK}
+import uk.gov.hmrc.auth.core.ConfidenceLevel
 
-import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
 import uk.gov.hmrc.apiscope.models.ResponseFormatters._
 import uk.gov.hmrc.apiscope.models.{ErrorCode, ErrorDescription, ErrorResponse, Scope}
 import uk.gov.hmrc.apiscope.services.ScopeService
@@ -77,7 +77,7 @@ class ScopeControllerSpec extends AsyncHmrcSpec
       val result = underTest.createOrUpdateScope()(request.withBody(Json.parse(validScopeBodyWithConfidenceLevel)))
 
       status(result) shouldBe OK
-      verify(mockScopeService).saveScopes(Seq(Scope("key1", "name1", "desc1", confidenceLevel = Some(L200))))
+      verify(mockScopeService).saveScopes(Seq(Scope("key1", "name1", "desc1", confidenceLevel = Some(ConfidenceLevel.L200))))
     }
 
     "fail with a 422 (invalid request) when the json payload is invalid for the request" in new Setup {

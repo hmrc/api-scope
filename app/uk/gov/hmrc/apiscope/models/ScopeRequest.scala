@@ -17,6 +17,7 @@
 package uk.gov.hmrc.apiscope.models
 
 import play.api.libs.json.{Json, OFormat}
+import uk.gov.hmrc.auth.core.ConfidenceLevel
 
 case class ScopeData(key: String, name: String, description: String, confidenceLevel: Option[ConfidenceLevel] = None) {
   require(key.trim.nonEmpty, s"scope key is required")

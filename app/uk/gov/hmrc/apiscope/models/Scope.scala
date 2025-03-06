@@ -16,4 +16,6 @@
 
 package uk.gov.hmrc.apiscope.models
 
+import uk.gov.hmrc.auth.core.ConfidenceLevel
+
 case class Scope(key: String, name: String, description: String, confidenceLevel: Option[ConfidenceLevel] = None)

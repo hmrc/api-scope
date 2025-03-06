@@ -20,6 +20,7 @@ import javax.inject.{Inject, Singleton}
 import scala.collection.immutable.Seq
 import scala.concurrent.{ExecutionContext, Future}
 
+import org.bson.conversions.Bson
 import org.mongodb.scala.model.Filters.equal
 import org.mongodb.scala.model.Indexes.ascending
 import org.mongodb.scala.model.Updates.{combine, set}
@@ -28,10 +29,11 @@ import org.mongodb.scala.model.{FindOneAndUpdateOptions, IndexModel, IndexOption
 import play.api.Logger
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{Reads, _}
+import uk.gov.hmrc.auth.core.ConfidenceLevel
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
 
-import uk.gov.hmrc.apiscope.models.{ConfidenceLevel, Scope}
+import uk.gov.hmrc.apiscope.models.Scope
 
 private object ScopeFormats {
 
@@ -48,6 +50,7 @@ private object ScopeFormats {
           case Some(250) => Some(ConfidenceLevel.L250)
           case Some(300) => Some(ConfidenceLevel.L200)
           case Some(500) => Some(ConfidenceLevel.L500)
+          case Some(600) => Some(ConfidenceLevel.L600)
           case Some(i)   => throw new RuntimeException(s"Bad data in confidence level of $i")
         })
   )(Scope.apply _)
@@ -76,18 +79,20 @@ class ScopeRepository @Inject() (mongoComponent: MongoComponent)(implicit val ec
   override lazy val requiresTtlIndex = false
 
   def save(scope: Scope): Future[Scope] = {
-    var updateSeq = Seq(
+    val updateSeq = Seq(
       set("key", Codecs.toBson(scope.key)),
       set("name", Codecs.toBson(scope.name)),
       set("description", Codecs.toBson(scope.description))
-    )
-    scope.confidenceLevel match {
-      case Some(value) =>
-        logger.info(s"confidenceLevel value id ${value} and value enumeration ${value.value}")
-        updateSeq = updateSeq :+ set("confidenceLevel", Codecs.toBson(value))
-      case None        => Future.successful(None)
-    }
+    ) ++
+      (scope.confidenceLevel.fold[Seq[Bson]](Seq.empty)(value => {
+        logger.info(s"confidenceLevel value id ${value} and value enumeration ${value.level}")
+        Seq(
+          set("confidenceLevel", Codecs.toBson(value))
+        )
+      }))
+
     logger.info(s"updateSeq: $updateSeq")
+
     collection.findOneAndUpdate(
       equal("key", Codecs.toBson(scope.key)),
       update = combine(updateSeq: _*),

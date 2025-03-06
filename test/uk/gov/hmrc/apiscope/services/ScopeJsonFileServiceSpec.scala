@@ -20,8 +20,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future.successful
 
 import play.api.libs.json.{JsValue, Json}
+import uk.gov.hmrc.auth.core.ConfidenceLevel
 
-import uk.gov.hmrc.apiscope.models.ConfidenceLevel._
 import uk.gov.hmrc.apiscope.models.Scope
 import uk.gov.hmrc.apiscope.repository.ScopeRepository
 import uk.gov.hmrc.util.AsyncHmrcSpec
@@ -29,7 +29,7 @@ import uk.gov.hmrc.util.AsyncHmrcSpec
 class ScopeJsonFileServiceSpec extends AsyncHmrcSpec {
 
   val scope1             = Scope("key1", "name1", "description1")
-  val scope2             = Scope("key2", "name2", "description2", confidenceLevel = Some(L200))
+  val scope2             = Scope("key2", "name2", "description2", confidenceLevel = Some(ConfidenceLevel.L200))
   val scope1AsJsonString = """[{"key": "key1", "name": "name1", "description": "description1"}]"""
   val jsonButNotScope    = """[{"random": "values", "that": "aren't", "anything": "like scopes"}]"""
 
