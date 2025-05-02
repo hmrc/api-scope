@@ -1107,5 +1107,10 @@
     "key": "write:pillar2",
     "name": "Write data for Pillar2",
     "description": "Write data related to Pillar2 subscriptions"
+  },
+  {
+    "key":"read:individuals-employments-ho-nrc",
+    "name":"access individuals employment information for HO NRC",
+    "description":"Scope for HO NRC to access employment and PAYE information on individuals"
   }
 ]
