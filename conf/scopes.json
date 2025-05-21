@@ -1112,5 +1112,10 @@
     "key":"read:individuals-employments-ho-nrc",
     "name":"access individuals employment information for HO NRC",
     "description":"Scope for HO NRC to access employment and PAYE information on individuals"
+  },
+  {
+    "key":"read:individuals-matching-ho-nrc",
+    "name":"access individuals matching for HO NRC",
+    "description":"Scope for HO NRC to access individuals matching endpoints"
   }
 ]
