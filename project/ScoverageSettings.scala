@@ -12,7 +12,6 @@ object ScoverageSettings {
       "app.*",
       ".*Reverse.*",
       ".*Routes.*",
-      "com.kenshoo.play.metrics.*",
       ".*definition.*",
       "uk.gov.hmrc.BuildInfo.*",
     ).mkString(";")
