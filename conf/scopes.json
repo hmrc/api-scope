@@ -1117,5 +1117,10 @@
     "key":"read:individuals-matching-ho-nrc",
     "name":"access individuals matching for HO NRC",
     "description":"Scope for HO NRC to access individuals matching endpoints"
+  },
+  {
+    "key": "write:universal-credit-liability-notification",
+    "name": "Universal Credit Liability Notification",
+    "description": "Scope to send universal credit liability notification"
   }
 ]
