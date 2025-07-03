@@ -76,6 +76,11 @@
     "description":"Allow write access to self assessment data"
   },
   {
+    "key":"write:internal-licensing-management",
+    "name":"Internal Licensing Management - Write",
+    "description":"Allow write access to ILMS data"
+  },
+  {
     "key":"read:self-assessment-api",
     "name":"Self-Assessment API - Read",
     "description":"Allow read access to self assessment data"
