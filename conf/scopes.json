@@ -1130,7 +1130,7 @@
   },
   {
     "key": "write:signals-transmitter-verification",
-    "name": "Test signals routing to GDS scope",
-    "description": "Scope to send a verification signal to GDS to test the routing of One-Login signals"
+    "name": "One Login Signals Outbound Verification Signal Request",
+    "description": "Scope to be able to request a verification signal be sent from HMRC Signal Transmitter"
   }
 ]
