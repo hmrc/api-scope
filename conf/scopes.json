@@ -1127,5 +1127,10 @@
     "key": "write:universal-credit-liability-notification",
     "name": "Universal Credit Liability Notification",
     "description": "Scope to send universal credit liability notification"
+  },
+  {
+    "key": "write:signals-transmitter-verification",
+    "name": "Test signals routing to GDS scope",
+    "description": "Scope to send a verification signal to GDS to test the routing of One-Login signals"
   }
 ]
