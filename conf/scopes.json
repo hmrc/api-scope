@@ -1127,5 +1127,10 @@
     "key": "write:universal-credit-liability-notification",
     "name": "Universal Credit Liability Notification",
     "description": "Scope to send universal credit liability notification"
+  },
+  {
+    "key": "write:signals-transmitter-verification",
+    "name": "One Login Signals Outbound Verification Signal Request",
+    "description": "Scope to be able to request a verification signal be sent from HMRC Signal Transmitter"
   }
 ]
