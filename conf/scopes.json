@@ -300,9 +300,9 @@
     "confidenceLevel":200
   },
   {
-    "key":"openid:hmrc-enrolments",
-    "name":"Access your enrolments",
-    "description":"Access your enrolments",
+    "key":"openid:trusted-helper",
+    "name":"Access trusted helper details",
+    "description":"Access trusted helper details",
     "confidenceLevel":200
   },
   {
