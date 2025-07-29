@@ -300,6 +300,12 @@
     "confidenceLevel":200
   },
   {
+    "key":"openid:trusted-helper",
+    "name":"Access trusted helper details",
+    "description":"Access trusted helper details",
+    "confidenceLevel":200
+  },
+  {
     "key":"read:individual-employments",
     "name":"access employment information",
     "description":"Access employment history",
