@@ -1138,5 +1138,25 @@
     "key": "write:signals-transmitter-verification",
     "name": "One Login Signals Outbound Verification Signal Request",
     "description": "Scope to be able to request a verification signal be sent from HMRC Signal Transmitter"
+  },
+  {
+    "key":"read:individuals-matching-scts",
+    "name":"match individual from their details for Scottish Courts and Tribunals Service",
+    "description":"Scope for Scottish Courts and Tribunals Service to match an individual from their details"
+  },
+  {
+    "key":"read:individuals-income-scts",
+    "name":"access individuals income information for Scottish Courts and Tribunals Service",
+    "description":"Scope for Scottish Courts and Tribunals Service to access income information for individuals"
+  },
+  {
+    "key":"read:individuals-details-scts",
+    "name":"access individuals address and contact details for Scottish Courts and Tribunals Service",
+    "description":"Scope for Scottish Courts and Tribunals Service to access contact and address information for individuals"
+  },
+  {
+    "key":"read:individuals-employment-scts",
+    "name":"access individuals employment information for Scottish Courts and Tribunals Service",
+    "description":"Scope for Scottish Courts and Tribunals Service to access employment information for individuals"
   }
 ]
