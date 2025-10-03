@@ -1158,5 +1158,15 @@
     "key":"read:individuals-employment-scts",
     "name":"access individuals employment information for Scottish Courts and Tribunals Service",
     "description":"Scope for Scottish Courts and Tribunals Service to access employment information for individuals"
+  },
+  {
+    "key":"read:individuals-matching-lad4",
+    "name":"match individual from their details for Department of Energy and Net Zero Local Authority Delivery Project",
+    "description":"Scope for Department of Energy and Net Zero Local Authority Delivery Project to match an individual from their details"
+  },
+  {
+    "key":"read:individuals-income-lad4",
+    "name":"access individuals income for Department of Energy and Net Zero Local Authority Delivery Project",
+    "description":"Scope for Department of Energy and Net Zero Local Authority Delivery Project to access income information for individuals"
   }
 ]
