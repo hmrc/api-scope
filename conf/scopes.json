@@ -1155,9 +1155,9 @@
     "description":"Scope for Scottish Courts and Tribunals Service to access contact and address information for individuals"
   },
   {
-    "key":"read:individuals-employment-scts",
-    "name":"access individuals employment information for Scottish Courts and Tribunals Service",
-    "description":"Scope for Scottish Courts and Tribunals Service to access employment information for individuals"
+    "key":"read:individuals-employments-scts",
+    "name":"access individuals employments information for Scottish Courts and Tribunals Service",
+    "description":"Scope for Scottish Courts and Tribunals Service to access employments information for individuals"
   },
   {
     "key":"read:individuals-matching-lad4",
