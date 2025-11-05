@@ -1168,5 +1168,15 @@
     "key":"read:individuals-income-lad4",
     "name":"access individuals income for Department of Energy and Net Zero Local Authority Delivery Project",
     "description":"Scope for Department of Energy and Net Zero Local Authority Delivery Project to access income information for individuals"
+  },
+  {
+    "key":"read:isa-returns",
+    "name":"Access ISA returns reports",
+    "description":"Scope to access ISA returns reports"
+  },
+  {
+    "key":"write:isa-returns",
+    "name":"Submit ISA returns and ISA manager’s declaration",
+    "description":"Scope to submit ISA returns and the ISA manager’s declaration"
   }
 ]
