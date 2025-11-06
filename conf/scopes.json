@@ -1170,13 +1170,13 @@
     "description":"Scope for Department of Energy and Net Zero Local Authority Delivery Project to access income information for individuals"
   },
   {
-    "key":"read:isa-returns",
-    "name":"Access ISA returns",
-    "description":"Scope to access ISA returns"
+    "key": "read:isa-returns",
+    "name": "Access ISA returns",
+    "description": "access submitted ISA returns"
   },
   {
-    "key":"write:isa-returns",
-    "name":"Submit ISA returns and ISA manager’s declaration",
-    "description":"Scope to submit ISA returns and ISA manager’s declaration"
+    "key": "write:isa-returns",
+    "name": "Submit ISA returns and declaration",
+    "description": "submit ISA returns and the ISA manager's declaration"
   }
 ]
