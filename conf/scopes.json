@@ -1028,6 +1028,11 @@
     "description":"Allow read access to time to pay proxy"
   },
   {
+    "key":"write:time-to-pay-proxy",
+    "name": "Write time-to-pay data",
+    "description": "Write access to time-to-pay endpoints"
+  },
+  {
     "key":"write:ppns-boxes",
     "name":"PPNS API",
     "description":"Allow creation and deletion of PPNS boxes"
