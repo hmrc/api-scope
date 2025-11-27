@@ -1178,5 +1178,10 @@
     "key": "write:isa-returns",
     "name": "Submit ISA returns and declaration",
     "description": "submit ISA returns and the ISA manager's declaration"
+  },
+  {
+    "key": "read:digital-contact-api",
+    "name": "Access Digital Contact Information",
+    "description": "Access user preferences and their digital messages"
   }
 ]
