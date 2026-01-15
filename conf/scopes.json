@@ -520,6 +520,11 @@
     "description":"Returns current status of relationship"
   },
   {
+    "key":"write:relationships",
+    "name":"Modify relationships",
+    "description":"De-authorise an existing relationship"
+  },
+  {
     "key":"write:cancel-invitations",
     "name":"Cancel Invitations",
     "description":"Cancel a pending invitation"
