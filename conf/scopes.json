@@ -521,8 +521,8 @@
   },
   {
     "key":"write:relationships",
-    "name":"Modify relationships",
-    "description":"De-authorise an existing relationship"
+    "name":"De-authorise agent relationships",
+    "description":"Allows de-authorising an existing agent-client relationship"
   },
   {
     "key":"write:cancel-invitations",
