@@ -520,6 +520,11 @@
     "description":"Returns current status of relationship"
   },
   {
+    "key":"write:relationships",
+    "name":"De-authorise agent relationships",
+    "description":"Allows de-authorising an existing agent-client relationship"
+  },
+  {
     "key":"write:cancel-invitations",
     "name":"Cancel Invitations",
     "description":"Cancel a pending invitation"
