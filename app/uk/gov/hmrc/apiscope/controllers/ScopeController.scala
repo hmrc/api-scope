@@ -26,8 +26,8 @@ import play.api.mvc._
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import uk.gov.hmrc.apiscope.models.ErrorCode._
-import uk.gov.hmrc.apiscope.models.ResponseFormatters._
-import uk.gov.hmrc.apiscope.models.{Scope, ScopeData}
+import uk.gov.hmrc.apiscope.models.ResponseFormatters.given
+import uk.gov.hmrc.apiscope.models._
 import uk.gov.hmrc.apiscope.services.ScopeService
 
 @Singleton

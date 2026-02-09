@@ -17,7 +17,7 @@
 package uk.gov.hmrc.apiscope.models
 
 import play.api.libs.json._
-import uk.gov.hmrc.apiplatform.modules.common.domain.services.SealedTraitJsonFormatting
+import uk.gov.hmrc.apiplatform.modules.common.domain.services.SimpleEnumJsonFormatting
 
 sealed trait ErrorCode
 
@@ -32,7 +32,7 @@ object ErrorCode {
 
   def unsafeApply(text: String): ErrorCode = apply(text).getOrElse(throw new RuntimeException(s"$text is not a valid Error Code"))
 
-  implicit val format: Format[ErrorCode] = SealedTraitJsonFormatting.createFormatFor[ErrorCode]("Error Code", apply)
+  implicit val format: Format[ErrorCode] = SimpleEnumJsonFormatting.createFormatFor[ErrorCode]("Error Code", apply)
 }
 
 case class ErrorResponse(code: ErrorCode, message: String, details: Option[Seq[ErrorDescription]] = None)

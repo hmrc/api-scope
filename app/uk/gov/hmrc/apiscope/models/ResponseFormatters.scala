@@ -19,5 +19,5 @@ package uk.gov.hmrc.apiscope.models
 import play.api.libs.json.{Json, OFormat}
 
 object ResponseFormatters {
-  implicit val scopeFormat: OFormat[Scope] = Json.format[Scope]
+  given OFormat[Scope] = Json.format[Scope]
 }

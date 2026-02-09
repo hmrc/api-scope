@@ -7,7 +7,7 @@ Global / bloopExportJarClassifiers := Some(Set("sources"))
 
 ThisBuild / semanticdbEnabled := true
 ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
-ThisBuild / scalaVersion := "2.13.16"
+ThisBuild / scalaVersion := "3.7.4"
 ThisBuild / majorVersion := 0
 ThisBuild / libraryDependencySchemes += "org.scala-lang.modules" %% "scala-xml" % VersionScheme.Always
 

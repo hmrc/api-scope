@@ -53,7 +53,7 @@ private object ScopeFormats {
           case Some(600) => Some(ConfidenceLevel.L600)
           case Some(i)   => throw new RuntimeException(s"Bad data in confidence level of $i")
         })
-  )(Scope.apply _)
+  )(Scope.apply)
 
   implicit val scopeWrites: OWrites[Scope] = Json.writes[Scope]
   implicit val scopeFormat: OFormat[Scope] = OFormat(scopeRead, scopeWrites)
@@ -95,7 +95,7 @@ class ScopeRepository @Inject() (mongoComponent: MongoComponent)(implicit val ec
 
     collection.findOneAndUpdate(
       equal("key", Codecs.toBson(scope.key)),
-      update = combine(updateSeq: _*),
+      update = combine(updateSeq*),
       options = FindOneAndUpdateOptions().upsert(true).returnDocument(ReturnDocument.AFTER)
     ).map(_.asInstanceOf[Scope]).head()
   }

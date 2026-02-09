@@ -32,7 +32,7 @@ import play.api.test.{FakeRequest, StubControllerComponentsFactory, StubPlayBody
 import play.mvc.Http.Status.{INTERNAL_SERVER_ERROR, NOT_FOUND, NO_CONTENT, OK}
 import uk.gov.hmrc.auth.core.ConfidenceLevel
 
-import uk.gov.hmrc.apiscope.models.ResponseFormatters._
+import uk.gov.hmrc.apiscope.models.ResponseFormatters.given
 import uk.gov.hmrc.apiscope.models.{ErrorCode, ErrorDescription, ErrorResponse, Scope}
 import uk.gov.hmrc.apiscope.services.ScopeService
 import uk.gov.hmrc.util.AsyncHmrcSpec
@@ -56,7 +56,7 @@ class ScopeControllerSpec extends AsyncHmrcSpec
     val mockScopeService: ScopeService             = mock[ScopeService]
     val controllerComponents: ControllerComponents = stubControllerComponents()
 
-    val underTest = new ScopeController(mockScopeService, controllerComponents, stubPlayBodyParsers(materializer))
+    val underTest = new ScopeController(mockScopeService, controllerComponents, stubPlayBodyParsers(using materializer))
 
     implicit lazy val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
