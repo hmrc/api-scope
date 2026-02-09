@@ -20,9 +20,9 @@ import scala.concurrent.Future
 
 import util.ApplicationLogger
 
+import play.api.libs.json.*
 import play.api.libs.json.Json.toJson
-import play.api.libs.json._
-import play.api.mvc.Results._
+import play.api.mvc.Results.*
 import play.api.mvc.{Request, Result}
 import uk.gov.hmrc.http.NotFoundException
 

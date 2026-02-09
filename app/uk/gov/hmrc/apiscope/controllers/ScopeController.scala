@@ -21,13 +21,13 @@ import scala.concurrent.{ExecutionContext, Future}
 
 import util.ApplicationLogger
 
-import play.api.libs.json._
-import play.api.mvc._
+import play.api.libs.json.*
+import play.api.mvc.*
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
-import uk.gov.hmrc.apiscope.models.ErrorCode._
+import uk.gov.hmrc.apiscope.models.*
+import uk.gov.hmrc.apiscope.models.ErrorCode.*
 import uk.gov.hmrc.apiscope.models.ResponseFormatters.given
-import uk.gov.hmrc.apiscope.models._
 import uk.gov.hmrc.apiscope.services.ScopeService
 
 @Singleton

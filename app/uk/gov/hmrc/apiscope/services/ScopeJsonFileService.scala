@@ -37,10 +37,10 @@ class ScopeJsonFileService @Inject() (scopeRepository: ScopeRepository, fileRead
   try {
     fileReader.readFile.map(s =>
       Json.parse(s).validate[List[Scope]] match {
-        case JsSuccess(scopes: List[Scope] @unchecked, _)  =>
+        case JsSuccess(scopes: List[Scope] @unchecked, _) =>
           logger.info(s"Inserting ${scopes.size} Scopes from bundled file")
           saveScopes(scopes)
-        case JsError(errors)                  => logger.error(s"Unable to parse JSON into Scopes ${errors.mkString("; ")}")
+        case JsError(errors)                              => logger.error(s"Unable to parse JSON into Scopes ${errors.mkString("; ")}")
       }
     )
   } catch {

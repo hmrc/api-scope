@@ -19,13 +19,16 @@ package uk.gov.hmrc.apiscope.services
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future.{failed, successful}
 
+import org.mockito.Mockito.{verify, when}
+import org.scalatestplus.mockito.MockitoSugar
+
 import uk.gov.hmrc.auth.core.ConfidenceLevel
 
 import uk.gov.hmrc.apiscope.models.Scope
 import uk.gov.hmrc.apiscope.repository.ScopeRepository
 import uk.gov.hmrc.util.AsyncHmrcSpec
 
-class ScopeServiceSpec extends AsyncHmrcSpec {
+class ScopeServiceSpec extends AsyncHmrcSpec with MockitoSugar {
 
   val scope1 = Scope("key1", "name1", "description1")
   val scope2 = Scope("key2", "name2", "description2", confidenceLevel = Some(ConfidenceLevel.L200))

@@ -20,14 +20,17 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future.{failed, successful}
 
 import org.apache.pekko.stream.Materializer
-import org.scalatest.prop.TableDrivenPropertyChecks._
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.*
+import org.scalatest.prop.TableDrivenPropertyChecks.*
 import org.scalatest.prop.TableFor2
 import org.scalatest.prop.Tables.Table
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 
 import play.api.libs.json.{JsDefined, JsString, Json}
 import play.api.mvc.{AnyContentAsEmpty, ControllerComponents}
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import play.api.test.{FakeRequest, StubControllerComponentsFactory, StubPlayBodyParsersFactory}
 import play.mvc.Http.Status.{INTERNAL_SERVER_ERROR, NOT_FOUND, NO_CONTENT, OK}
 import uk.gov.hmrc.auth.core.ConfidenceLevel
@@ -35,12 +38,13 @@ import uk.gov.hmrc.auth.core.ConfidenceLevel
 import uk.gov.hmrc.apiscope.models.ResponseFormatters.given
 import uk.gov.hmrc.apiscope.models.{ErrorCode, ErrorDescription, ErrorResponse, Scope}
 import uk.gov.hmrc.apiscope.services.ScopeService
-import uk.gov.hmrc.util.AsyncHmrcSpec
+import uk.gov.hmrc.util.AsyncHmrcSpec;
 
 class ScopeControllerSpec extends AsyncHmrcSpec
     with GuiceOneAppPerSuite
     with StubControllerComponentsFactory
-    with StubPlayBodyParsersFactory {
+    with StubPlayBodyParsersFactory
+    with MockitoSugar {
 
   val scope: Scope = Scope("key1", "name1", "desc1")
 
@@ -60,7 +64,7 @@ class ScopeControllerSpec extends AsyncHmrcSpec
 
     implicit lazy val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-    when(mockScopeService.saveScopes(any[Seq[Scope]])).thenReturn(successful(Seq()))
+    when(mockScopeService.saveScopes(any[Seq[Scope]]())).thenReturn(successful(Seq()))
     when(mockScopeService.fetchScopes(Set(scope.key))).thenReturn(successful(Seq(scope)))
   }
 
@@ -93,7 +97,7 @@ class ScopeControllerSpec extends AsyncHmrcSpec
         val result = underTest.createOrUpdateScope()(request.withBody(Json.parse(invalidBody)))
 
         status(result) shouldBe expectedResponseCode
-        verify(mockScopeService, times(0)).saveScopes(*)
+        verify(mockScopeService, times(0)).saveScopes(any())
       }
     }
 
