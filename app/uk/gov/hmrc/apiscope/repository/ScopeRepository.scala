@@ -23,7 +23,7 @@ import scala.concurrent.{ExecutionContext, Future}
 import org.bson.conversions.Bson
 import org.mongodb.scala.model.Filters.equal
 import org.mongodb.scala.model.Indexes.ascending
-import org.mongodb.scala.model.Updates.{combine, set}
+import org.mongodb.scala.model.Updates.{combine, set, unset}
 import org.mongodb.scala.model.{FindOneAndUpdateOptions, IndexModel, IndexOptions, ReturnDocument}
 
 import play.api.Logger
@@ -37,7 +37,7 @@ import uk.gov.hmrc.apiscope.models.Scope
 
 private object ScopeFormats {
 
-  implicit val scopeRead: Reads[Scope] = (
+  private val rds: Reads[Scope] = (
     (JsPath \ "key").read[String] and
       (JsPath \ "name").read[String] and
       (JsPath \ "description").read[String] and
@@ -55,16 +55,18 @@ private object ScopeFormats {
         })
   )(Scope.apply)
 
-  implicit val scopeWrites: OWrites[Scope] = Json.writes[Scope]
-  implicit val scopeFormat: OFormat[Scope] = OFormat(scopeRead, scopeWrites)
+  import ConfidenceLevel.jsonFormat
+
+  private val wrts: OWrites[Scope] = Json.writes[Scope]
+  given OFormat[Scope]             = OFormat(rds, wrts)
 }
 
 @Singleton
-class ScopeRepository @Inject() (mongoComponent: MongoComponent)(implicit val ec: ExecutionContext)
+class ScopeRepository @Inject() (mongoComponent: MongoComponent)(using ExecutionContext)
     extends PlayMongoRepository[Scope](
       mongoComponent = mongoComponent,
       collectionName = "scope",
-      domainFormat = ScopeFormats.scopeFormat,
+      domainFormat = ScopeFormats.given_OFormat_Scope,
       indexes = Seq(IndexModel(
         ascending("key"),
         IndexOptions()
@@ -72,8 +74,7 @@ class ScopeRepository @Inject() (mongoComponent: MongoComponent)(implicit val ec
           .background(true)
           .unique(true)
       )),
-      replaceIndexes = true,
-      extraCodecs = Seq(Codecs.playFormatCodec(ScopeFormats.scopeFormat))
+      replaceIndexes = true
     ) {
   private val logger                 = Logger(this.getClass)
   override lazy val requiresTtlIndex = false
@@ -84,7 +85,9 @@ class ScopeRepository @Inject() (mongoComponent: MongoComponent)(implicit val ec
       set("name", Codecs.toBson(scope.name)),
       set("description", Codecs.toBson(scope.description))
     ) ++
-      (scope.confidenceLevel.fold[Seq[Bson]](Seq.empty)(value => {
+      (scope.confidenceLevel.fold[Seq[Bson]](
+        Seq.empty // or Seq(unset("confidenceLevel")) to set this too
+      )(value => {
         logger.info(s"confidenceLevel value id ${value} and value enumeration ${value.level}")
         Seq(
           set("confidenceLevel", Codecs.toBson(value))

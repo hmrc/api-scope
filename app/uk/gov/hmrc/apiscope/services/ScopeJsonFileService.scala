@@ -24,12 +24,11 @@ import util.ApplicationLogger
 
 import play.api.libs.json.{JsError, JsSuccess, Json}
 
-import uk.gov.hmrc.apiscope.models.ResponseFormatters.given
 import uk.gov.hmrc.apiscope.models.Scope
 import uk.gov.hmrc.apiscope.repository.ScopeRepository
 
 @Singleton
-class ScopeJsonFileService @Inject() (scopeRepository: ScopeRepository, fileReader: ScopeJsonFileReader)(implicit val ec: ExecutionContext) extends ApplicationLogger {
+class ScopeJsonFileService @Inject() (scopeRepository: ScopeRepository, fileReader: ScopeJsonFileReader)(using ExecutionContext) extends ApplicationLogger {
 
   private def saveScopes(scopes: List[Scope]): Future[List[Scope]] =
     Future.sequence(scopes.map(scopeRepository.save))

@@ -35,10 +35,9 @@ import play.api.test.{FakeRequest, StubControllerComponentsFactory, StubPlayBody
 import play.mvc.Http.Status.{INTERNAL_SERVER_ERROR, NOT_FOUND, NO_CONTENT, OK}
 import uk.gov.hmrc.auth.core.ConfidenceLevel
 
-import uk.gov.hmrc.apiscope.models.ResponseFormatters.given
 import uk.gov.hmrc.apiscope.models.{ErrorCode, ErrorDescription, ErrorResponse, Scope}
 import uk.gov.hmrc.apiscope.services.ScopeService
-import uk.gov.hmrc.util.AsyncHmrcSpec;
+import uk.gov.hmrc.util.AsyncHmrcSpec
 
 class ScopeControllerSpec extends AsyncHmrcSpec
     with GuiceOneAppPerSuite
@@ -54,15 +53,15 @@ class ScopeControllerSpec extends AsyncHmrcSpec
   val scopeBodyMissingKeyAndDesc: String          = """[{"name":"name1"},{"key":"key2","name":"name2"}]"""
   val scopeBodyWithInvalidConfidenceLevel: String = """[{"key":"key1", "name":"name1", "description":"desc1", "confidenceLevel":1001}]"""
 
-  implicit lazy val materializer: Materializer = mock[Materializer]
+  val mat: Materializer = mock[Materializer]
 
   trait Setup {
     val mockScopeService: ScopeService             = mock[ScopeService]
     val controllerComponents: ControllerComponents = stubControllerComponents()
 
-    val underTest = new ScopeController(mockScopeService, controllerComponents, stubPlayBodyParsers(using materializer))
+    val underTest = new ScopeController(mockScopeService, controllerComponents, stubPlayBodyParsers(using mat))
 
-    implicit lazy val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
+    val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
     when(mockScopeService.saveScopes(any[Seq[Scope]]())).thenReturn(successful(Seq()))
     when(mockScopeService.fetchScopes(Set(scope.key))).thenReturn(successful(Seq(scope)))
@@ -132,7 +131,7 @@ class ScopeControllerSpec extends AsyncHmrcSpec
       val result = underTest.fetchScope("key1")(request)
 
       status(result) shouldBe NOT_FOUND
-      contentAsJson(result) \ "code" shouldEqual JsDefined(JsString(ErrorCode.SCOPE_NOT_FOUND.toString))
+      contentAsJson(result) \ "code" shouldEqual JsDefined(JsString("SCOPE_NOT_FOUND"))
     }
 
     "return 500 (internal service error) when the service throws an exception" in new Setup {
@@ -211,7 +210,7 @@ class ScopeControllerSpec extends AsyncHmrcSpec
 
       contentAsJson(result) shouldBe Json.toJson(
         ErrorResponse(
-          ErrorCode.API_INVALID_JSON,
+          ErrorCode.ApiInvalidJson,
           "Json cannot be converted to API Scope",
           Some(Seq(
             ErrorDescription("(0)/description", "element is missing"),
@@ -227,7 +226,7 @@ class ScopeControllerSpec extends AsyncHmrcSpec
 
       contentAsJson(result) shouldEqual Json.toJson(
         ErrorResponse(
-          ErrorCode.API_INVALID_JSON,
+          ErrorCode.ApiInvalidJson,
           "Json cannot be converted to API Scope",
           Some(Seq(
             ErrorDescription("(0)/name", "element is missing")

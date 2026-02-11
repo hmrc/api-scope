@@ -47,8 +47,9 @@ class ScopeRepositorySpec extends AsyncHmrcSpec
   val scopeConfidence200: Scope = Scope("key2", "name2", "description2", confidenceLevel = Some(ConfidenceLevel.L200))
   val scopeConfidence500: Scope = Scope("key3", "name3", "description3", confidenceLevel = Some(ConfidenceLevel.L500))
 
-  override val repository: ScopeRepository    = app.injector.instanceOf[ScopeRepository]
-  override implicit lazy val app: Application = appBuilder.build()
+  override val repository: ScopeRepository = app.injector.instanceOf[ScopeRepository]
+
+  override lazy val app: Application = appBuilder.build()
 
   private def getIndexes(): List[BsonDocument] = {
     await(repository.collection.listIndexes().map(toBsonDocument).toFuture().map(_.toList))
@@ -116,10 +117,11 @@ class ScopeRepositorySpec extends AsyncHmrcSpec
       await(repository.save(updatedScope1))
       await(repository.save(updatedScope2))
 
-      await(repository.fetch(basicScope.key)).get shouldEqual updatedScope1
       await(repository.fetch(scopeConfidence200.key)).get shouldEqual updatedScope2
+      await(repository.fetch(basicScope.key)).get shouldEqual updatedScope1
     }
   }
+
   "read a scope" should {
     val scopeName        = "some scope name"
     val scopeKey         = "read:some-scope-key"

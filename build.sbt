@@ -26,14 +26,6 @@ lazy val microservice = Project(appName, file("."))
     Test / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-eT"),
     Test / unmanagedSourceDirectories += baseDirectory.value / "test-common"
   )
-  // .settings(
-  //   scalacOptions ++= Seq(
-  //     "-Wconf:cat=unused&src=views/.*\\.scala:s",
-  //     "-Wconf:cat=unused&src=.*RoutesPrefix\\.scala:s",
-  //     "-Wconf:cat=unused&src=.*Routes\\.scala:s",
-  //     "-Wconf:cat=unused&src=.*ReverseRoutes\\.scala:s"
-  //   )
-  // )
 
 lazy val it = (project in file("it"))
   .enablePlugins(PlayScala)

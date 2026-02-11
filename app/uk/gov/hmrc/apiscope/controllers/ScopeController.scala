@@ -25,13 +25,11 @@ import play.api.libs.json.*
 import play.api.mvc.*
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
-import uk.gov.hmrc.apiscope.models.*
-import uk.gov.hmrc.apiscope.models.ErrorCode.*
-import uk.gov.hmrc.apiscope.models.ResponseFormatters.given
+import uk.gov.hmrc.apiscope.models.{ErrorCode, *}
 import uk.gov.hmrc.apiscope.services.ScopeService
 
 @Singleton
-class ScopeController @Inject() (scopeService: ScopeService, cc: ControllerComponents, playBodyParsers: PlayBodyParsers)(implicit val ec: ExecutionContext)
+class ScopeController @Inject() (scopeService: ScopeService, cc: ControllerComponents, playBodyParsers: PlayBodyParsers)(using ExecutionContext)
     extends BackendController(cc) with ApplicationLogger {
 
   def createOrUpdateScope(): Action[JsValue] = Action.async(playBodyParsers.json) { implicit request =>
@@ -54,7 +52,7 @@ class ScopeController @Inject() (scopeService: ScopeService, cc: ControllerCompo
   def fetchScope(key: String): Action[AnyContent] = Action.async {
     scopeService.fetchScope(key).map {
       case Some(scope) => Ok(Json.toJson(scope))
-      case None        => NotFound(error(SCOPE_NOT_FOUND, s"Scope not found with key: $key"))
+      case None        => NotFound(error(ErrorCode.ScopeNotFound, s"Scope not found with key: $key"))
     } recover recovery
   }
 
@@ -76,7 +74,7 @@ class ScopeController @Inject() (scopeService: ScopeService, cc: ControllerCompo
   private def recovery: PartialFunction[Throwable, Result] = {
     case e =>
       logger.error(s"An unexpected error occurred: ${e.getMessage}", e)
-      InternalServerError(error(UNKNOWN_ERROR, "An unexpected error occurred"))
+      InternalServerError(error(ErrorCode.UnknownError, "An unexpected error occurred"))
   }
 
 }

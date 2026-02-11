@@ -26,20 +26,19 @@ import play.api.mvc.Results.*
 import play.api.mvc.{Request, Result}
 import uk.gov.hmrc.http.NotFoundException
 
-import uk.gov.hmrc.apiscope.models.ErrorCode.{API_INVALID_JSON, SCOPE_NOT_FOUND}
 import uk.gov.hmrc.apiscope.models.{ErrorCode, ErrorDescription, ErrorResponse}
 
 package object controllers extends ApplicationLogger {
 
-  private def validate[T](request: Request[JsValue])(implicit tjs: Reads[T]): Either[Result, JsResult[T]] = {
+  private def validate[T](request: Request[JsValue])(using Reads[T]): Either[Result, JsResult[T]] = {
     try {
       Right(request.body.validate[T])
     } catch {
-      case e: Throwable => Left(UnprocessableEntity(error(ErrorCode.INVALID_REQUEST_PAYLOAD, e.getMessage)))
+      case e: Throwable => Left(UnprocessableEntity(error(ErrorCode.InvalidRequestPayload, e.getMessage)))
     }
   }
 
-  def handleRequest[T](request: Request[JsValue])(f: T => Future[Result])(implicit tjs: Reads[T]): Future[Result] = {
+  def handleRequest[T](request: Request[JsValue])(f: T => Future[Result])(using Reads[T]): Future[Result] = {
 
     val either: Either[Result, JsResult[T]] = validate(request)
 
@@ -66,14 +65,14 @@ package object controllers extends ApplicationLogger {
       }
     }).toSeq
 
-    toJson(ErrorResponse(API_INVALID_JSON, "Json cannot be converted to API Scope", Some(errs)))
+    toJson(ErrorResponse(ErrorCode.ApiInvalidJson, "Json cannot be converted to API Scope", Some(errs)))
   }
 
   def recovery: PartialFunction[Throwable, Result] = {
-    case nfe: NotFoundException => NotFound(error(SCOPE_NOT_FOUND, nfe.getMessage))
+    case nfe: NotFoundException => NotFound(error(ErrorCode.ScopeNotFound, nfe.getMessage))
     case e                      =>
       logger.error(s"An unexpected error occurred: ${e.getMessage}", e)
-      InternalServerError(error(ErrorCode.UNKNOWN_ERROR, "An unexpected error occurred"))
+      InternalServerError(error(ErrorCode.UnknownError, "An unexpected error occurred"))
   }
 
   def error(code: ErrorCode, message: String): JsValue = {
