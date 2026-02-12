@@ -19,11 +19,12 @@ package uk.gov.hmrc.apiscope.repository
 import javax.inject.{Inject, Singleton}
 import scala.collection.immutable.Seq
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.{Failure, Success, Try}
 
 import org.bson.conversions.Bson
 import org.mongodb.scala.model.Filters.equal
 import org.mongodb.scala.model.Indexes.ascending
-import org.mongodb.scala.model.Updates.{combine, set, unset}
+import org.mongodb.scala.model.Updates.{combine, set}
 import org.mongodb.scala.model.{FindOneAndUpdateOptions, IndexModel, IndexOptions, ReturnDocument}
 
 import play.api.Logger
@@ -32,33 +33,28 @@ import play.api.libs.json.{Reads, *}
 import uk.gov.hmrc.auth.core.ConfidenceLevel
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
+import uk.gov.hmrc.play.json.Mappings
 
 import uk.gov.hmrc.apiscope.models.Scope
 
 private object ScopeFormats {
 
-  private val rds: Reads[Scope] = (
-    (JsPath \ "key").read[String] and
-      (JsPath \ "name").read[String] and
-      (JsPath \ "description").read[String] and
-      (JsPath \ "confidenceLevel").readNullable[Int]
-        .map[Option[ConfidenceLevel]](_ match {
-          case None      => None
-          case Some(50)  => Some(ConfidenceLevel.L50)
-          case Some(100) => Some(ConfidenceLevel.L200)
-          case Some(200) => Some(ConfidenceLevel.L200)
-          case Some(250) => Some(ConfidenceLevel.L250)
-          case Some(300) => Some(ConfidenceLevel.L200)
-          case Some(500) => Some(ConfidenceLevel.L500)
-          case Some(600) => Some(ConfidenceLevel.L600)
-          case Some(i)   => throw new RuntimeException(s"Bad data in confidence level of $i")
-        })
-  )(Scope.apply)
+  private def fromIntIncludingOldValues(level: Int): Try[ConfidenceLevel] = level match {
+    case 600 => Success(ConfidenceLevel.L600)
+    case 500 => Success(ConfidenceLevel.L500)
+    case 300 => Success(ConfidenceLevel.L200)
+    case 250 => Success(ConfidenceLevel.L250)
+    case 200 => Success(ConfidenceLevel.L200)
+    case 100 => Success(ConfidenceLevel.L200)
+    case 50  => Success(ConfidenceLevel.L50)
+    case _   => Failure(throw new NoSuchElementException(s"Bad data in confidence level of $level"))
+  }
 
-  import ConfidenceLevel.jsonFormat
+  private val mapping = Mappings.mapTry[Int, ConfidenceLevel](fromIntIncludingOldValues, _.level)
 
-  private val wrts: OWrites[Scope] = Json.writes[Scope]
-  given OFormat[Scope]             = OFormat(rds, wrts)
+  given Format[ConfidenceLevel] = mapping.jsonFormat
+
+  given mongoScopeFmt: OFormat[Scope] = Json.format[Scope]
 }
 
 @Singleton
@@ -66,7 +62,7 @@ class ScopeRepository @Inject() (mongoComponent: MongoComponent)(using Execution
     extends PlayMongoRepository[Scope](
       mongoComponent = mongoComponent,
       collectionName = "scope",
-      domainFormat = ScopeFormats.given_OFormat_Scope,
+      domainFormat = ScopeFormats.mongoScopeFmt,
       indexes = Seq(IndexModel(
         ascending("key"),
         IndexOptions()
