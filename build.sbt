@@ -7,12 +7,12 @@ Global / bloopExportJarClassifiers := Some(Set("sources"))
 
 inThisBuild(
   List(
+    majorVersion := 0,
     scalaVersion := "3.7.4",
     semanticdbEnabled := true,
     semanticdbVersion := scalafixSemanticdb.revision
   )
 )
-ThisBuild / majorVersion := 0
 
 lazy val microservice = Project(appName, file("."))
   .enablePlugins(PlayScala, SbtDistributablesPlugin)

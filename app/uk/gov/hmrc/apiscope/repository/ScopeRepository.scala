@@ -28,7 +28,6 @@ import org.mongodb.scala.model.Updates.{combine, set}
 import org.mongodb.scala.model.{FindOneAndUpdateOptions, IndexModel, IndexOptions, ReturnDocument}
 
 import play.api.Logger
-import play.api.libs.functional.syntax.*
 import play.api.libs.json.{Reads, *}
 import uk.gov.hmrc.auth.core.ConfidenceLevel
 import uk.gov.hmrc.mongo.MongoComponent
