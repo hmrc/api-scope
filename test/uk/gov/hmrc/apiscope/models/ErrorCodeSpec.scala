@@ -16,22 +16,21 @@
 
 package uk.gov.hmrc.apiscope.models
 
-import play.api.libs.json.{JsError, _}
+import play.api.libs.json.{JsError, *}
 import uk.gov.hmrc.apiplatform.modules.common.utils.HmrcSpec
 
 class ErrorCodeSpec extends HmrcSpec {
 
   "read" should {
     "read valid error code" in {
-      Json.fromJson[ErrorCode](JsString("SCOPE_NOT_FOUND")) shouldBe JsSuccess(ErrorCode.SCOPE_NOT_FOUND)
+      Json.fromJson[ErrorCode](JsString("SCOPE_NOT_FOUND")) shouldBe JsSuccess(ErrorCode.ScopeNotFound)
     }
-
     "report invalid error code" in {
       Json.fromJson[ErrorCode](JsNumber(0)) should matchPattern {
-        case e: JsError =>
+        case _: JsError =>
       }
       Json.fromJson[ErrorCode](JsString("NOT VALID")) should matchPattern {
-        case e: JsError =>
+        case _: JsError =>
       }
     }
   }

@@ -16,34 +16,31 @@
 
 package uk.gov.hmrc.apiscope.models
 
-import play.api.libs.json._
-import uk.gov.hmrc.apiplatform.modules.common.domain.services.SealedTraitJsonFormatting
+import play.api.libs.json.*
+import uk.gov.hmrc.apiplatform.modules.common.domain.services.SimpleEnumJsonFormatting
 
-sealed trait ErrorCode
+enum ErrorCode:
+  case ScopeNotFound, InvalidRequestPayload, UnknownError, ApiInvalidJson, ApiScopeAlreadyInUse
 
 object ErrorCode {
-  case object SCOPE_NOT_FOUND          extends ErrorCode
-  case object INVALID_REQUEST_PAYLOAD  extends ErrorCode
-  case object UNKNOWN_ERROR            extends ErrorCode
-  case object API_INVALID_JSON         extends ErrorCode
-  case object API_SCOPE_ALREADY_IN_USE extends ErrorCode
-  val values: Set[ErrorCode]                 = Set(SCOPE_NOT_FOUND, INVALID_REQUEST_PAYLOAD, UNKNOWN_ERROR, API_INVALID_JSON, API_SCOPE_ALREADY_IN_USE)
-  def apply(text: String): Option[ErrorCode] = ErrorCode.values.find(_.toString() == text.toUpperCase)
+  def apply(text: String): Option[ErrorCode] = ErrorCode.values.find(_.toString.equalsIgnoreCase(text))
 
-  def unsafeApply(text: String): ErrorCode = apply(text).getOrElse(throw new RuntimeException(s"$text is not a valid Error Code"))
+  def unsafeApply(text: String): ErrorCode =
+    apply(text).getOrElse(throw new RuntimeException(s"$text is not a valid Error Code"))
 
-  implicit val format: Format[ErrorCode] = SealedTraitJsonFormatting.createFormatFor[ErrorCode]("Error Code", apply)
-}
+  import play.api.libs.json.Format
 
-case class ErrorResponse(code: ErrorCode, message: String, details: Option[Seq[ErrorDescription]] = None)
-
-object ErrorResponse {
-  implicit val format1: OFormat[ErrorDescription] = Json.format[ErrorDescription]
-  implicit val format3: OFormat[ErrorResponse]    = Json.format[ErrorResponse]
+  given Format[ErrorCode] = SimpleEnumJsonFormatting.createEnumFormatFor[ErrorCode]("Error Code", apply)
 }
 
 case class ErrorDescription(field: String, message: String)
 
+case class ErrorResponse(code: ErrorCode, message: String, details: Option[Seq[ErrorDescription]] = None)
+
 object ErrorDescription {
-  implicit val format: OFormat[ErrorDescription] = Json.format[ErrorDescription]
+  given OFormat[ErrorDescription] = Json.format[ErrorDescription]
+}
+
+object ErrorResponse {
+  given OFormat[ErrorResponse] = Json.format[ErrorResponse]
 }

@@ -26,5 +26,5 @@ case class ScopeData(key: String, name: String, description: String, confidenceL
 }
 
 object ScopeData {
-  implicit val format1: OFormat[ScopeData] = Json.format[ScopeData]
+  given OFormat[ScopeData] = Json.format[ScopeData]
 }
