@@ -23,13 +23,14 @@ import org.mongodb.scala.Document
 import org.mongodb.scala.MongoClient.DEFAULT_CODEC_REGISTRY
 import org.mongodb.scala.bson.{BsonDocument, BsonString}
 import org.scalatest.BeforeAndAfterEach
-import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.{Format, JsObject, Json}
 import uk.gov.hmrc.auth.core.ConfidenceLevel
+import uk.gov.hmrc.mongo.logging.ObservableFutureImplicits.given
 import uk.gov.hmrc.mongo.play.json.Codecs
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
@@ -39,14 +40,16 @@ import uk.gov.hmrc.util.AsyncHmrcSpec
 class ScopeRepositorySpec extends AsyncHmrcSpec
     with BeforeAndAfterEach
     with GuiceOneAppPerSuite
-    with DefaultPlayMongoRepositorySupport[Scope] {
+    with DefaultPlayMongoRepositorySupport[Scope]
+    with MockitoSugar {
 
   val basicScope: Scope         = Scope("key1", "name1", "description1")
   val scopeConfidence200: Scope = Scope("key2", "name2", "description2", confidenceLevel = Some(ConfidenceLevel.L200))
   val scopeConfidence500: Scope = Scope("key3", "name3", "description3", confidenceLevel = Some(ConfidenceLevel.L500))
 
-  override val repository: ScopeRepository    = app.injector.instanceOf[ScopeRepository]
-  override implicit lazy val app: Application = appBuilder.build()
+  override val repository: ScopeRepository = app.injector.instanceOf[ScopeRepository]
+
+  override lazy val app: Application = appBuilder.build()
 
   private def getIndexes(): List[BsonDocument] = {
     await(repository.collection.listIndexes().map(toBsonDocument).toFuture().map(_.toList))
@@ -114,10 +117,11 @@ class ScopeRepositorySpec extends AsyncHmrcSpec
       await(repository.save(updatedScope1))
       await(repository.save(updatedScope2))
 
-      await(repository.fetch(basicScope.key)).get shouldEqual updatedScope1
       await(repository.fetch(scopeConfidence200.key)).get shouldEqual updatedScope2
+      await(repository.fetch(basicScope.key)).get shouldEqual updatedScope1
     }
   }
+
   "read a scope" should {
     val scopeName        = "some scope name"
     val scopeKey         = "read:some-scope-key"
@@ -175,7 +179,7 @@ class ScopeRepositorySpec extends AsyncHmrcSpec
     "have all the indexes" in {
       val indexes = getIndexes()
 
-      indexes.size mustEqual 2
+      indexes.size shouldBe 2
 
       indexes.map(ind => ind.get("name")) contains BsonString("keyIndex")
       indexes.map(ind => ind.get("key")) contains BsonDocument("key" -> 1)

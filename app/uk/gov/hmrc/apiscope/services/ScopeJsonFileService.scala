@@ -24,23 +24,22 @@ import util.ApplicationLogger
 
 import play.api.libs.json.{JsError, JsSuccess, Json}
 
-import uk.gov.hmrc.apiscope.models.ResponseFormatters._
 import uk.gov.hmrc.apiscope.models.Scope
 import uk.gov.hmrc.apiscope.repository.ScopeRepository
 
 @Singleton
-class ScopeJsonFileService @Inject() (scopeRepository: ScopeRepository, fileReader: ScopeJsonFileReader)(implicit val ec: ExecutionContext) extends ApplicationLogger {
+class ScopeJsonFileService @Inject() (scopeRepository: ScopeRepository, fileReader: ScopeJsonFileReader)(using ExecutionContext) extends ApplicationLogger {
 
-  private def saveScopes(scopes: Seq[Scope]): Future[Seq[Scope]] =
+  private def saveScopes(scopes: List[Scope]): Future[List[Scope]] =
     Future.sequence(scopes.map(scopeRepository.save))
 
   try {
     fileReader.readFile.map(s =>
-      Json.parse(s).validate[Seq[Scope]] match {
-        case JsSuccess(scopes: Seq[Scope], _) =>
+      Json.parse(s).validate[List[Scope]] match {
+        case JsSuccess(scopes: List[Scope] @unchecked, _) =>
           logger.info(s"Inserting ${scopes.size} Scopes from bundled file")
           saveScopes(scopes)
-        case JsError(errors)                  => logger.error(s"Unable to parse JSON into Scopes ${errors.mkString("; ")}")
+        case JsError(errors)                              => logger.error(s"Unable to parse JSON into Scopes ${errors.mkString("; ")}")
       }
     )
   } catch {

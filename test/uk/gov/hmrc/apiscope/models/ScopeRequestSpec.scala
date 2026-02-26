@@ -24,12 +24,12 @@ class ScopeRequestSpec extends HmrcSpec {
   val scopeRequest = Seq(scopeData)
 
   val testCases = Map(
-    "scope key is empty"                -> { s: Seq[ScopeData] => Seq(scopeData.copy(key = "")) },
-    "scope key is empty string"         -> { s: Seq[ScopeData] => Seq(scopeData.copy(key = "   ")) },
-    "scope name is empty"               -> { s: Seq[ScopeData] => Seq(scopeData.copy(name = "")) },
-    "scope name is empty string"        -> { s: Seq[ScopeData] => Seq(scopeData.copy(name = "   ")) },
-    "scope description is empty"        -> { s: Seq[ScopeData] => Seq(scopeData.copy(description = "")) },
-    "scope description is empty string" -> { s: Seq[ScopeData] => Seq(scopeData.copy(description = "   ")) }
+    "scope key is empty"                -> { (_: Seq[ScopeData]) => Seq(scopeData.copy(key = "")) },
+    "scope key is empty string"         -> { (_: Seq[ScopeData]) => Seq(scopeData.copy(key = "   ")) },
+    "scope name is empty"               -> { (_: Seq[ScopeData]) => Seq(scopeData.copy(name = "")) },
+    "scope name is empty string"        -> { (_: Seq[ScopeData]) => Seq(scopeData.copy(name = "   ")) },
+    "scope description is empty"        -> { (_: Seq[ScopeData]) => Seq(scopeData.copy(description = "")) },
+    "scope description is empty string" -> { (_: Seq[ScopeData]) => Seq(scopeData.copy(description = "   ")) }
   )
   "scopeRequest" should {
     testCases foreach {

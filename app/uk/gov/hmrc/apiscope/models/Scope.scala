@@ -19,3 +19,8 @@ package uk.gov.hmrc.apiscope.models
 import uk.gov.hmrc.auth.core.ConfidenceLevel
 
 case class Scope(key: String, name: String, description: String, confidenceLevel: Option[ConfidenceLevel] = None)
+
+object Scope {
+  import play.api.libs.json.{Json, OFormat}
+  given OFormat[Scope] = Json.format[Scope]
+}
