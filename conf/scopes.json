@@ -1188,5 +1188,10 @@
     "key": "read:digital-contact-api",
     "name": "Access Digital Contact Information",
     "description": "Access user preferences and their digital messages"
+  },
+  {
+    "key":"read:individuals-employments-dfe",
+    "name":"Access individuals employment information for Department for Education",
+    "description":"Scope for Department for Education to access employment information for individuals"
   }
 ]
