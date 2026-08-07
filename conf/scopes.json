@@ -1175,9 +1175,9 @@
     "description":"Scope for Department of Energy and Net Zero Local Authority Delivery Project to access income information for individuals"
   },
   {
-  "key":"read:individuals-matching-dfe",
-  "name":"Access individuals matching information for Department for Education",
-  "description":"Scope for Department for Education to access matching information for individuals"
+    "key":"read:individuals-matching-dfe",
+    "name":"match individual from their details for Department for Education",
+    "description":"Scope for Department for Education to match an individual from their details"
   },
   {
     "key": "read:isa-returns",
