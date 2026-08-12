@@ -1193,5 +1193,10 @@
     "key":"read:individuals-employments-dfe",
     "name":"Access individuals employment information for Department for Education",
     "description":"Scope for Department for Education to access employment information for individuals"
+  },
+  {
+    "key":"read:individuals-income-dfe",
+    "name":"access individuals income information for Department for Education",
+    "description":"Scope for Department for Education to access income information for individuals"
   }
 ]
