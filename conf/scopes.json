@@ -615,6 +615,11 @@
     "description":"Search goods vehicle movement service records"
   },
   {
+    "key":"read:goods-movement-system-data-retrieval",
+    "name":"read goods vehicle movement service records",
+    "description":"Retrieve goods vehicle movement service records"
+  },
+  {
     "key":"read:pull-notifications",
     "name":"Read pull notifications",
     "description":"Read pull notifications"
