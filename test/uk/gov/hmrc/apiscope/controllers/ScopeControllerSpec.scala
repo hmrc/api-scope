@@ -25,7 +25,6 @@ import org.mockito.Mockito.*
 import org.scalatest.prop.TableDrivenPropertyChecks.*
 import org.scalatest.prop.TableFor2
 import org.scalatest.prop.Tables.Table
-import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 
 import play.api.libs.json.{JsDefined, JsString, Json}
@@ -42,8 +41,7 @@ import uk.gov.hmrc.util.AsyncHmrcSpec
 class ScopeControllerSpec extends AsyncHmrcSpec
     with GuiceOneAppPerSuite
     with StubControllerComponentsFactory
-    with StubPlayBodyParsersFactory
-    with MockitoSugar {
+    with StubPlayBodyParsersFactory {
 
   val scope: Scope = Scope("key1", "name1", "desc1")
 
@@ -63,7 +61,7 @@ class ScopeControllerSpec extends AsyncHmrcSpec
 
     val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-    when(mockScopeService.saveScopes(any[Seq[Scope]]())).thenReturn(successful(Seq()))
+    when(mockScopeService.saveScopes(*)).thenReturn(successful(Seq()))
     when(mockScopeService.fetchScopes(Set(scope.key))).thenReturn(successful(Seq(scope)))
   }
 
@@ -96,7 +94,7 @@ class ScopeControllerSpec extends AsyncHmrcSpec
         val result = underTest.createOrUpdateScope()(request.withBody(Json.parse(invalidBody)))
 
         status(result) shouldBe expectedResponseCode
-        verify(mockScopeService, times(0)).saveScopes(any())
+        verify(mockScopeService, times(0)).saveScopes(*)
       }
     }
 
