@@ -20,7 +20,6 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future.successful
 
 import org.mockito.Mockito.{never, verify, when}
-import org.scalatestplus.mockito.MockitoSugar
 
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.auth.core.ConfidenceLevel
@@ -29,7 +28,7 @@ import uk.gov.hmrc.apiscope.models.Scope
 import uk.gov.hmrc.apiscope.repository.ScopeRepository
 import uk.gov.hmrc.util.AsyncHmrcSpec
 
-class ScopeJsonFileServiceSpec extends AsyncHmrcSpec with MockitoSugar {
+class ScopeJsonFileServiceSpec extends AsyncHmrcSpec {
 
   val scope1             = Scope("key1", "name1", "description1")
   val scope2             = Scope("key2", "name2", "description2", confidenceLevel = Some(ConfidenceLevel.L200))
